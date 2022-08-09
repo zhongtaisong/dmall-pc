@@ -2,6 +2,7 @@ import { message } from 'antd';
 import { observable, action } from 'mobx';
 import { makeAutoObservable } from "mobx";
 import { PAGE_SIZE } from '@config';
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 import { OPERATION_BTN } from './data';
@@ -44,8 +45,8 @@ class State {
         };
         const res = await service.selectData(requestParams);
 
-        if(res?.data?.code === 200){
-            let { data, total } = res?.data?.data || {};
+        if(res?.data?.code === SUCCESS_CODE){
+            let { data, total } = res?.data?.content || {};
             if(Array.isArray(data)) {
                 data.forEach(item => {
                     Object.entries(item).forEach(([key, value]: Array<any>) => {
@@ -78,7 +79,7 @@ class State {
         if(!params || !Object.keys(params).length) return;
         
         const res = await service.addData(params);
-        if( res.data.code === 200 ){
+        if(res?.data?.code === SUCCESS_CODE){
             message.success(res.data.msg);
             this.selectDataFn();
             return true;
@@ -93,7 +94,7 @@ class State {
         if(!params || !Object.keys(params).length) return;
 
         const res = await service.updateData(params);
-        if( res.data.code === 200 ){
+        if(res?.data?.code === SUCCESS_CODE){
             message.success(res.data.msg);
             this.selectDataFn();
             return true;
@@ -109,7 +110,7 @@ class State {
         if(!id || typeof id !== 'number') return;
 
         const res = await service.deleteData(id);
-        if( res.data.code === 200 ){
+        if(res?.data?.code === SUCCESS_CODE){
             message.success(res.data.msg);
             this.selectDataFn();
         }

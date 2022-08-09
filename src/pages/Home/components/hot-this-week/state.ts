@@ -1,7 +1,6 @@
-import { action, observable } from 'mobx';
-import { makeAutoObservable } from "mobx";
-// 接口服务
-import service from './service';
+import { SUCCESS_CODE } from '@config';
+import { action, observable, makeAutoObservable } from 'mobx';
+import { selectHotRecommendations } from './service';
 
 class State {
 
@@ -9,23 +8,21 @@ class State {
         makeAutoObservable(this);
     }
 
-    // 本周热门商品列表
-    @observable productsList = [];
-    @action setProductsList = (data = []) => {
-        this.productsList = data;
+    @observable dataSource = [];
+    @action setDataSource = (data = []) => {
+        this.dataSource = data;
     }
 
-    // 查询本周热门商品
-    productsListData = async () => {
-        const res: any = await service.productsListData();
-        try{
-            if( res.data.code === 200 ){
-                this.setProductsList(res?.data?.data || []);
-            }
-        }catch(err) {
-            console.log(err);
+    /**
+     * 查询 - 热门推荐商品 - 操作
+     */
+    selectHotRecommendationsFn = async () => {
+        const res = await selectHotRecommendations();
+        if(res?.data?.code === SUCCESS_CODE ){
+            this.setDataSource(res?.data?.content || []);
         }
     }
+    
 }
 
 export default new State();

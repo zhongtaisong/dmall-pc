@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 import { message } from 'antd';
 import { makeAutoObservable } from "mobx";
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 // 全局设置
@@ -25,7 +26,7 @@ class State {
             list
         });
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 message.success('成功加入购物车！');
                 searchAreaState.productNumData();
             }

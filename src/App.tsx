@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { Button } from 'antd';
 import axios from '@axios';
+import { SUCCESS_CODE } from '@config';
 // 全局公共方法
 import { ScrollToTop } from '@utils';
 // 首页
@@ -33,7 +34,7 @@ class App extends React.PureComponent<any, any> {
         });
         
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 let { data } = res.data || {};
                 if( data ){
                     data['GENDER'] = {

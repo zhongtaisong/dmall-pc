@@ -1,3 +1,4 @@
+import { SUCCESS_CODE } from '@config';
 import { observable, action } from 'mobx';
 import { makeAutoObservable } from "mobx";
 // 接口服务
@@ -26,8 +27,8 @@ class State {
      */
     getUnameFn = async () => {
         const res = await service.getUname();
-        if(res?.data?.code === 200){
-            this.setUsersList(res?.data?.data || []);
+        if(res?.data?.code === SUCCESS_CODE){
+            this.setUsersList(res?.data?.content || []);
         }
     }
 
@@ -36,8 +37,8 @@ class State {
      */
     getPidFn = async () => {
         const res = await service.getPid();
-        if(res?.data?.code === 200){
-            this.setLidList(res?.data?.data || []);
+        if(res?.data?.code === SUCCESS_CODE){
+            this.setLidList(res?.data?.content || []);
         }
     }
     

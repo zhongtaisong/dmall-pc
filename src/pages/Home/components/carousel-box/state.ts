@@ -1,7 +1,6 @@
+import { SUCCESS_CODE } from '@config';
 import { action, observable, makeAutoObservable } from 'mobx';
-
-// 接口服务
-import service from './service';
+import { selectLargeScalePromotion } from './service';
 
 class State {
 
@@ -9,23 +8,21 @@ class State {
         makeAutoObservable(this);
     }
 
-    // 图片
-    @observable carouselList = [];
-    @action setCarouselList = (data = []) => {
-        this.carouselList = data;
+    @observable dataSource = [];
+    @action setDataSource = (data = []) => {
+        this.dataSource = data;
     }
 
-    // 获取图片
-    imgCarouselData = async () => {
-        const res: any = await service.imgCarouselData();
-        try{
-            if( res.data.code === 200 ){
-                this.setCarouselList(res?.data?.data || []);
-            }
-        }catch(err) {
-            console.log(err);
+    /**
+     * 查询 - 大图推广商品 - 操作
+     */
+    selectLargeScalePromotionFn = async () => {
+        const res = await selectLargeScalePromotion();
+        if(res?.data?.code === SUCCESS_CODE ){
+            this.setDataSource(res?.data?.content || []);
         }
     }
+
 }
 
 export default new State();

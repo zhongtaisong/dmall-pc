@@ -1,6 +1,7 @@
 import { observable, action } from "mobx";
 import { makeAutoObservable } from "mobx";
 import { message } from "antd";
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 
@@ -53,7 +54,7 @@ class State {
             id, type
         });
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 let { address, productsInfo=[] } = res.data.data || {};
                 if( type == 'detail' ){
                     productsInfo[0].num = num;
@@ -90,7 +91,7 @@ class State {
     addorderData = async (values = {}) => {
         const res: any = await service.addorderData(values);
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 message.success(res.data.msg);
                 return res.data.data;
             }

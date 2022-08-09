@@ -6,6 +6,7 @@ import $state from '@store';
 import { indexState } from '@config';
 import { cacheKey } from '@utils';
 import { makeAutoObservable } from "mobx";
+import { SUCCESS_CODE } from '@config';
 
 class State {
 
@@ -19,7 +20,7 @@ class State {
     logoutData = async (callBack?: Function) => {
         const res: any = await service.logoutData();
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 localStorage.removeItem(cacheKey.USER_INFO);
                 sessionStorage.removeItem(cacheKey.USER_INFO);
                 callBack?.();

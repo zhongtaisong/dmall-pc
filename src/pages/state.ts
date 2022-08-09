@@ -6,6 +6,7 @@ import service from './service';
 import $state from '@store';
 // 全局设置
 import { searchAreaState } from '@config';
+import { SUCCESS_CODE } from '@config';
 
 class State {
 
@@ -19,7 +20,7 @@ class State {
     
         const res: any = await service.oauthData();
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 const { data } = res.data || {};
                 data.uname && $state.setUname( data.uname );
                 data.token && $state.setToken( data.token );
@@ -49,7 +50,7 @@ class State {
         }
         const res: any = await service.adminData({ uname });
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 res.data.data && $state.setAdminObj(res.data.data);
             }
         }catch(err) {

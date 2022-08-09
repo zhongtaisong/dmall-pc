@@ -2,6 +2,7 @@ import { observable, action } from 'mobx';
 import { makeAutoObservable } from "mobx";
 import moment from 'moment';
 import { message } from 'antd';
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 // url前缀
@@ -34,21 +35,21 @@ class State {
     selectUserInfoData = async () => {
         const res = await service.fetchSelectUserInfoData();
 
-        if(res?.data?.code === 200){
-            let { data } = res?.data || {};
-            if(!data || !Object.keys(data).length) {
-                data = {};
+        if(res?.data?.code === SUCCESS_CODE){
+            let { content } = res?.data || {};
+            if(!content || !Object.keys(content).length) {
+                content = {};
             };
 
             this.setFileListArr([{
                 uid: '-1',
                 name: 'image.png',
                 status: 'done',
-                url: `${ PUBLIC_URL }${ data?.avatar }`,
+                url: `${ PUBLIC_URL }${ content?.avatar }`,
             }]);
             return {
-                ...data,
-                birthday: moment(data?.['birthday']),
+                ...content,
+                birthday: moment(content?.['birthday']),
             }
         }
     }
@@ -59,7 +60,7 @@ class State {
      */
     updateUserInfoData = async (params = {}) => {
         const res = await service.fetchUpdateUserInfoData(params);
-        if( res.data.code === 200 ){
+        if(res?.data?.code === SUCCESS_CODE){
             message.success(res.data.msg);
         }else {
             message.error("操作失败！");
@@ -73,7 +74,7 @@ class State {
      */
     updateUpwdData = async (params = {}) => {
         const res = await service.fetchUpdateUpwdData({ ...params });
-        if( res?.data?.code === 200 ){
+        if( res?.data?.code === SUCCESS_CODE ){
             message.success(res.data.msg);
             return true;
         }else {

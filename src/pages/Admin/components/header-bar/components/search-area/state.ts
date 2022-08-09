@@ -1,6 +1,7 @@
 import { observable, action, toJS } from "mobx";
 import { message } from 'antd';
 import { makeAutoObservable } from "mobx";
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 
@@ -33,7 +34,7 @@ class State {
             isCount: true
         });
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 this.setProductNum( res.data.data );
             }
         }catch(err) {
@@ -62,7 +63,7 @@ class State {
             kws: kw,
         });
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 if( res.data.data ){
                     res.data.data.forEach((item, index) =>{
                         item['key'] = index + 1;

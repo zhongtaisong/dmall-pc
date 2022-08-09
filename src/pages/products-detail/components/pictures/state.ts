@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx';
 import { makeAutoObservable } from "mobx";
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 
@@ -21,7 +22,7 @@ class State {
             lid
         });
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 let data = res.data.data.filter(item => lid == item.lid);
                 this.setPics( data );
             }

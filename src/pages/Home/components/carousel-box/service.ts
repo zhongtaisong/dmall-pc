@@ -1,18 +1,10 @@
 import axios from '@axios';
-// 获取需要展示的图片
-const imgCarouselUrl = `index/banner`;
-class Service {
-    imgCarouselData = (req = {}) => {
-        return new Promise((resolve, reject) => {
-            axios.get(imgCarouselUrl, {
-                params: req
-            }).then(res => {
-                resolve(res);
-            }).catch(err => {
-                console.log(err);
-            });
-        });
-    }
-}
+import { IResponse } from '@types';
 
-export default new Service();
+/**
+ * 查询 - 大图推广商品
+ * @returns 
+ */
+export const selectLargeScalePromotion = (): Promise<IResponse> => {
+    return axios.get("/public/large-scale-promotion");
+}

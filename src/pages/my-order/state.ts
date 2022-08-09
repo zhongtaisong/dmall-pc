@@ -2,6 +2,7 @@ import { observable, action } from "mobx";
 import { makeAutoObservable } from "mobx";
 import { message } from "antd";
 import { PAGE_SIZE } from "@config";
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 
@@ -43,8 +44,8 @@ class State {
         };
         const res = await service.selOrdersData(requestParams);
 
-        if(res?.data?.code === 200){
-            const { content, total } = res?.data?.data || {};
+        if(res?.data?.code === SUCCESS_CODE){
+            const { content, total } = res?.data?.content || {};
 
             this.setDataSource(content);
             this.setTotal(total);
@@ -61,7 +62,7 @@ class State {
         if(!id || typeof id !== 'number') return;
 
         const res = await service.deleteOrderData(id);
-        if( res.data.code === 200 ){
+        if(res?.data?.code === SUCCESS_CODE){
             message.success(res.data.msg);
             this.selOrdersDataFn();
         }

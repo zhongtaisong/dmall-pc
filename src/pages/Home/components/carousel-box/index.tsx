@@ -10,27 +10,29 @@ import state from './state';
 // less样式
 import './index.less';
 
-// 走马灯区域 + 首页推荐
+/**
+ * 大图推广
+ */
 @observer
 class CarouselBox extends React.PureComponent<any, any> {
 
     componentDidMount() {
-        state.imgCarouselData();
+        state.selectLargeScalePromotionFn();
     }
 
     render() {
-        const { carouselList } = state;
+        const { dataSource } = state;
         
         return (
             <div className='common_width'>
                 <div className='dm_CarouselBox'>
                     {
-                        carouselList.length ? (
+                        dataSource.length ? (
                             <Carousel autoplay effect="fade"
                                 dots={{ className: "dm_CarouselBox__dots" }}
                             >
                                 {
-                                    carouselList.map( item => {
+                                    dataSource.map( item => {
                                         return (
                                             <Link key={ item.id } 
                                                 to={'/views/products/detail/' + item.id}

@@ -1,5 +1,6 @@
 import { observable, action } from "mobx";
 import { makeAutoObservable } from "mobx";
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 
@@ -41,8 +42,8 @@ class State {
         if(typeof id !== 'number') return;
 
         const res = await service.detailOrdersData(id);
-        if(res?.data?.code === 200){
-            const { address, orderInfo, productsInfo } = res?.data?.data || {};
+        if(res?.data?.code === SUCCESS_CODE){
+            const { address, orderInfo, productsInfo } = res?.data?.content || {};
 
             this.setConsignees(address);
             this.setOrderInfo(orderInfo);

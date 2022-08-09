@@ -1,6 +1,7 @@
 import service from './service';
 import { observable, action } from 'mobx';
 import { makeAutoObservable } from "mobx";
+import { SUCCESS_CODE } from '@config';
 
 class State {
 
@@ -42,7 +43,7 @@ class State {
     selectProductsDetailData = async (params = {}) => {
         const res: any = await service.selectProductsDetailData(params);
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 const { basicInfo, imgList, params, specs, detailsPic } = res.data.data || {};
                 basicInfo && this.setBasicInfo(basicInfo);
                 params && this.setParams(params);

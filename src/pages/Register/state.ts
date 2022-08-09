@@ -2,6 +2,7 @@ import service from './service';
 import { message } from 'antd';
 import { observable, action } from 'mobx';
 import { makeAutoObservable } from "mobx";
+import { SUCCESS_CODE } from '@config';
 
 class State {
 
@@ -17,7 +18,7 @@ class State {
     registerData = async ( values ) => {
         const res: any = await service.registerData(values);
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 const { data } = res.data || {};
                 message.success('恭喜你，注册成功！');
                 data && localStorage.setItem('uname', data); 

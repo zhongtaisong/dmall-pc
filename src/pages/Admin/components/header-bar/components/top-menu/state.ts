@@ -5,6 +5,7 @@ import $state from '@store';
 // 全局设置
 import { indexState } from '@config';
 import { makeAutoObservable } from "mobx";
+import { SUCCESS_CODE } from '@config';
 
 class State {
 
@@ -16,7 +17,7 @@ class State {
     logoutData = async () => {
         const res: any = await service.logoutData();
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 $state.setUname( res.data.data );
                 let uname = sessionStorage.getItem('uname');
                 uname && localStorage.setItem('uname', uname);

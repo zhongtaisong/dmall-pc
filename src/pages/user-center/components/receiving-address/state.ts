@@ -2,6 +2,7 @@ import { commonFn } from '@utils';
 import { message } from 'antd';
 import { observable, action } from 'mobx';
 import { makeAutoObservable } from "mobx";
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 
@@ -36,7 +37,7 @@ class State {
     editAddressData = async (params = {}) => {
         const res = await service.editAddressData({...params});
 
-        if(res?.data?.code === 200){
+        if(res?.data?.code === SUCCESS_CODE){
             message.success(res.data.msg);
             this.selAddressData();
         }
@@ -48,16 +49,16 @@ class State {
     selAddressData = async () => {
         const res = await service.selAddressData();
 
-        if( res?.data?.code === 200 ){
-            let { data } = res?.data || {};
-            if(!Array.isArray(data)) {
-                data = [];
+        if( res?.data?.code === SUCCESS_CODE ){
+            let { content } = res?.data || {};
+            if(!Array.isArray(content)) {
+                content = [];
             }
 
-            data.forEach(item => {
+            content.forEach(item => {
                 item.isDefault = Number(item.isDefault);
             })
-            this.setDataSource(data);
+            this.setDataSource(content);
         }
     }
 
@@ -66,7 +67,7 @@ class State {
         if(!params || !Object.keys(params).length) return;
 
         const res = await service.delAddressData(params);
-        if( res.data.code === 200 ){
+        if(res?.data?.code === SUCCESS_CODE){
             message.success(res.data.msg);
             this.selAddressData();
         }

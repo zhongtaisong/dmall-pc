@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 import { message } from 'antd';
 import { makeAutoObservable } from "mobx";
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 
@@ -28,7 +29,7 @@ class State {
     selmessagesData = async () => {
         const res: any = await service.selmessagesData();
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 const { data } = res.data || {};
                 if(data){
                     this.setMessageList( res.data.data );
@@ -50,7 +51,7 @@ class State {
     agreemessagesData = async (params = {}) => {
         const res: any = await service.agreemessagesData(params);
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 message.success(res.data.msg);
             }
         }catch(err) {
@@ -62,7 +63,7 @@ class State {
     addMessagesData = async (params = {}) => {
         const res: any = await service.addMessagesData(params);
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 message.success(res.data.msg);
                 this.selmessagesData();
             }

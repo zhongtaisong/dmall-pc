@@ -51,6 +51,11 @@ export const PAGE_SIZE = 10;
  */
 export const INIT_PWD = Math.random().toString().slice(2, 8);
 
+/**
+ * 接口请求成功code
+ */
+export const SUCCESS_CODE = "DM-000000";
+
 export {
     indexState, 
     topMenuState, 

@@ -1,6 +1,7 @@
 import { observable, action, toJS } from "mobx";
 import { makeAutoObservable } from "mobx";
 import { message } from 'antd';
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 // 全局设置
@@ -53,7 +54,7 @@ class State {
         });
 
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 if( res.data.data ){
                     this.setDataSource( res.data.data );
                     let sum = 0;
@@ -76,7 +77,7 @@ class State {
             ids
         });
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 message.success(res.data.msg);
                 this.cartLisData();
             }
@@ -93,7 +94,7 @@ class State {
             collection: 1
         });
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 message.success(res.data.msg);
                 this.cartLisData();
             }
@@ -109,7 +110,7 @@ class State {
             id, num, totalprice
         });
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 this.cartLisData();
             }
         }catch(err) {

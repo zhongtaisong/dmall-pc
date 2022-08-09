@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import { observable, action } from 'mobx';
 import { makeAutoObservable } from "mobx";
+import { SUCCESS_CODE } from '@config';
 import md5 from 'js-md5';
 // 接口服务
 import service from './service';
@@ -45,8 +46,8 @@ class State {
         };
         const res = await service.selectUsersData(requestParams);
 
-        if(res?.data?.code === 200){
-            const { products, total } = res?.data?.data || {};
+        if(res?.data?.code === SUCCESS_CODE){
+            const { products, total } = res?.data?.content || {};
 
             this.setDataSource( products );
             this.setTotal( total );
@@ -61,7 +62,7 @@ class State {
      */
     addUsersDataFn = async (params = {}) => {
         const res = await service.addUsersData(params);
-        if( res.data.code === 200 ){
+        if(res?.data?.code === SUCCESS_CODE){
             message.success(res.data.msg);
             this.selectUsersDataFn();
             return true;
@@ -74,7 +75,7 @@ class State {
      */
     updateUsersDataFn = async (params = {}) => {
         const res = await service.updateUsersData(params);
-        if( res.data.code === 200 ){
+        if(res?.data?.code === SUCCESS_CODE){
             message.success(res.data.msg);
             this.selectUsersDataFn();
             return true;
@@ -90,7 +91,7 @@ class State {
         if(!id || typeof id !== 'number') return;
 
         const res = await service.deleteUsersData(id);
-        if( res.data.code === 200 ){
+        if(res?.data?.code === SUCCESS_CODE){
             message.success(res.data.msg);
             this.selectUsersDataFn();
         }
@@ -108,7 +109,7 @@ class State {
             upwd: md5( INIT_PWD + PWD_KEY ),
             ...params,
         });
-        if( res.data.code === 200 ){
+        if(res?.data?.code === SUCCESS_CODE){
             message.success(`重置用户密码成功，初始密码为：${ INIT_PWD }`);
         }
     }

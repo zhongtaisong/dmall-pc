@@ -1,19 +1,10 @@
 import axios from '@axios';
-// 本周热门商品 - 查询
-const productsListUrl = 'index/hot';
+import { IResponse } from '@types';
 
-class Service {
-    productsListData = (req = {}) => {
-        return new Promise((resolve, reject) => {
-            axios.get(productsListUrl, {
-                params: req
-            }).then(res => {
-                resolve(res);
-            }).catch(err => {
-                console.log(err);
-            });
-        });
-    }
+/**
+ * 查询 - 热门推荐商品
+ * @returns 
+ */
+export const selectHotRecommendations = (): Promise<IResponse> => {
+    return axios.get("/public/hot-recommendations");
 }
-
-export default new Service();

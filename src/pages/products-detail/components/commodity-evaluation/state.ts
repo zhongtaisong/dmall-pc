@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 import { makeAutoObservable } from "mobx";
 import { message } from 'antd';
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 
@@ -28,7 +29,7 @@ class State {
     selcommentsData = async (params = {}) => {
         const res: any = await service.selcommentsData(params);
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 const { data } = res.data || {};
                 if(data){
                     this.setCommentList( res.data.data );
@@ -50,7 +51,7 @@ class State {
     agreecommentsData = async (params = {}) => {
         const res: any = await service.agreecommentsData(params);
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 message.success(res.data.msg);
             }
         }catch(err) {

@@ -2,6 +2,7 @@ import { message } from 'antd';
 import { observable, action } from 'mobx';
 import { cacheKey } from '@utils';
 import { makeAutoObservable } from "mobx";
+import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
 // 全局数据
@@ -25,7 +26,7 @@ class State {
 
         const res: any = await service.loginData(values);
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 const { isRemember } = values;
                 const { data } = res.data || {};
 
@@ -48,7 +49,7 @@ class State {
     forgetPwdData = async ( values ) => {
         const res: any = await service.forgetPwdData(values);
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 const { data={} } = res.data || {};
                 if(data) {
                     this.setUpwdObj(data);
@@ -69,7 +70,7 @@ class State {
             ...this.upwdObj
         });
         try{
-            if( res.data.code === 200 ){
+            if(res?.data?.code === SUCCESS_CODE){
                 message.success('新密码提交成功！');
                 res.data.data && localStorage.setItem('uname', res.data.data);      
             }
