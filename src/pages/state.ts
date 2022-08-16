@@ -4,8 +4,6 @@ import { makeAutoObservable } from "mobx";
 import service from './service';
 // 全局数据
 import $state from '@store';
-// 全局设置
-import { searchAreaState } from '@config';
 import { SUCCESS_CODE } from '@config';
 
 class State {
@@ -16,7 +14,6 @@ class State {
 
     // 发起账号认证
     oauthData = async () => {
-        searchAreaState.setIsShowSearchInput();
     
         const res: any = await service.oauthData();
         try{

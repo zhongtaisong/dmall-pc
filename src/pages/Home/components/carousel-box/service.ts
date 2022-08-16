@@ -6,5 +6,5 @@ import { IResponse } from '@types';
  * @returns 
  */
 export const selectLargeScalePromotion = (): Promise<IResponse> => {
-    return axios.get("/public/large-scale-promotion");
+    return axios.get("/home/public/large-scale-promotion");
 }

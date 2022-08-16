@@ -19,13 +19,13 @@ class TopMenu extends React.Component<any, any> {
         }else if( that == 'register' ){
             this.props.history.push('/register');
         }else if( that == 'order' ){
-            this.props.history.push('/views/products/order');
+            this.props.history.push('/views/goods/order');
         }else if( that == 'collection' ){
-            this.props.history.push('/views/products/collection');
+            this.props.history.push('/views/goods/collection');
         }else if( that == 'userCenter' ){
             this.props.history.push('/views/user');
         }else if( that == 'logout' ){
-            state.logoutData();
+
         }else if( that == 'admin' ){
             this.props.history.push('/admin');
         }

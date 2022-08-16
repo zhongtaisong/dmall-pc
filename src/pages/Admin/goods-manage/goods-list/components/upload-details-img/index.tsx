@@ -22,7 +22,7 @@ class Index extends React.PureComponent<any, any> {
             >
                 {/* 上传商品大图 */}
                 <UploadImg 
-                    downloadUrl='products/download'
+                    downloadUrl='goods/download'
                     maxCount={ 5 }
                     {...this.props}
                 />

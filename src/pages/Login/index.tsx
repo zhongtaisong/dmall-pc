@@ -9,7 +9,7 @@ import ForgetPassword from './components/forget-password';
 // 新密码
 import NewPassword from './components/new-password';
 // 设置
-import { indexState, PWD_KEY } from '@config';
+import { PWD_KEY } from '@config';
 // logo图片
 import logoImg from '@img/logo2.png';
 // 数据

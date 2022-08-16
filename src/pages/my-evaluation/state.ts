@@ -18,9 +18,9 @@ class State {
     }
 
     // 商品
-    @observable products: any = {};
+    @observable goods: any = {};
     @action setProducts = (data = {}) => {
-        this.products = data;
+        this.goods = data;
     }
 
     // 查询商品

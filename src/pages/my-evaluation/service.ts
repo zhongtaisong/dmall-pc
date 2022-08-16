@@ -1,6 +1,6 @@
 import axios from '@axios';
 // 查询商品
-const productsUrl = 'comment/select/products';
+const productsUrl = 'comment/select/goods';
 // 提交评价
 const addcommentsUrl = 'comment/add';
 

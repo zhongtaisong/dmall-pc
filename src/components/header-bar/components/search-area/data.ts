@@ -10,7 +10,7 @@ export const MENU_LIST_01 = [
     {
         key: 2,
         name: "杂货铺",
-        pathname: "/views/products",
+        pathname: "/views/goods-list",
     },
     {
         key: 3,

@@ -4,8 +4,6 @@ import { Table, Row, Button, Typography, Col, Select, message } from 'antd';
 import { toJS } from 'mobx';
 // 全局公共方法
 import { session } from '@utils';
-// 全局设置
-import { searchAreaState } from '@config';
 // 各种表头
 import { columns02 } from './data';
 // 数据
@@ -48,10 +46,8 @@ class SettlementPage extends React.Component<any, any> {
             nums
         });
         if( orderId ){
-            // 提交订单成功后，刷新购物车商品数量
-            searchAreaState.productNumData();
             this.props.history.replace({
-                pathname: '/views/products/cart/orderDetails',
+                pathname: '/views/goods/cart/orderDetails',
                 state: {
                     id: orderId
                 }

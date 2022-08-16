@@ -1,15 +1,18 @@
 import axios from '@axios';
 import { IResponse } from '@types';
+// 商品筛选条件
+const filterUrl = '/public/select/filter';
 
 class Service {
 
     /**
-     * 查询 - 所有用户
+     * 查询 - 商品列表
+     * @param params 
      * @returns 
      */
-    getUname = (): Promise<IResponse> => {
+    selectGoodsList = (params = {}): Promise<IResponse> => {
         return new Promise((resolve, reject) => {
-            axios.get("users/select/uname").then(res => {
+            axios.post("/goods-list/public/select", params).then(res => {
                 resolve(res);
             }).catch(err => {
                 reject(err);
@@ -18,12 +21,13 @@ class Service {
     }
 
     /**
-     * 查询 - 商品pid
+     * 查询 - 商品过滤条件
+     * @param params 
      * @returns 
      */
-    getPid = (): Promise<IResponse> => {
+    selectGoodsListfilterParams = (): Promise<IResponse> => {
         return new Promise((resolve, reject) => {
-            axios.get("goods/select/pid").then(res => {
+            axios.get("/goods-list/public/select/filter").then(res => {
                 resolve(res);
             }).catch(err => {
                 reject(err);

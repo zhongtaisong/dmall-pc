@@ -4,8 +4,6 @@ import { makeAutoObservable } from "mobx";
 import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
-// 全局设置
-import { searchAreaState } from '@config';
 
 class State {
 
@@ -28,7 +26,6 @@ class State {
         try{
             if(res?.data?.code === SUCCESS_CODE){
                 message.success('成功加入购物车！');
-                searchAreaState.productNumData();
             }
         }catch(err) {
             console.log(err);

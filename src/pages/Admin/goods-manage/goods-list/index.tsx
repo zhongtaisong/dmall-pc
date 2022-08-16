@@ -5,13 +5,13 @@ import { FormInstance } from 'antd/es/form';
 // 基本信息
 import BasicInfo from './components/basic-info';
 // 商品属性
-import ProductAttributes from './components/product-attributes';
+import ProductAttributes from './components/goods-attributes';
 // 上传商品图片
-import UploadProductsImg from './components/upload-products-img';
+import UploadProductsImg from './components/upload-goods-img';
 // 上传商品详情图片
 import UploadDetailsImg from './components/upload-details-img';
 // 推广商品
-import PushProducts from './components/push-products';
+import PushProducts from './components/push-goods';
 // 表头
 import columns from './data';
 // 数据

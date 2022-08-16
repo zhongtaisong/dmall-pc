@@ -17,7 +17,7 @@ export const columns02 = [
         dataIndex: 'description',
         key: 'description',
         width: '40%',
-        render: (text, record, index) => <Link to={'/views/products/detail/' + record.id}>{ text }</Link>
+        render: (text, record, index) => <Link to={'/views/goods/detail/' + record.id}>{ text }</Link>
     },
     {
         title: '规格',

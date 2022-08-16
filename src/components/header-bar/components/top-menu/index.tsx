@@ -93,7 +93,7 @@ class TopMenu extends React.Component<Partial<RouteComponentProps>, {
      * 退出登录 - 操作
      */
     logoutFn = () => {
-        state.logoutData(() => {
+        state.logoutDataFn(() => {
             this.setState({ isLoginAndRegister: true });
         });
     }

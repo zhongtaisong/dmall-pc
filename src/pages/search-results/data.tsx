@@ -19,7 +19,7 @@ const columns = [
         render: (text, record, index) => {
             return (
             <Link className='title_style'
-                to={`/views/products/detail/${record.id}`}
+                to={`/views/goods/detail/${record.id}`}
             >
                 <span title={ text }>{ text }</span>
                 <span title={ record.description }>{ record.description }</span>
@@ -51,7 +51,7 @@ const columns = [
     //     return (              
     //         <div className='operation'>
     //             <Link to={{
-    //                 pathname: '/views/products/detail',
+    //                 pathname: '/views/goods/detail',
     //                 state: {
     //                     id: record.id
     //                 }

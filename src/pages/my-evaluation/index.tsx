@@ -52,7 +52,7 @@ class MyEvaluation extends React.Component<any, any> {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { products={} } = state;
+        const { goods={} } = state;
         return (
             <div className='common_width dm_MyEvaluation'>
                 <Row className='table_title'>
@@ -62,13 +62,13 @@ class MyEvaluation extends React.Component<any, any> {
                 <Row className='main_content'>
                     <Col span={ 8 }>
                         {
-                            products ? (
+                            goods ? (
                                 <Fragment>
-                                    <Link to={'/views/products/detail/' + products.id}>
-                                        <img src={ products.mainPicture ? `${ PUBLIC_URL }${ products.mainPicture }` : products.mainPicture } />
-                                        <span title={ products.description }>{ products.description }</span>
+                                    <Link to={'/views/goods/detail/' + goods.id}>
+                                        <img src={ goods.mainPicture ? `${ PUBLIC_URL }${ goods.mainPicture }` : goods.mainPicture } />
+                                        <span title={ goods.description }>{ goods.description }</span>
                                     </Link>
-                                    <p>{ products.price && Number(products.price) ? `￥${Number(products.price).toFixed(2)}` : products.price }</p>
+                                    <p>{ goods.price && Number(goods.price) ? `￥${Number(goods.price).toFixed(2)}` : goods.price }</p>
                                 </Fragment>
                             ) : ''
                         }

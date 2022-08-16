@@ -1,7 +1,7 @@
 import Home from '@pages/home';
-import Products from '@pages/products';
-import ProductsDetail from '@pages/products-detail';
-import MyShoppingCart from '@pages/shopping-cart';
+import GoodsList from '@pages/goods-list';
+import GoodsDetail from '@pages/goods-detail';
+import ShoppingCart from '@pages/shopping-cart';
 import SettlementPage from '@pages/settlement-page';
 import OrderDetails from '@pages/order-details';
 import MyCollection from '@pages/my-collection';
@@ -10,8 +10,8 @@ import MyOrder from '@pages/my-order';
 import WebsiteDescription from '@pages/website-description';
 import UserCenter from '@pages/user-center';
 import Message from '@pages/message';
-import BrandList from '@pages/admin/products-manage/brand-list';
-import ProductList from '@pages/admin/products-manage/product-list';
+import BrandList from '@pages/admin/goods-manage/brand-list';
+import ProductList from '@pages/admin/goods-manage/goods-list';
 import OrdersList from '@pages/admin/orders-manage/order-list';
 import UsersManageList from '@pages/admin/users-manage/user-list';
 import CommentsManageList from '@pages/admin/comments-manage/comment-list';
@@ -40,9 +40,9 @@ export default [
     },
     { 
         id: 3,
-        path: '/views/products',
-        name: 'Products',
-        component: Products,
+        path: '/views/goods-list/:keyword?',
+        name: 'GoodsList',
+        component: GoodsList,
         title: '杂货铺',
         isOpen: true,
     },
@@ -64,9 +64,9 @@ export default [
     },
     { 
         id: 6,
-        path: '/views/cart',
-        name: 'MyShoppingCart',
-        component: MyShoppingCart,
+        path: '/views/shopping-cart',
+        name: 'ShoppingCart',
+        component: ShoppingCart,
         title: '我的购物车',
         isOpen: false,
     },
@@ -96,15 +96,15 @@ export default [
     },
     { 
         id: 10,
-        path: '/views/products/detail/:id',
-        name: 'ProductsDetail',
-        component: ProductsDetail,
+        path: '/views/goods-detail/:id',
+        name: 'GoodsDetail',
+        component: GoodsDetail,
         title: '商品详情',
         isOpen: true,
     },
     { 
         id: 11,
-        path: '/views/products/cart/settlement',
+        path: '/views/goods/cart/settlement',
         name: 'SettlementPage',
         component: SettlementPage,
         title: '结算页',
@@ -112,7 +112,7 @@ export default [
     },
     { 
         id: 12,
-        path: '/views/products/cart/orderDetails',
+        path: '/views/goods/cart/orderDetails',
         name: 'OrderDetails',
         component: OrderDetails,
         title: '订单详情',
@@ -120,7 +120,7 @@ export default [
     },
     { 
         id: 13,
-        path: '/views/products/cart/evaluate',
+        path: '/views/goods/cart/evaluate',
         name: 'MyEvaluation',
         component: MyEvaluation,
         title: '我的评价',

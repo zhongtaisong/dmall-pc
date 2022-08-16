@@ -37,7 +37,7 @@ class CommoditySpecification extends React.Component<any, any> {
     // 选择规格
     handleToggleSpecs = (id) => {
         if( id ){
-            this.props.history.push(`/views/products/detail/${id}`);
+            this.props.history.push(`/views/goods/detail/${id}`);
             this.setState(() => ({
                 num: 1,
                 actionIndex: 0
@@ -69,7 +69,7 @@ class CommoditySpecification extends React.Component<any, any> {
         let { basicInfo={} } = this.props;
         const { id } = basicInfo;
         id && this.props.history.push({
-            pathname: '/views/products/cart/settlement',
+            pathname: '/views/goods/cart/settlement',
             state: {
                 id: [id],
                 num: this.state.num,

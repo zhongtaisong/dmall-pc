@@ -1,9 +1,5 @@
 // 接口服务
 import service from './service';
-// 全局数据
-import $state from '@store';
-// 全局设置
-import { indexState } from '@config';
 import { makeAutoObservable } from "mobx";
 import { SUCCESS_CODE } from '@config';
 
@@ -11,22 +7,6 @@ class State {
 
     constructor() {
         makeAutoObservable(this);
-    }
-
-    // 退出登录
-    logoutData = async () => {
-        const res: any = await service.logoutData();
-        try{
-            if(res?.data?.code === SUCCESS_CODE){
-                $state.setUname( res.data.data );
-                let uname = sessionStorage.getItem('uname');
-                uname && localStorage.setItem('uname', uname);
-                sessionStorage.clear();
-                // indexState.oauthData();
-            }
-        }catch(err) {
-            console.log(err);
-        }
     }
 }
 

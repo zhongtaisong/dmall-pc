@@ -1,19 +1,16 @@
 import axios from '@axios';
-import { message } from 'antd';
-// 退出登录
-const logoutUrl = `users/logout`;
+import { IResponse } from '@types';
 
-class Service {
-    
-    logoutData = (req = {}) => {
-        return new Promise((resolve, reject) => {
-            axios.post(logoutUrl, req).then(res => {
-                resolve(res);
-            }).catch(err => {
-                message.error("操作失败！");
-            });
-        })
-    }
-}
-
-export default new Service();
+/**
+ * 退出登录
+ * @returns 
+ */
+export const logoutData = (): Promise<IResponse> => {
+    return new Promise((resolve, reject) => {
+        axios.patch("users/logout").then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });
+};

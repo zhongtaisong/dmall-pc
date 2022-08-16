@@ -10,7 +10,7 @@ class Service {
      */
     selectProductsData = (params = {}): Promise<IResponse> => {
         return new Promise((resolve, reject) => {
-            axios.post("products/select", params).then(res => {
+            axios.post("goods/select", params).then(res => {
                 resolve(res);
             }).catch(err => {
                 reject(err);
@@ -25,7 +25,7 @@ class Service {
      */
     addProductsData = (params = {}): Promise<IResponse> => {
         return new Promise((resolve, reject) => {
-            axios.post("products/add", params).then(res => {
+            axios.post("goods/add", params).then(res => {
                 resolve(res);
             }).catch(err => {
                 reject(err);
@@ -40,7 +40,7 @@ class Service {
      */
     updateProductsData = (params = {}): Promise<IResponse> => {
         return new Promise((resolve, reject) => {
-            axios.put("products/update", params).then(res => {
+            axios.put("goods/update", params).then(res => {
                 resolve(res);
             }).catch(err => {
                 reject(err);
@@ -55,7 +55,7 @@ class Service {
      */
     deleteProductsData = (id: number): Promise<IResponse> => {
         return new Promise((resolve, reject) => {
-            axios.delete(`products/delete/${ id }`).then(res => {
+            axios.delete(`goods/delete/${ id }`).then(res => {
                 resolve(res);
             }).catch(err => {
                 reject(err);
@@ -70,7 +70,7 @@ class Service {
      */
     pushData = (params = {}): Promise<IResponse> => {
         return new Promise((resolve, reject) => {
-            axios.post("products/push", params).then(res => {
+            axios.post("goods/push", params).then(res => {
                 resolve(res);
             }).catch(err => {
                 reject(err);

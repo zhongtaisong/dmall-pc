@@ -6,5 +6,5 @@ import { IResponse } from '@types';
  * @returns 
  */
 export const selectHotRecommendations = (): Promise<IResponse> => {
-    return axios.get("/public/hot-recommendations");
+    return axios.get("/home/public/hot-recommendations");
 }

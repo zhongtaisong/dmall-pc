@@ -4,8 +4,6 @@ import { message } from 'antd';
 import { SUCCESS_CODE } from '@config';
 // 接口服务
 import service from './service';
-// 全局设置
-import { searchAreaState } from '@config';
 
 class State {
 
@@ -63,7 +61,6 @@ class State {
                     });
                     this.setAllProductsSize( sum );
                 }
-                searchAreaState.productNumData();
             }
         }catch(err) {
             console.log(err);

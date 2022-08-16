@@ -6,14 +6,20 @@ import { PUBLIC_URL, BLACK_LIST_PATH } from '@config';
 // 全局数据
 import $state from '@store';
 
+const headersParams = {};
+const { token, uname } = commonFn?.getUserInfo() || {};
+if(token) {
+    headersParams['token'] = token;
+}
+if(uname) {
+    headersParams['uname'] = uname;
+}
+
 const $axios = axios.create({
     baseURL: PUBLIC_URL,
     timeout: 60 * 1000,
     withCredentials: true,
-    headers: {
-        token: commonFn?.getUserInfo()?.token,
-        uname: commonFn?.getUserInfo()?.uname,
-    },
+    headers: headersParams,
 });
 
 // 添加请求拦截器
@@ -49,7 +55,6 @@ $axios.interceptors.response.use(
             switch (status) {
                 case 401:
                     // 返回 401 清除token信息并跳转到404页面
-                    // topMenuState.logoutData();
                     if( BLACK_LIST_PATH.includes( pathname ) ){
                         // window.location.replace('/views/401');
                     }

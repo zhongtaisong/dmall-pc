@@ -12,7 +12,6 @@ import state from './state';
 import $state from '@store';
 // less样式
 import './index.less';
-const { Search } = Input;
 
 /**
  * 搜索区域
@@ -33,6 +32,7 @@ class SearchArea extends React.Component<Partial<RouteComponentProps>, any> {
         const { productNum } = state;
         const { history, location } = this.props;
         const adminObj = toJS($state.adminObj);
+        const keyword = location.pathname.split("/")?.[3] || '';
 
         return (
             <>
@@ -42,7 +42,7 @@ class SearchArea extends React.Component<Partial<RouteComponentProps>, any> {
                             className='dm_SearchArea__content--logo' 
                             onClick={() => history.push("/")} 
                         >
-                            <svg className="icon" aria-hidden="true">
+                            <svg className="icon-font" aria-hidden="true">
                                 <use xlinkHref="#icon-logo"></use>
                             </svg>
                         </Col>
@@ -56,7 +56,7 @@ class SearchArea extends React.Component<Partial<RouteComponentProps>, any> {
                                                     <Link 
                                                         key={ item.key }
                                                         to={ item.pathname } 
-                                                        className={ location.pathname === item.pathname ? 'active' : '' }
+                                                        className={ location?.pathname?.includes?.(item.pathname) ? 'active' : '' }
                                                     >{ item.name }</Link>
                                                 );
                                             })
@@ -72,7 +72,7 @@ class SearchArea extends React.Component<Partial<RouteComponentProps>, any> {
                                                     <Link 
                                                         key={ item.key }
                                                         to={ item.pathname } 
-                                                        className={ location.pathname === item.pathname ? 'active' : '' }
+                                                        className={ location?.pathname?.includes?.(item.pathname) ? 'active' : '' }
                                                     >{ item.name }</Link>
                                                 );
                                             })
@@ -85,19 +85,24 @@ class SearchArea extends React.Component<Partial<RouteComponentProps>, any> {
                             {
                                 !location.pathname.includes('/views/admin') ? (
                                     <>
-                                        <Search 
-                                            className='dm_SearchArea__content--search__input'
-                                            placeholder="请输入关键字" 
-                                            enterButton 
-                                            onSearch={ this.getSearchKws } 
-                                        />
+                                        {
+                                            location?.pathname?.includes?.("/goods-list") ? (
+                                                <Input.Search 
+                                                    className='dm_SearchArea__content--search__input'
+                                                    placeholder="请输入关键字" 
+                                                    enterButton 
+                                                    defaultValue={ keyword }
+                                                    onSearch={ this.getSearchKws } 
+                                                />
+                                            ) : null
+                                        }
                                         <Badge count={ productNum } overflowCount={ 99 }>
                                             <Button 
-                                                icon={ <ShoppingCartOutlined style={{ fontSize: 16 }} /> } 
+                                                icon={ <ShoppingCartOutlined style={{ fontSize: 15 }} /> } 
                                                 type="primary" 
                                                 className='dm_SearchArea__content--search__cart'
                                                 onClick={ this.goShopCartFn }
-                                            />
+                                            >购物车</Button>
                                         </Badge>
                                     </>
                                 ) : ''
@@ -115,7 +120,7 @@ class SearchArea extends React.Component<Partial<RouteComponentProps>, any> {
      * @returns 
      */
     getSearchKws = lodash.debounce((value: string) => {
-        state.kwData(value?.trim?.());
+        this.props.history.push(`/views/goods-list/${ value?.trim?.() }`);
     }, 360);
 
     /**

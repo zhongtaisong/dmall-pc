@@ -59,7 +59,7 @@ class MyShoppingCart extends React.Component<any, any> {
         const { selectedRows, pidArr } = this.state;
         if( selectedRows.length ){
             this.props.history.push({
-                pathname: '/views/products/cart/settlement',
+                pathname: '/views/goods/cart/settlement',
                 state: {
                     id: pidArr,
                     type: 'cart'

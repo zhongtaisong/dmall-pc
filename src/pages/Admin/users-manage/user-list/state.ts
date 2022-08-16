@@ -47,9 +47,9 @@ class State {
         const res = await service.selectUsersData(requestParams);
 
         if(res?.data?.code === SUCCESS_CODE){
-            const { products, total } = res?.data?.content || {};
+            const { goods, total } = res?.data?.content || {};
 
-            this.setDataSource( products );
+            this.setDataSource( goods );
             this.setTotal( total );
             this.setRequestParams(requestParams);
         }

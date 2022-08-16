@@ -72,7 +72,7 @@ class Index extends React.PureComponent<any, any> {
                             <div style={{ padding: '10px 0' }}>提示：每张图片宽度为：1098px，高度不限；每张图片大小限制在2M以内；最多上传1张图片</div>
                             {/* 上传商品大图 */}
                             <UploadImg 
-                                downloadUrl='products/download'
+                                downloadUrl='goods/download'
                                 maxCount={ 1 }
                                 onUploadCallBack={ setFileListArr }
                                 fileListArr={ fileListArr }

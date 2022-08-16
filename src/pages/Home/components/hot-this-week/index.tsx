@@ -34,11 +34,11 @@ class HotThisWeek extends React.Component<any, any> {
                                     className='dm_HotThisWeek__content--item'
                                 >
                                     <img src={ `${ PUBLIC_URL }${ item.mainPicture }` } alt="商品图片" 
-                                        onClick={() => this.props?.history?.push?.(`/views/products/detail/${ item?.id }`)}
+                                        onClick={() => this.props?.history?.push?.(`/views/goods/detail/${ item?.id }`)}
                                     />
                                     <div className='dm_HotThisWeek__content--item__text'>
                                         <div className='dm_HotThisWeek__content--item__text--title'>
-                                            <Link to={`/views/products/detail/${ item?.id }`}>{ item.productName }</Link>
+                                            <Link to={`/views/goods/detail/${ item?.id }`}>{ item.productName }</Link>
                                             <div className='two_line_ellipsis'>{ item.description }</div>
                                         </div>
                                         <div className='dm_HotThisWeek__content--item__text--price'>
