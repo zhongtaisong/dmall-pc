@@ -19,7 +19,7 @@ const { TextArea  } = Input;
  * 留言
  */
 @observer
-class Index extends React.Component<any, any> {
+class Index extends React.PureComponent<any, any> {
 
     constructor(props) {
         super(props);

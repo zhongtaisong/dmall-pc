@@ -13,7 +13,7 @@ import './index.less';
  * 我的购物车
  */
 @observer
-class MyShoppingCart extends React.Component<any, any> {
+class MyShoppingCart extends React.PureComponent<any, any> {
 
     constructor(props) {
         super(props);

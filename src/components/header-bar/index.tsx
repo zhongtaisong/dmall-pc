@@ -12,7 +12,7 @@ import './index.less';
  * 顶部导航
  */
 @observer
-class HeaderBar extends React.Component<any, any> {
+class HeaderBar extends React.PureComponent<any, any> {
     render() {
         return (
             <div className='dm_HeaderBar'>

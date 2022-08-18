@@ -12,7 +12,7 @@ interface IComponentProps {
  * 忘记密码 - 表单
  */
 @observer
-class ForgetPassword extends React.Component<IComponentProps, any> {
+class ForgetPassword extends React.PureComponent<IComponentProps, any> {
     render() {
         const { handleTarget } = this.props;
 

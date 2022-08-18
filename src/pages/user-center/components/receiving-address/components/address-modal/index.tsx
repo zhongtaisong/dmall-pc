@@ -7,7 +7,7 @@ import {FormInstance} from 'antd/es/form';
  * 添加收货地址 - Modal
  */
 @observer
-class AddressModal extends React.Component<{
+class AddressModal extends React.PureComponent<{
     /**
      * AddressModal是否可见
      */

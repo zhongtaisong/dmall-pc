@@ -9,7 +9,7 @@ import './index.less';
  * 订单详情
  */
 @observer
-class Index extends React.Component<any, any> {
+class Index extends React.PureComponent<any, any> {
 
     constructor(props) {
         super(props);

@@ -7,7 +7,7 @@ import './index.less';
  * 网站说明
  */
 @observer
-class WebsiteDescription extends React.Component<any, any> {
+class WebsiteDescription extends React.PureComponent<any, any> {
     render() {
         return (
             <div className='common_width dm_WebsiteDescription'>期待中</div>

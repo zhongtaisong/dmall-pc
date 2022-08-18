@@ -17,7 +17,7 @@ import './index.less';
  * 搜索区域
  */
 @observer
-class SearchArea extends React.Component<Partial<RouteComponentProps>, any> {
+class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> {
     
     componentDidMount() {
         state.productNumData(); 

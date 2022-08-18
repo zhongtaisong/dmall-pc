@@ -8,7 +8,7 @@ const { BRAND_LIST } = session.getItem('tableDic');
 
 // 规格参数
 @observer
-class Parameter extends React.Component<any, any> {
+class Parameter extends React.PureComponent<any, any> {
 
     state = {
         showParams: [

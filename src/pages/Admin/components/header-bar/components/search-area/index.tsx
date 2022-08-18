@@ -20,7 +20,7 @@ const logoBg = {
 
 // 搜索区域
 @observer
-class SearchArea extends React.Component<any, any> {
+class SearchArea extends React.PureComponent<any, any> {
 
     // 跳转页面
     handleClick = (that) => {

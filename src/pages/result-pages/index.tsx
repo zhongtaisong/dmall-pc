@@ -8,7 +8,7 @@ import './index.less';
  * 401、402、403、404等页面
  */
 @observer
-class ResultPages extends React.Component<any, any> {
+class ResultPages extends React.PureComponent<any, any> {
     render() {
         return (
             <Result

@@ -14,7 +14,7 @@ const { TextArea } = Input;
  * 我的评价
  */
 @observer
-class MyEvaluation extends React.Component<any, any> {
+class MyEvaluation extends React.PureComponent<any, any> {
 
     constructor(props) {
         super(props);

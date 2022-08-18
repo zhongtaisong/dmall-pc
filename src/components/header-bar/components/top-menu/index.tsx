@@ -14,7 +14,7 @@ import './index.less';
  * 顶部菜单
  */
 @observer
-class TopMenu extends React.Component<Partial<RouteComponentProps>, {
+class TopMenu extends React.PureComponent<Partial<RouteComponentProps>, {
     /**
      * 是否展示登录、注册
      */

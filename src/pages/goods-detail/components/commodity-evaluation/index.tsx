@@ -25,7 +25,7 @@ interface IComponentState {
  * 评价
  */
 @observer
-class CommodityEvaluation extends React.Component<Partial<IComponentProps>, IComponentState> {
+class CommodityEvaluation extends React.PureComponent<Partial<IComponentProps>, IComponentState> {
 
     constructor(props) {
         super(props);

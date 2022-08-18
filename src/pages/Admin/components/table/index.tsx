@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import './index.less';
 
 @observer
-class CustomTable extends React.Component<any, any> {
+class CustomTable extends React.PureComponent<any, any> {
     render() {
         const { 
             columns=[], dataSource=[], current, total, pageSize, 

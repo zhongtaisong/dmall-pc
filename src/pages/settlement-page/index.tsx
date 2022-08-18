@@ -15,7 +15,7 @@ import './index.less';
  * 结算页
  */
 @observer
-class SettlementPage extends React.Component<any, any> {
+class SettlementPage extends React.PureComponent<any, any> {
 
     constructor(props) {
         super(props);

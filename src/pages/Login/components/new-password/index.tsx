@@ -11,7 +11,7 @@ interface IComponentProps {
  * 新密码 - 表单
  */
 @observer
-class NewPassword extends React.Component<IComponentProps, any> {
+class NewPassword extends React.PureComponent<IComponentProps, any> {
     render() {
         const { handleTarget } = this.props;
 

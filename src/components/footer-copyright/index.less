@@ -1,23 +1,23 @@
 .dm_FooterCopyright {
     width: 100%;
-    background: #e0e0e0;
+    background: #fff;
+    border-top: 1px solid #eee;
     >.ant-row {
-        padding: 6% 0;
+        padding-top: 30px;
+        padding-bottom: 20px;
         .ant-col-8 {
             padding-left: 80px;
-            i, a {
+            >i, >a {
                 display: block;
+                color: #999;
             }
-            i {
-                font-size: 18px;
+            >i {
+                font-size: 16px;
                 font-style: normal;
                 padding-bottom: 10px;
-                color: #212529;
-                font-weight: bold;
             }
-            a {
-                color: var(--dm-font-color-555);
-                line-height: 2rem;
+            >a {
+                line-height: 24px;
                 font-size: 14px;
                 &:hover {
                     color: var(--dm-main-color);
@@ -27,13 +27,14 @@
     }
 
     &__copyright {
-        background: #555;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         padding: 10px 0;
+        color: #aeaeae;
+        line-height: 24px;
         >li {
-            color: var(--dm-font-color-white);
-            line-height: 24px;
-            font-size: 12px;
+            padding: 0 4px;
         }
     }
 }

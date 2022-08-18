@@ -13,7 +13,7 @@ import './index.less';
  * 我的收藏
  */
 @observer
-class MyCollection extends React.Component<any, any> {
+class MyCollection extends React.PureComponent<any, any> {
 
     constructor(props) {
         super(props);

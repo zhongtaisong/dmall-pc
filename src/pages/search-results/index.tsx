@@ -10,7 +10,7 @@ import './index.less';
  * 搜索结果展示页面
  */
 @observer
-class SearchResults extends React.Component<any, any> {
+class SearchResults extends React.PureComponent<any, any> {
     render() {
         const { searchResultList } = this.props;
         return (

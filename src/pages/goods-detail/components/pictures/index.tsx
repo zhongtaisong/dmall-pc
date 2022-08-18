@@ -6,7 +6,7 @@ import { PUBLIC_URL } from '@config';
 
 // 商品详情图片
 @observer
-class Pictures extends React.Component<any, any> {
+class Pictures extends React.PureComponent<any, any> {
     render() {
         const { detailsPic } = this.props;
         return (

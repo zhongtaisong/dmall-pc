@@ -12,7 +12,7 @@ import './index.less';
  * 热门推荐
  */
 @observer
-class HotThisWeek extends React.Component<any, any> {
+class HotThisWeek extends React.PureComponent<any, any> {
 
     componentDidMount(): void {
         state.selectHotRecommendationsFn();
@@ -23,8 +23,9 @@ class HotThisWeek extends React.Component<any, any> {
         if(!dataSource.length) return null;
 
         return (
-            <div className='dm_HotThisWeek'>
-                <ul className='common_width dm_HotThisWeek__content'>
+            <div className='common_width dm_HotThisWeek'>
+                <div className='dm_HotThisWeek__title'>热门推荐</div>
+                <ul className='dm_HotThisWeek__content'>
                     {
                         dataSource.map(item => {
                             const price = !Number.isNaN(Number(item?.price)) ? Number(item.price).toFixed(2) : 0.00;

@@ -15,7 +15,7 @@ import './index.less';
  * 注册
  */
 @observer
-class Register extends React.Component<any, any> {
+class Register extends React.PureComponent<any, any> {
 
     componentDidMount() {
         this.props.history && state.setHistory( this.props.history );

@@ -13,7 +13,7 @@ import './index.less';
  * 我的订单
  */
 @observer
-class MyOrder extends React.Component<any, any> {
+class MyOrder extends React.PureComponent<any, any> {
 
     componentDidMount() {
         state.selOrdersDataFn({

@@ -13,7 +13,7 @@ interface IComponentProps {
  * 登录 - 表单
  */
 @observer
-class Logins extends React.Component<IComponentProps, any> {
+class Logins extends React.PureComponent<IComponentProps, any> {
     render() {
         const { handleTarget } = this.props;
         

@@ -31,7 +31,7 @@ interface IComponentState {
  * 登录、忘记密码、新密码
  */
 @observer
-class Login extends React.Component<Partial<RouteComponentProps>, IComponentState> {
+class Login extends React.PureComponent<Partial<RouteComponentProps>, IComponentState> {
 
     constructor(props) {
         super(props);

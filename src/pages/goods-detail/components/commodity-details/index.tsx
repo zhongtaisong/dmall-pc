@@ -13,7 +13,7 @@ const { TabPane } = Tabs;
 
 // 商品详情区域
 @observer
-class CommodityDetails extends React.Component<any, any> {
+class CommodityDetails extends React.PureComponent<any, any> {
 
     constructor(props) {
         super(props);

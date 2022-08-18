@@ -13,7 +13,7 @@ const { Title, Paragraph } = Typography;
 
 // 商品规格
 @observer
-class CommoditySpecification extends React.Component<any, any> {
+class CommoditySpecification extends React.PureComponent<any, any> {
 
     constructor(props) {
         super(props);

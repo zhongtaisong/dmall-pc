@@ -3,7 +3,7 @@ import { Drawer } from 'antd';
 import { observer } from 'mobx-react';
 
 @observer
-class CustomDrawer extends React.Component<any, any> {
+class CustomDrawer extends React.PureComponent<any, any> {
     render() {
         const {
             title='标题', closeDrawer, drawerVisible=false, children='', btnChildren='', className='', width=720

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 const { TabPane } = Tabs;
 
 @observer
-class Index extends React.Component<any, any> {
+class Index extends React.PureComponent<any, any> {
     render() {
         const { defaultActiveKey, tabPane=[] } = this.props;
         return (

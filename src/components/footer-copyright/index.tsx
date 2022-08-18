@@ -9,7 +9,7 @@ import './index.less';
  * 底部版权区域
  */
 @observer
-class FooterCopyright extends React.Component<any, any> {
+class FooterCopyright extends React.PureComponent<any, any> {
     render() {
         return (
             <div className='dm_FooterCopyright'>
@@ -40,11 +40,24 @@ class FooterCopyright extends React.Component<any, any> {
                 </Row>
 
                 <ul className='dm_FooterCopyright__copyright'> 
-                    <li>闹钟太松了 - 2019/11/10 - 设计、开发、测试、上线</li>
-                    <li>最近更新时间：{ new Date().toLocaleDateString() }</li>
+                    <li>Copyright © 2019 - { new Date().getFullYear() } 闹钟太松了 版权所有</li>
+                    <li>|</li>
+                    <li>最近更新时间：{ this.getFormatDate() }</li>
                 </ul>
             </div>
         );
+    }
+
+    /**
+     * 获取 - 格式化日期
+     */
+    getFormatDate = () => {
+        const date = new Date();
+        const y = date.getFullYear();
+        const m = date.getMonth() + 1;
+        const d = date.getDate();
+
+        return `${ y }-${ m < 10 ? `0${ m }` : m }-${ d }`;
     }
 }
 
