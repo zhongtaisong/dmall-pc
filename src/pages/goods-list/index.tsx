@@ -234,11 +234,11 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
                                 className='dm_Products__content--goodsList__item'
                             >
                                 <img src={ `${ PUBLIC_URL }${ item.mainPicture }` } alt="商品图片" 
-                                    onClick={() => this.props?.history?.push?.(`/views/goods/detail/${ item?.id }`)}
+                                    onClick={() => this.props?.history?.push?.(`/views/goods-detail/${ item?.id }`)}
                                 />
                                 <div className='dm_Products__content--goodsList__item--text'>
                                     <div className='dm_Products__content--goodsList__item--text__title'>
-                                        <Link to={`/views/goods/detail/${ item?.id }`}>{ item.productName }</Link>
+                                        <Link to={`/views/goods-detail/${ item?.id }`}>{ item.productName }</Link>
                                         <div className='two_line_ellipsis'>{ item.description }</div>
                                     </div>
                                     <div className='dm_Products__content--goodsList__item--text__price'>

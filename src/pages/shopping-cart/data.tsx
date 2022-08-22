@@ -24,7 +24,7 @@ export const columns = [
         width: '44%',
         render: (text, record, index) => {
             return (
-                <Link className='title_style' to={'/views/goods/detail/' + record.pid}>
+                <Link className='title_style' to={'/views/goods-detail/' + record.pid}>
                     <span title={ text }>{ text }</span>
                     <span className='single_line_ellipsis'>规格：{ record.spec }</span>
                 </Link>

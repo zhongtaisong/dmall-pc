@@ -22,7 +22,7 @@ export const columns = [
             return (
                 <Link 
                     className='dm_MyOrder__columns--description' 
-                    to={ `/views/goods/detail/${ record?.id }` }
+                    to={ `/views/goods-detail/${ record?.id }` }
                 >
                     <span className='two_line_ellipsis' title={ text }>{ text }</span>
                     <span className='single_line_ellipsis'>规格：{ record?.spec }</span>

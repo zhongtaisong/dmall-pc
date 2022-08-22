@@ -6,7 +6,7 @@ import { commonFn } from '@utils';
 // 公共组件
 import { HeaderBar, FooterCopyright } from '@com';
 // 各级页面路由
-import routeList from '@router';
+import ROUTE_LIST from '@router';
 // 401、402、403、404
 import ResultPages from '@pages/result-pages';
 // 数据
@@ -36,7 +36,7 @@ class Index extends React.PureComponent<RouteComponentProps, any> {
                     <div className='pages_index__content'>
                         <Switch>
                             {
-                                routeList.map(item => {
+                                ROUTE_LIST.map(item => {
                                     const isAuth = isLogin || item?.isOpen;
 
                                     if(item.redirect){

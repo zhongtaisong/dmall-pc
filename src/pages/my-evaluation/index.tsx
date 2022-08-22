@@ -64,7 +64,7 @@ class MyEvaluation extends React.PureComponent<any, any> {
                         {
                             goods ? (
                                 <Fragment>
-                                    <Link to={'/views/goods/detail/' + goods.id}>
+                                    <Link to={'/views/goods-detail/' + goods.id}>
                                         <img src={ goods.mainPicture ? `${ PUBLIC_URL }${ goods.mainPicture }` : goods.mainPicture } />
                                         <span title={ goods.description }>{ goods.description }</span>
                                     </Link>

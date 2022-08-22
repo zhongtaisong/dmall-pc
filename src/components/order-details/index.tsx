@@ -60,7 +60,7 @@ class Index extends React.PureComponent<any, any> {
                                 dataIndex: 'description',
                                 key: 'description',
                                 width: '30%',
-                                render: (text, record, index) => <Link to={'/views/goods/detail/' + record.id}>{ text }</Link>
+                                render: (text, record, index) => <Link to={'/views/goods-detail/' + record.id}>{ text }</Link>
                             },
                             {
                                 title: '规格',

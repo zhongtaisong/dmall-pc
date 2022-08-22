@@ -23,7 +23,7 @@ class Logins extends React.PureComponent<IComponentProps, any> {
                     name="uname"
                     rules={[{ 
                         required: true, 
-                        message: '必填', 
+                        message: '请输入用户名', 
                         whitespace: true 
                     }]}
                     initialValue={ localStorage.getItem('uname') }
@@ -37,7 +37,7 @@ class Logins extends React.PureComponent<IComponentProps, any> {
                     name="upwd"
                     rules={[{ 
                         required: true, 
-                        message: '必填', 
+                        message: '请输入密码', 
                         whitespace: true 
                     }]}
                 >
@@ -57,7 +57,7 @@ class Logins extends React.PureComponent<IComponentProps, any> {
                         <Checkbox>记住密码</Checkbox>
                     </Form.Item>
                     <Form.Item>
-                        <span className='login_logins__pwd--text' onClick={() => handleTarget?.('forget')}>忘记密码？</span>
+                        <span className='login_logins__pwd--text' onClick={() => handleTarget?.()}>忘记密码？</span>
                     </Form.Item>
                 </div>
 
@@ -66,6 +66,7 @@ class Logins extends React.PureComponent<IComponentProps, any> {
                         type="primary" 
                         htmlType="submit"
                         style={{ width: '100%' }}
+                        size='large'
                     >登录</Button>
                 </Form.Item> 
                 <Form.Item>

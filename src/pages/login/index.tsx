@@ -50,22 +50,17 @@ class Login extends React.PureComponent<Partial<RouteComponentProps>, IComponent
 
     render() {
         const { code } = this.state;
-        const layout = [1, 2].includes(code) ? {
-            labelCol: { span: 6 },
-            wrapperCol: { span: 18 },
-        } : {};
 
         return (
             <div className='dm_Login'>
                 <div className='dm_Login__content' >
                     <Form 
-                        {...layout}
                         autoComplete='off'
                         onFinish={ this.onFinish }
                     >
                         <Link 
                             to='/' 
-                            className='dm_Login__logo'
+                            className='dm_Login__content--logo'
                         >
                             <img src={ logoImg } alt='logo' />
                         </Link>

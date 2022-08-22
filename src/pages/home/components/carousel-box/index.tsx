@@ -35,7 +35,7 @@ class CarouselBox extends React.PureComponent<any, any> {
                                     dataSource.map( item => {
                                         return (
                                             <Link key={ item.id } 
-                                                to={'/views/goods/detail/' + item.id}
+                                                to={'/views/goods-detail/' + item.id}
                                             >
                                                 <img src={ `${ PUBLIC_URL }${ item.bannerPic }` } alt='' title={ item.description } />
                                             </Link>

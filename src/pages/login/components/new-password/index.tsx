@@ -18,21 +18,19 @@ class NewPassword extends React.PureComponent<IComponentProps, any> {
         return (
             <div className='dm_ForgetPassword'>
                 <Form.Item 
-                    label="密码" 
                     name="uPwd"
                     hasFeedback
                     rules={[
                         {
                           required: true,
                           whitespace: false,
-                          message: '请输入密码！',
+                          message: '请输入密码',
                         },
                     ]}
                 >
                     <Input.Password placeholder='请输入密码' />
                 </Form.Item>
                 <Form.Item 
-                    label="确认密码" 
                     name="confirm"
                     dependencies={['uPwd']}
                     required
@@ -42,11 +40,11 @@ class NewPassword extends React.PureComponent<IComponentProps, any> {
                             validator(_, value) {
                                 value = value?.trim?.();
                                 if(!value) {
-                                    return Promise.reject("请输入确认密码！");
+                                    return Promise.reject("请输入确认密码");
                                 };
 
                                 if (getFieldValue('uPwd') !== value) {
-                                    return Promise.reject("两次输入的密码不一致！");
+                                    return Promise.reject("两次输入的密码不一致");
                                 }
 
                                 return Promise.resolve();
@@ -57,17 +55,16 @@ class NewPassword extends React.PureComponent<IComponentProps, any> {
                     <Input.Password placeholder='请输入确认密码' />
                 </Form.Item>
                 <Form.Item
-                    label=" "
                     colon={ false }
                 >
                     <Button 
                         type="primary" 
                         style={{ width: '100%' }} 
                         htmlType="submit"
+                        size='large'
                     >提交新密码</Button>
                 </Form.Item>
                 <Form.Item
-                    label=" "
                     colon={ false }
                 >
                     <span className='dm_ForgetPassword__login' onClick={() => handleTarget?.()}>直接登录</span>
