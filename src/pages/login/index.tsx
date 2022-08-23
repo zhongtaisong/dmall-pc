@@ -2,6 +2,7 @@ import React from 'react';
 import { Form } from 'antd';
 import { observer } from 'mobx-react';
 import { Link, RouteComponentProps } from 'react-router-dom';
+import { cacheKey } from '@utils';
 // 登录 - 表单
 import Logins from './components/logins';
 // 忘记密码 - 表单
@@ -113,11 +114,19 @@ class Login extends React.PureComponent<Partial<RouteComponentProps>, IComponent
         if(!values || !Object.keys(values).length) return;
         
         if(code === 0) {
-            return state.loginData({
-                ...values,
+            const { isRemember, ...otherValues } = values;
+            return state.loginFn({
+                ...otherValues,
                 upwd: (window as any).$md5(values?.upwd + PWD_KEY),
-                isRemember: Number(values?.isRemember),
-            }, () => {
+            }, (data) => {
+                const key = cacheKey.USER_INFO;
+                const val = JSON.stringify(data);
+                if(isRemember) {
+                    localStorage.setItem(key, val);
+                }else {
+                    sessionStorage.setItem(key, val);
+                }
+                
                 this.props.history.replace("/");
             });
         }

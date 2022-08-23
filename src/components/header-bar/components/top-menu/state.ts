@@ -13,14 +13,17 @@ class State {
     /**
      * 退出登录
      */
-    logoutDataFn = async (callBack?: Function) => {
-        const res = await logoutData();
+    logoutDataFn = (callBack?: Function) => {
+        localStorage.removeItem(cacheKey.USER_INFO);
+        sessionStorage.removeItem(cacheKey.USER_INFO);
+        callBack?.();
+        // const res = await logoutData();
 
-        if(res?.data?.code === SUCCESS_CODE){
-            localStorage.removeItem(cacheKey.USER_INFO);
-            sessionStorage.removeItem(cacheKey.USER_INFO);
-            callBack?.();
-        }
+        // if(res?.data?.code === SUCCESS_CODE){
+        //     localStorage.removeItem(cacheKey.USER_INFO);
+        //     sessionStorage.removeItem(cacheKey.USER_INFO);
+        //     callBack?.();
+        // }
     }
 }
 

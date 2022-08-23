@@ -4,7 +4,7 @@ import { cacheKey } from '@utils';
 import { makeAutoObservable } from "mobx";
 import { SUCCESS_CODE } from '@config';
 // 接口服务
-import service from './service';
+import { ILogin, login, forgetPwdData, newPwdData, } from './service';
 // 全局数据
 import $state from '@store';
 
@@ -20,34 +20,24 @@ class State {
         this.upwdObj = data;
     }
 
-    // 登录
-    loginData = async (values, callBack) => {
-        if(!values || !Object.keys(values).length) return;
+    /**
+     * 登录 - 操作
+     * @param params 
+     * @returns 
+     */
+    loginFn = async (params: ILogin, callBack: Function) => {
+        if(!params || !Object.keys(params).length) return;
 
-        const res: any = await service.loginData(values);
-        try{
-            if(res?.data?.code === SUCCESS_CODE){
-                const { isRemember } = values;
-                const { data } = res.data || {};
-
-                const key = cacheKey.USER_INFO;
-                const value = JSON.stringify(data);
-                if(isRemember === 1) {
-                    localStorage.setItem(key, value);
-                }else {
-                    sessionStorage.setItem(key, value);
-                }
-                message.success('登录成功！');
-                callBack?.();
-            }
-        }catch(err) {
-            console.log(err);
+        const res = await login(params);
+        if(res?.data?.code === SUCCESS_CODE){
+            message.success("登录成功!");
+            callBack?.(res?.data?.content || {});
         }
     }
 
     // 忘记密码 - 信息验证 - 下一步
     forgetPwdData = async ( values ) => {
-        const res: any = await service.forgetPwdData(values);
+        const res: any = await forgetPwdData(values);
         try{
             if(res?.data?.code === SUCCESS_CODE){
                 const { data={} } = res.data || {};
@@ -64,7 +54,7 @@ class State {
 
     // 提交新密码
     newPwdData = async ( values = {} ) => {
-        const res: any = await service.newPwdData({
+        const res: any = await newPwdData({
             ...values,
             isForgetPwd: true,
             ...this.upwdObj
