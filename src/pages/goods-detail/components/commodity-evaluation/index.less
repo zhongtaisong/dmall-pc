@@ -1,5 +1,15 @@
-.CommodityEvaluation {
-    .ant-comment {
-        border-bottom: 1px solid #eee;
+.commodity_evaluation {
+    &__comment {
+        border-bottom: 1px solid var(--dm-border-color-eee);
+        &--action {
+            font-size: 12px;
+            cursor: pointer;
+            &__number {
+                padding-left: 8px;
+            }
+        }
+        &--content {
+            color: var(--dm-font-color-555);
+        }
     }
 }

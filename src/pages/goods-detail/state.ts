@@ -1,7 +1,8 @@
-import service from './service';
 import { observable, action } from 'mobx';
 import { makeAutoObservable } from "mobx";
 import { SUCCESS_CODE } from '@config';
+import { selectGoodsDetail, ISelectGoodsDetail, selectGoodsEvaluate, } from './service';
+import { IGoodsInfo } from './type';
 
 class State {
 
@@ -9,52 +10,46 @@ class State {
         makeAutoObservable(this);
     }
 
-    // 基本信息
-    @observable basicInfo = {};
-    @action setBasicInfo = (data = {}) => {
-        this.basicInfo = data;
+    // 商品信息
+    @observable goodsInfo: IGoodsInfo = {};
+    @action setGoodsInfo = (data = {}) => {
+        this.goodsInfo = data;
     }
 
-    // 商品属性
-    @observable params = {};
-    @action setParams = (data = {}) => {
-        this.params = data;
-    }
+    /**
+     * 查询 - 商品详情 - 操作
+     * @param params 
+     * @returns 
+     */
+    selectGoodsDetailFn = async (params: ISelectGoodsDetail) => {
+        if(!params || !Object.keys(params).length) return;
 
-    // 商品图片
-    @observable imgList = [];
-    @action setImgList = (data = []) => {
-        this.imgList = data;
-    }
-
-    // 商品规格
-    @observable specs = [];
-    @action setSpecs = (data = []) => {
-        this.specs = data;
-    }
-
-    // 商品详情图片
-    @observable detailsPic = [];
-    @action setDetailsPic = (data = []) => {
-        this.detailsPic = data;
-    }
-
-    // 查询商品详情
-    selectProductsDetailData = async (params = {}) => {
-        const res: any = await service.selectProductsDetailData(params);
-        try{
-            if(res?.data?.code === SUCCESS_CODE){
-                const { basicInfo, imgList, params, specs, detailsPic } = res.data.data || {};
-                basicInfo && this.setBasicInfo(basicInfo);
-                params && this.setParams(params);
-                imgList && this.setImgList(imgList);
-                specs && this.setSpecs(specs);
-                detailsPic && this.setDetailsPic(detailsPic);
-            }
-        }catch(err) {
-            console.log(err);
+        const res = await selectGoodsDetail(params);
+        if(res?.data?.code === SUCCESS_CODE ){
+            this.setGoodsInfo(res?.data?.content || {});
         }
     }
+
+    // 商品评价列表
+    @observable evaluationList = [];
+    @action setEvaluationList = (data = []) => {
+        this.evaluationList = data;
+    }
+
+    /**
+     * 查询 - 商品评价 - 操作
+     * @param params 
+     * @returns 
+     */
+    selectGoodsEvaluateFn = async (params: ISelectGoodsDetail) => {
+        if(!params || !Object.keys(params).length) return;
+
+        const res = await selectGoodsEvaluate(params);
+        if(res?.data?.code === SUCCESS_CODE ){
+            this.setEvaluationList(res?.data?.content || []);
+        }
+    }
+
 }
 
 export default new State();

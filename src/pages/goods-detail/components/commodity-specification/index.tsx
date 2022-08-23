@@ -1,9 +1,12 @@
 import React, { Fragment } from 'react';
 import { observer } from 'mobx-react';
-import { Row, Col, Typography, InputNumber, Button, Tooltip } from 'antd';
+import { RouteComponentProps } from 'react-router-dom';
+import { Row, Col, Typography, InputNumber, Button, Tooltip, Image, } from 'antd';
 // 设置
 import { PUBLIC_URL } from '@config';
-// 数据
+// 页面组件 - 数据
+import pageState from './../../state';
+// 当前组件数据
 import state from './state';
 // 全局数据
 import $state from '@store';
@@ -11,161 +14,201 @@ import $state from '@store';
 import './index.less';
 const { Title, Paragraph } = Typography;
 
-// 商品规格
+interface IComponentState {
+    /**
+     * 大主图索引
+     */
+    imageIndex: number;
+}
+
+/**
+ * 主图、商品规格
+ */
 @observer
-class CommoditySpecification extends React.PureComponent<any, any> {
+class CommoditySpecification extends React.PureComponent<Partial<RouteComponentProps<{
+    /**
+     * 商品id
+     */
+    id: string;
+}>>, IComponentState> {
 
     constructor(props) {
         super(props);
         this.state = {
-            actionIndex: 0,
-            num: 1
+            imageIndex: 0,
         };
     }
 
-    componentDidMount() {
-        this.props.history && state.setHistory( this.props.history );
-    }
-
     // 选择预览图片
-    handleTogglePic = (index) => {
-        this.setState(() => ({
-            actionIndex: index
-        }));
-    }
+    // handleTogglePic = (index) => {
+    //     this.setState(() => ({
+    //         actionIndex: index
+    //     }));
+    // }
 
-    // 选择规格
-    handleToggleSpecs = (id) => {
-        if( id ){
-            this.props.history.push(`/views/goods/detail/${id}`);
-            this.setState(() => ({
-                num: 1,
-                actionIndex: 0
-            }));
-        }
-    }
+    // // 选择规格
+    // handleToggleSpecs = (id) => {
+    //     if( id ){
+    //         this.props.history.push(`/views/goods-detail/${id}`);
+    //         this.setState(() => ({
+    //             num: 1,
+    //             actionIndex: 0
+    //         }));
+    //     }
+    // }
 
-    // 数量
-    watchNumber = (value) => {
-        this.setState(() => ({
-            num: value
-        }));
-    }
+    // // 数量
+    // watchNumber = (value) => {
+    //     this.setState(() => ({
+    //         num: value
+    //     }));
+    // }
 
-    // 加入购物车
-    handleAddCart = () => {
-        const { basicInfo } = this.props;
-        if( basicInfo ){
-            state.addcartData([{
-                pid: basicInfo.id,
-                num: this.state.num,
-                totalprice: basicInfo.price ? Number(basicInfo.price) * this.state.num : basicInfo.price
-            }]);
-        }
-    }
+    // // 加入购物车
+    // handleAddCart = () => {
+    //     const { basicInfo } = this.props;
+    //     if( basicInfo ){
+    //         state.addcartData([{
+    //             pid: basicInfo.id,
+    //             num: this.state.num,
+    //             totalprice: basicInfo.price ? Number(basicInfo.price) * this.state.num : basicInfo.price
+    //         }]);
+    //     }
+    // }
 
-    // 立即购买
-    immediatePurchase = () => {
-        let { basicInfo={} } = this.props;
-        const { id } = basicInfo;
-        id && this.props.history.push({
-            pathname: '/views/goods/cart/settlement',
-            state: {
-                id: [id],
-                num: this.state.num,
-                type: 'detail'
-            }
-        });
-    }
+    // // 立即购买
+    // immediatePurchase = () => {
+    //     let { basicInfo={} } = this.props;
+    //     const { id } = basicInfo;
+    //     id && this.props.history.push({
+    //         pathname: '/views/goods/cart/settlement',
+    //         state: {
+    //             id: [id],
+    //             num: this.state.num,
+    //             type: 'detail'
+    //         }
+    //     });
+    // }
 
     render() {
-        const { basicInfo, imgList, specs } = this.props;
-        const { num } = this.state;
+        const { goodsInfo } = pageState;
+        const { imageIndex } = this.state;
+        const { id } = this.props?.match?.params || {};
         const { oauthCode } = $state;
+        const bigImgUrl = goodsInfo?.images?.[imageIndex];
+        console.log('7777777', id)
+
         return (
-            <div className='CommoditySpecification'>
-                <Row>
-                    <Col span={ 8 }>
-                        <dl>
-                            <dt>
-                                {
-                                    imgList[this.state.actionIndex] ? (
-                                        <img src={ PUBLIC_URL + imgList[this.state.actionIndex] } alt='loading...' />
-                                    ) : ''
-                                }
-                            </dt>
-                            <dd>
-                                {
-                                    imgList.map((item, index) => {
-                                        return (
-                                            <div key={ index } onMouseOver={ this.handleTogglePic.bind(this, index) } className={ this.state.actionIndex === index ? 'active' : '' }>
-                                                <img src={ PUBLIC_URL + item } alt='' />
-                                            </div>
-                                        );
-                                    })
-                                }
-                            </dd>
-                        </dl>
-                    </Col>
-                    <Col span={ 16 }>
-                        <Title level={ 4 } title={ basicInfo.description ? basicInfo.description : '敬请期待~~~' }>{ basicInfo.description ? basicInfo.description : '敬请期待~~~' }</Title>
-                        <h3 className='single_line_ellipsis' title={ basicInfo.copywriting ? basicInfo.copywriting : '敬请期待~~~' }>{ basicInfo.copywriting ? basicInfo.copywriting : '敬请期待~~~' }</h3>
-                        <div className='price'>售价：
-                            <Title level={ 3 }><span className='unit'>￥</span>{ basicInfo.price ? Number(basicInfo.price).toFixed(2) : 0 }</Title>
-                        </div>
-                        <Row className='Specifications'>
-                            <Col span={ 2 }>规格：</Col>
-                            <Col span={ 22 }>
-                                <Row>
-                                    {
-                                        specs.length ? (
-                                            specs.map(item => {
-                                                return (
-                                                    <Fragment key={ item.id }>
-                                                        <Col span={ 11 } className={ basicInfo.id === item.id ? 'active' : '' }
-                                                            onClick={ this.handleToggleSpecs.bind(this, item.id) }
-                                                        >
-                                                            <Paragraph ellipsis title={ item.spec }>{ item.spec }</Paragraph>
-                                                        </Col>
-                                                        <Col span={ 1 }></Col>
-                                                    </Fragment>
-                                                );
-                                            })
-                                        ) : (
-                                            <Fragment>
-                                                <Col span={ 11 } >
-                                                    <Paragraph ellipsis title='没错，我就是规格'>没错，我就是规格</Paragraph>
-                                                </Col>
-                                                <Col span={ 1 }></Col>
-                                            </Fragment>
-                                        )
-                                    }
-                                </Row>
-                            </Col>
-                        </Row>
+            <div className='dm_commoditySpecification'>
+                <div className='dm_commoditySpecification__left'>
+                    {
+                        bigImgUrl ? (
+                            <Image 
+                                className='dm_commoditySpecification__left--bigImg'
+                                src={ `${ PUBLIC_URL }${ bigImgUrl}` } 
+                                alt="大主图" 
+                            />
+                        ) : null
+                    }
+                    <div className='dm_commoditySpecification__left--smallImg'>
                         {
-                            oauthCode && oauthCode != 401 ? (
-                                <Fragment>
-                                    <Row className='Number'>
-                                        <Col span={ 2 }>数量：</Col>
-                                        <Col span={ 22 }>
-                                            <InputNumber min={ 1 } max={ 99 } value={ num } precision={ 0 } onChange={ this.watchNumber } />
-                                        </Col>
-                                    </Row>
-                                    <Row className='handleButton'>
-                                        <Col span={ 2 }></Col>
-                                        <Col span={ 22 }>
-                                            <Button type="primary" size='large' ghost onClick={ this.immediatePurchase }>立即购买</Button>
-                                            <Button type="primary" size='large' onClick={ this.handleAddCart }>加入购物车</Button>
-                                        </Col>
-                                    </Row>
-                                </Fragment>
-                            ) : ''
+                            goodsInfo?.images?.map?.((item, index) => {
+                                return (
+                                    <Image 
+                                        key={ item }
+                                        rootClassName={ imageIndex === index  ? 'dm_commoditySpecification__left--smallImg__item' : '' }
+                                        preview={ false } 
+                                        src={ `${ PUBLIC_URL }${ item}` } 
+                                        alt="小主图" 
+                                        onClick={() => this.onPreviewClick(index)}
+                                    />
+                                );
+                            })
                         }
-                    </Col>
-                </Row>
+                    </div>
+                </div>
+
+                <div className='dm_commoditySpecification__right'>
+                    {
+                        goodsInfo?.description ? (
+                            <div className='dm_commoditySpecification__right--title'>{ goodsInfo?.description }</div>
+                        ) : null
+                    }
+                    {
+                        goodsInfo?.copywriting ? (
+                            <div className='dm_commoditySpecification__right--subTitle'>{ goodsInfo?.copywriting }</div>
+                        ) : null
+                    }
+
+                    <div className='dm_commoditySpecification__right--row'>
+                        <span>售价：</span>
+                        <div className='dm_commoditySpecification__right--row__price'>
+                            <span>￥</span>
+                            <p>{ Number?.(goodsInfo?.price)?.toFixed?.(2) || "0.00" }</p>
+                        </div>
+                    </div>
+
+                    {
+                        goodsInfo?.specs?.length ? (
+                            <div className='dm_commoditySpecification__right--row'>
+                                <span>规格：</span>
+                                <div className='dm_commoditySpecification__right--row__specs'>
+                                    {
+                                        goodsInfo?.specs?.map?.(item => {
+                                            return (
+                                                <span 
+                                                    key={ item?.id }
+                                                    className={ `single_line_ellipsis${ item?.id === Number(id) ? ' dm_commoditySpecification__right--row__specs--item' : '' }` }
+                                                    onClick={() => this.props.history.push(`/views/goods-detail/${ item?.id }`)}
+                                                >{ item?.spec }</span>
+                                            );
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        ) : null
+                    }
+
+                    <div className='dm_commoditySpecification__right--row'>
+                        <span>数量：</span>
+                        <InputNumber 
+                            className='dm_commoditySpecification__right--row__number'
+                            min={ 1 } 
+                            max={ 99 } 
+                            value={ 1 } 
+                            precision={ 0 } 
+                            // onChange={ this.watchNumber } 
+                        />
+                    </div>
+
+                    <div className='dm_commoditySpecification__right--row'>
+                        <span></span>
+                        <div className='dm_commoditySpecification__right--row__btn'>
+                            <Button 
+                                type="primary" 
+                                size='large' 
+                                // onClick={ this.immediatePurchase }
+                            >立即购买</Button>
+                            <Button 
+                                type="primary" 
+                                size='large' 
+                                ghost 
+                                // onClick={ this.handleAddCart }
+                            >加入购物车</Button>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
+    }
+
+    /**
+     * 选择将要预览的小主图 - 操作
+     * @param index 
+     */
+    onPreviewClick = (index: number) => {
+        if(typeof index !== 'number') return;
+        this.setState({ imageIndex: index, });
     }
 }
 

@@ -1,19 +1,25 @@
 import axios from '@axios';
-// 商品规格 - 查询
-const selectProductsDetailUrl = 'details/select';
+import { IResponse } from '@types';
 
-class Service {
-    selectProductsDetailData = (req = {}) => {
-        return new Promise((resolve, reject) => {
-            axios.get(selectProductsDetailUrl, {
-                params: req
-            }).then(res => {
-                resolve(res);
-            }).catch(err => {
-                console.log(err);
-            });
-        });
-    }
+export interface ISelectGoodsDetail {
+    /**
+     * 商品id
+     */
+    id: number | string;
 }
 
-export default new Service();
+/**
+ * 查询 - 商品详情
+ * @returns 
+ */
+export const selectGoodsDetail = (params: ISelectGoodsDetail): Promise<IResponse> => {
+    return axios.get(`/goods-detail/public/select/${ params?.id }`);
+}
+
+/**
+ * 查询 - 商品评价
+ * @returns 
+ */
+export const selectGoodsEvaluate = (params: ISelectGoodsDetail): Promise<IResponse> => {
+    return axios.get(`/goods-evaluate/public/select/${ params?.id }`);
+}

@@ -1,122 +1,105 @@
-import React, { Fragment } from 'react';
-import { Comment, Avatar, Empty } from 'antd';
+import React, { createElement } from 'react';
+import { Comment, Avatar, Empty, Tooltip, } from 'antd';
 import { observer } from 'mobx-react';
-import { toJS } from 'mobx';
-import { LikeOutlined, DislikeOutlined } from '@ant-design/icons';
+import { DislikeFilled, DislikeOutlined, LikeFilled, LikeOutlined } from '@ant-design/icons';
 import { RouteComponentProps } from 'react-router-dom';
+import lodash from 'lodash';
 // 设置
 import { PUBLIC_URL } from '@config';
-// 数据
-import state from './state';
-// 全局数据
-import $state from '@store';
+// 页面组件 - 数据
+import pageState from './../../state';
 // less样式
 import './index.less';
 
-interface IComponentProps extends RouteComponentProps {
-    pid: number;
-}
-
 interface IComponentState {
-    [key: string]: any;
+    /**
+     * 当前操作，赞、踩
+     */
+    actionKeyMap: {
+        [key: string]: "liked" | "disliked";
+    };
 }
 
 /**
- * 评价
+ * 商品评价
  */
 @observer
-class CommodityEvaluation extends React.PureComponent<Partial<IComponentProps>, IComponentState> {
+class CommodityEvaluation extends React.PureComponent<Partial<RouteComponentProps>, IComponentState> {
 
     constructor(props) {
         super(props);
         this.state = {
-            action: null
+            actionKeyMap: {},
         };
     }
 
-    componentDidMount() {
-        const { pid } = this.props;
-        if(pid) {
-            state.selcommentsData({ pid });
-        }
-    }
-
-    componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<any>, snapshot?: any): void {
-        const { pid } = this.props;
-        if( pid && pid !== prevProps.pid ){
-            state.selcommentsData({ pid });
-        }
-    }
-
-    // 喜欢 / 不喜欢
-    handleLike = (type, index, item: any={} ) => {
-        let { nums, setNums02 } = state;
-        const { id } = item;
-        nums = toJS(nums);
-
-        this.setState({
-            [`action${index}`]: type
-        });
-        let result = nums[index][type] == item[type] ? nums[index][type]+1 : nums[index][type];
-        setNums02(index, type, result);
-        if( type == 'agree' ){
-            setNums02(index, 'disagree', item['disagree']);
-        }else{
-            setNums02(index, 'agree', item['agree']);
-        }
-        nums[index][type] == item[type] && state.agreecommentsData({
-            id, type, 
-            agreeNum: type == 'agree' ? result : item['agree'],
-            disagreeNum: type == 'agree' ? item['disagree'] : result
-        });
-    }
-
     render() {
-        const { commentList, nums } = state;
-        const { oauthCode } = $state;
+        const { evaluationList } = pageState;
+        const { actionKeyMap } = this.state;
+        if(!Array.isArray(evaluationList) || !evaluationList.length) {
+            return (
+                <Empty image={ Empty.PRESENTED_IMAGE_SIMPLE } description='暂无评价' />
+            );
+        }
+
         return (
-            <div className='CommodityEvaluation'>
+            <div className='commodity_evaluation'>
                 {
-                    commentList.length ? (
-                        <Fragment>
-                            {
-                                commentList.map((item, index) => {
-                                    return (
-                                        <Comment
-                                            key={ item.id }
-                                            actions={ oauthCode && oauthCode != 401 ? [
-                                                <span key="comment-basic-agree">
-                                                    <LikeOutlined 
-                                                        // theme={ this.state[`action${index}`] === 'agree' ? 'filled' : 'outlined' }
-                                                        onClick={ this.handleLike.bind(this, 'agree', index, item) }
-                                                    />
-                                                    <span style={{ paddingLeft: 8, cursor: 'auto' }}>{ nums[index] && nums[index]['agree'] ? nums[index]['agree'] : 0 }</span>
-                                                </span>,
-                                                <span key="comment-basic-disagree">
-                                                    <DislikeOutlined 
-                                                        // theme={ this.state[`action${index}`] === 'disagree' ? 'filled' : 'outlined'}
-                                                        onClick={ this.handleLike.bind(this, 'disagree', index, item) }
-                                                    />
-                                                    <span style={{ paddingLeft: 8, cursor: 'auto' }}>{ nums[index] && nums[index]['disagree'] ? nums[index]['disagree'] : 0 }</span>
-                                                </span>
-                                            ] : [] }
-                                            author={ item.uname }
-                                            avatar={ <Avatar src={ item.avatar ? PUBLIC_URL + item.avatar : '' } alt="avatar" /> }
-                                            content={
-                                                <p style={{ fontSize: '14px' }}>{ item.content }</p>
-                                            }
-                                            datetime={ item.commentTime }
-                                        />
-                                    );
-                                })
-                            }
-                        </Fragment>
-                    ) : (
-                        <Empty image={ Empty.PRESENTED_IMAGE_SIMPLE } description='暂无评价' />
-                    )
+                    evaluationList.map(item => {
+                        return (
+                            <Comment
+                                key={ item?.id }
+                                className="commodity_evaluation__comment"
+                                actions={[
+                                    <Tooltip 
+                                        key="agree"
+                                        className="commodity_evaluation__comment--action"
+                                        title="赞"
+                                    >
+                                        <span onClick={() => this.onActionClick(item?.id, 'liked')}>
+                                            { createElement(actionKeyMap[item?.id] === 'liked' ? LikeFilled : LikeOutlined) }
+                                            <span className="commodity_evaluation__comment--action__number">{ item?.agree || 0 }</span>
+                                        </span>
+                                    </Tooltip>,
+                                    <div 
+                                        key="disagree"
+                                        className="commodity_evaluation__comment--action"
+                                        title="踩"
+                                    >
+                                        <span onClick={() => this.onActionClick(item?.id, 'disliked')}>
+                                            { createElement(actionKeyMap[item?.id] === 'disliked' ? DislikeFilled : DislikeOutlined) }
+                                            <span className="commodity_evaluation__comment--action__number">{ item?.disagree || 0 }</span>
+                                        </span>
+                                    </div>
+                                ]}
+                                author={ item?.uname }
+                                avatar={ <Avatar src={ `${ PUBLIC_URL }${ item?.avatar }` } alt="用户头像" /> }
+                                content={ <div className='commodity_evaluation__comment--content'>{ item.content }</div> }
+                                datetime={ item?.commentTime }
+                            />
+                        );
+                    })
                 }
             </div>
         );
+    }
+
+    /**
+     * 点赞、踩 - 操作
+     * @param id 
+     * @param key 
+     */
+    onActionClick = (id, key) => {
+        let { actionKeyMap } = this.state;
+        actionKeyMap = lodash.cloneDeep(actionKeyMap);
+        const actionKeyMapItem = actionKeyMap[id];
+        if(key === actionKeyMapItem) {
+            delete actionKeyMap[id];
+        }else {
+            actionKeyMap[id] = key;
+        }
+
+        this.setState({ actionKeyMap, });
     }
 }
 
