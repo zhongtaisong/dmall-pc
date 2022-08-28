@@ -34,7 +34,13 @@ class State {
     // 是否显示loading
     @observable isLoading = false;
     @action setIsLoading = (data = false) => {
-        this.isLoading = data;
+        if(!data) {
+            setTimeout(() => {
+                this.isLoading = false;
+            }, 1000);
+        }else {
+            this.isLoading = true;
+        }
     }
 
     // 菜单 和 按钮 权限

@@ -1,24 +1,36 @@
 import axios from "axios";
 import { message } from 'antd';
 import { commonFn } from "@utils";
+import { validResponseCode } from "@utils/common-fn";
 // 设置
 import { PUBLIC_URL, BLACK_LIST_PATH } from '@config';
 // 全局数据
-import $state from '@store';
+import globalState from '@store';
 
 const $axios = axios.create({
     baseURL: PUBLIC_URL,
-    timeout: 60 * 1000,
+    // 30s
+    timeout: 30 * 1000,
     withCredentials: true,
 });
 
-// 添加请求拦截器
+// 累计接口请求次数
+let requestNum = 0;
+
+/**
+ * 请求拦截器
+ */
 $axios.interceptors.request.use(
     config => {
+        if(!requestNum) {
+            // 开启loading
+            globalState.setIsLoading(true);
+        }
+
         const headersParams = {};
         const { token, uname } = commonFn?.getUserInfo() || {};
         if(token) {
-            headersParams['token'] = token;
+            headersParams['Authorization'] = token;
         }
         if(uname) {
             headersParams['uname'] = uname;
@@ -28,50 +40,46 @@ $axios.interceptors.request.use(
             ...headersParams,
         };
 
+        // 接口请求次数加1
+        requestNum++;
         return config;
     }, 
     error => {
-        // 对请求错误做些什么
+        // 关闭loading
+        globalState.setIsLoading(false);
+
         return Promise.reject(error);
     }
 );
 
-// 添加响应拦截器
+/**
+ * 响应拦截器
+ */
 $axios.interceptors.response.use(
     response => {
-        const { config: { url }, data } = response || {};
-        if( data ){
-            $state.setIsLoading( false );
+        // 接口请求次数减1
+        requestNum--;
+        if(requestNum <= 0) {
+            // 关闭loading
+            globalState.setIsLoading(false);
         }
-        // 对响应数据做点什么
+        
         return response;
     }, 
     error => {
-        const { config: { url }, code, request, response } = error || {};
-        if( code == 'ECONNABORTED' ){
-            message.error(`${ url } 请求超时！`);
-            $state.setIsLoading( false );
+        // 校验 - 接口响应内容
+        const msg = validResponseCode(error);
+        if(msg) {
+            message.error(msg);
         }
-        if (error.response) {
-            const { pathname } = window.location || {};
-            const { data, status, request: { responseURL } } = error.response || {};
-            switch (status) {
-                case 401:
-                    // 返回 401 清除token信息并跳转到404页面
-                    if( BLACK_LIST_PATH.includes( pathname ) ){
-                        // window.location.replace('/views/401');
-                    }
-                    // window.location.replace('/login');
-                    break;
-                case 404:
-                    message.error(data.msg );
-                    break;
-                // default:                    
-                //     message.error(data.msg );
-            }
+        
+        // 接口请求次数减1
+        requestNum--;
+        if(requestNum <= 0) {
+            // 关闭loading
+            globalState.setIsLoading(false);
         }
-        $state.setIsLoading( false );
-        // 对响应错误做点什么
+
         return Promise.reject(error);
     }
 );

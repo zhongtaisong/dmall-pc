@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import { BackTop, Spin } from 'antd';
-import { StaticContext } from 'react-router';
+import { observer } from 'mobx-react';
 import { commonFn } from '@utils';
 // 公共组件
 import { HeaderBar, FooterCopyright } from '@com';
@@ -18,6 +18,7 @@ import './index.less';
 /**
  * 根页面
  */
+@observer
 class Index extends React.PureComponent<RouteComponentProps, any> {
 
     componentDidMount() {

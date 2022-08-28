@@ -105,4 +105,52 @@ export const checkSize = (file, width: Array<number>, height: Array<number>): Pr
             resolve(false);
         };
     });
-}
+};
+
+/**
+ * 校验 - 接口响应内容
+ * @param params 
+ */
+export const validResponseCode = (params: {
+    /**
+     * 异常码
+     */
+    code: string;
+    /**
+     * 响应结果
+     */
+    response: {
+        /**
+         * 返回结果
+         */
+        data: {
+            /**
+             * 接口返回结果码
+             */
+            code: string;
+            /**
+             * 提示语
+             */
+            msg: string;
+        },
+        /**
+         * 响应码
+         */
+        status: number;
+    };
+}) => {
+    if(!params || !Object.keys(params).length) return;
+
+    const { code, } = params;
+    const { status, data, } = params?.response || {};
+    switch(code) {
+        case "ERR_NETWORK":
+            return "网络出错了!";
+        case "ECONNABORTED":
+            return "请求超时!";
+        case "ERR_BAD_REQUEST":
+            if(status === 401) {
+                return data?.msg || "身份认证失败!";
+            }
+    }
+};
