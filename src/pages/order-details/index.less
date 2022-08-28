@@ -1,8 +1,72 @@
-.dm_OrderDetails_front {
+.dm_OrderDetails {
     height: 100%;
     background: #fff;
     margin-bottom: 30px !important;
     border: solid 1px var(--dm-border-color-eee);
-    padding: 20px;
-    
+    padding: 10px 10px 20px;
+
+    &__title {
+        display: flex;
+        align-items: center;
+        padding: 6px 10px 10px;
+        border-bottom: 1px solid var(--dm-border-color-eee);
+        >span {
+            font-size: 20px;
+            font-weight: bold;
+            padding-right: 4px;
+        }
+        >div {
+            display: flex;
+            >i {
+                font-style: normal;
+                font-weight: bold;
+                padding: 0 4px;
+            }
+        }
+    }
+
+    &__description {
+        >span {
+            display: block;
+            text-align: left;
+        }
+        span + span {
+            color: #999;
+            font-size: 13px;
+        }
+    }
+
+    &__bottom {
+        width: 88%;
+        margin: 10px auto;
+        &--title {
+            padding: 10px 0;
+            font-weight: bold;
+            color: var(--dm-font-color-555);
+        }
+        &--list {
+            display: flex;
+            flex-wrap: wrap;
+            &__item {
+                display: flex;
+                align-items: center;
+                width: 50%;
+                line-height: 24px;
+                >div {
+                    color: var(--dm-font-color-999);
+                }
+                >span {
+                    color: var(--dm-font-color-555);
+                }
+                >ul {
+                    display: flex;
+                    align-items: center;
+                    >li {
+                        margin-right: 10px;
+                        color: var(--dm-font-color-555);
+                    }
+                }
+            }
+        }
+    }
 }

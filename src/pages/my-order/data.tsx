@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import type { ColumnsType } from 'antd/es/table';
 // 全局设置
 import { PUBLIC_URL } from '@config';
+// 数据
+import state from './state';
 
-export const columns = [
+export const columns: ColumnsType<any> = [
     {
-        title: '主图',
+        title: '图片',
         dataIndex: 'mainPicture',
         key: 'mainPicture',
         align: 'center',
@@ -52,6 +55,13 @@ export const columns = [
         key: 'totalprice',
         align: 'center',
         width: '16%',
+        onCell: (_, index) => {
+            if (index === 0) {
+              return { rowSpan: state?.dataSource?.length || 0 };
+            }else {
+                return { rowSpan: 0 };
+            }
+        },
         render: (text) => `￥${ Number(text || 0)?.toFixed?.(2) || "0.00" }`,
     },
     {
@@ -69,12 +79,7 @@ export const columns = [
                             state: { id: record?.id },
                         }}
                     >评价</Link>
-                    <Link 
-                        to={{ 
-                            pathname: '/views/goods/cart/orderDetails', 
-                            state: { id: record?.orderId },
-                        }}
-                    >详情</Link>
+                    <Link to={`/views/order-details/${ record?.ordernum }`} >详情</Link>
                 </div>
             );
         }

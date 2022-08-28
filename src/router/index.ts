@@ -112,7 +112,7 @@ export default [
     },
     { 
         id: 12,
-        path: '/views/goods/cart/orderDetails',
+        path: '/views/order-details/:ordernum',
         name: 'OrderDetails',
         component: OrderDetails,
         title: '订单详情',

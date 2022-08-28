@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Table, Typography, Popconfirm, Pagination } from 'antd';
+import { Table, Popconfirm, Pagination } from 'antd';
 import { QuestionCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 // 各种表头
 import { columns } from './data';
@@ -27,14 +27,14 @@ class MyOrder extends React.PureComponent<any, any> {
         return (
             <div className='common_width dm_MyOrder'>
                 <div className='dm_MyOrder__title'>
-                    <Typography.Title level={ 4 }>我的订单</Typography.Title>
+                    <span>我的订单</span>
                     <div>( 共有 <i>{ total }</i> 笔订单 )</div>
                 </div>
 
                 {/* 表头 */}
                 <Table 
                     className='dm_MyOrder__columns'
-                    columns={ columns as any } 
+                    columns={ columns } 
                     dataSource={[]} 
                     pagination={ false }
                     bordered
@@ -48,7 +48,7 @@ class MyOrder extends React.PureComponent<any, any> {
                                 style={{ marginBottom: '20px' }} 
                             >
                                 <Table 
-                                    columns={ columns as any } 
+                                    columns={ columns } 
                                     dataSource={ item?.goods_infos || [] } 
                                     pagination={ false }
                                     showHeader={ false }

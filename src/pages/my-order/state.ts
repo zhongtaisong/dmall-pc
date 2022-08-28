@@ -45,9 +45,9 @@ class State {
         const res = await service.selOrdersData(requestParams);
 
         if(res?.data?.code === SUCCESS_CODE){
-            const { content, total } = res?.data?.content || {};
+            const { dataSource, total } = res?.data?.content || {};
 
-            this.setDataSource(content);
+            this.setDataSource(dataSource);
             this.setTotal(total);
             this.setRequestParams(requestParams);
         }
