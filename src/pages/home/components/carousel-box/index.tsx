@@ -37,7 +37,7 @@ class CarouselBox extends React.PureComponent<any, any> {
                                             <Link key={ item.id } 
                                                 to={'/views/goods-detail/' + item.id}
                                             >
-                                                <img src={ `${ PUBLIC_URL }${ item.bannerPic }` } alt='' title={ item.description } />
+                                                <img src={ `${ PUBLIC_URL }${ item.bannerPic }` } alt='' />
                                             </Link>
                                         );
                                     } )

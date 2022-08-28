@@ -6,25 +6,28 @@ import { PUBLIC_URL, BLACK_LIST_PATH } from '@config';
 // 全局数据
 import $state from '@store';
 
-const headersParams = {};
-const { token, uname } = commonFn?.getUserInfo() || {};
-if(token) {
-    headersParams['token'] = token;
-}
-if(uname) {
-    headersParams['uname'] = uname;
-}
-
 const $axios = axios.create({
     baseURL: PUBLIC_URL,
     timeout: 60 * 1000,
     withCredentials: true,
-    headers: headersParams,
 });
 
 // 添加请求拦截器
 $axios.interceptors.request.use(
     config => {
+        const headersParams = {};
+        const { token, uname } = commonFn?.getUserInfo() || {};
+        if(token) {
+            headersParams['token'] = token;
+        }
+        if(uname) {
+            headersParams['uname'] = uname;
+        }
+        config.headers = {
+            ...config.headers,
+            ...headersParams,
+        };
+
         return config;
     }, 
     error => {

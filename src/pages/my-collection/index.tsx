@@ -72,12 +72,13 @@ class MyCollection extends React.PureComponent<any, any> {
         const { dataSource } = state;
         return (
             <div className='common_width dm_MyCollection'>
-                <Row className='table_title'>
-                    <Typography.Title level={ 4 }>我的收藏</Typography.Title>
-                    <div>（当前共有 <i>{ dataSource.length }</i> 件藏品）</div>
-                </Row>
+                <div className='dm_MyCollection__title'>
+                    <span>我的收藏</span>
+                    <div>( 共有 <i>{ dataSource?.length || 0 }</i> 笔藏品 )</div>
+                </div>
+
                 <Table 
-                    columns={ columns as any } 
+                    columns={ columns } 
                     dataSource={ toJS(dataSource) } 
                     pagination={ false }
                     scroll={{ x: '100%', y: 330 }}

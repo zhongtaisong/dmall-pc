@@ -2,47 +2,37 @@ import React from 'react';
 import { Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import type { ColumnsType } from 'antd/lib/table';
 // 全局设置
 import { PUBLIC_URL } from '@config';
 // 数据
 import state from './state';
 
-export const columns = [
+export const columns: ColumnsType<any> = [
     {
         title: '图片',
         dataIndex: 'mainPicture',
         key: 'mainPicture',
         align: 'center',
         width: '10%',
-        render: (text, record, index) => <img className='imgs_style' src={ `${ PUBLIC_URL }${ text }` } alt={ text } />
+        render: (text) => <img style={{ width: '100%', }} src={ `${ PUBLIC_URL }${ text }` } alt={ text } />
     },
     {
-        title: '商品名称',
-        dataIndex: 'productName',
-        key: 'productName',
-        align: 'center',
-        width: '14%',
-        ellipsis: true
-    },
-    {
-        title: '商品',
+        title: '商品详情',
         dataIndex: 'description',
         key: 'description',
         align: 'center',
-        width: '44%',
-        render: (text, record, index) => {
+        render: (text, record) => {
             return (
-                <Link className='title_style' to={'/views/goods-detail/' + record.pid} title={ text }>{ text }</Link>
+                <Link 
+                    className='dm_MyOrder__columns--description' 
+                    to={ `/views/goods-detail/${ record?.id }` }
+                >
+                    <span className='two_line_ellipsis' title={ text }>{ text }</span>
+                    <span className='single_line_ellipsis'>规格：{ record?.spec }</span>
+                </Link>
             );
         }
-    },
-    {
-        title: '规格',
-        dataIndex: 'spec',
-        key: 'spec',
-        align: 'center',
-        width: '16%',
-        ellipsis: true
     },
     {
         title: '单价',
@@ -50,18 +40,17 @@ export const columns = [
         key: 'price',
         align: 'center',
         width: '16%',
-        render: (text, record, index) => Number(text) ? `￥${Number(text).toFixed(2)}` : 0
+        render: (text) => `￥${ Number(text || 0)?.toFixed?.(2) || "0.00" }`,
     },
     {
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
         align: 'center',
-        // fixed: 'right',
         width: '148px',
-        render: (text, record, index) => {
-            return (              
-                <div className='operation'>
+        render: (text, record) => {
+            return (
+                <div className='operation-btn'>
                     <Popconfirm
                         title="你确定要删除这条数据？"
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
