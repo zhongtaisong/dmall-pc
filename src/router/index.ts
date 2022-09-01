@@ -25,14 +25,14 @@ import AdminList from '@pages/admin/admin-list';
 export default [
     { 
         id: 1,
-        path: '/views',
+        pathname: '/views',
         redirect: '/views/home',
         title: '首页',
         isOpen: true,
     },
     { 
         id: 2,
-        path: '/views/home',
+        pathname: '/views/home',
         name: 'Home',
         component: Home,
         title: '首页',
@@ -40,7 +40,7 @@ export default [
     },
     { 
         id: 3,
-        path: '/views/goods-list/:keyword?',
+        pathname: '/views/goods-list/:keyword?',
         name: 'GoodsList',
         component: GoodsList,
         title: '杂货铺',
@@ -48,7 +48,7 @@ export default [
     },
     { 
         id: 4,
-        path: '/views/web',
+        pathname: '/views/web',
         name: 'WebsiteDescription',
         component: WebsiteDescription,
         title: '网站说明',
@@ -56,7 +56,7 @@ export default [
     },
     { 
         id: 5,
-        path: '/views/message',
+        pathname: '/views/message',
         name: 'Message',
         component: Message,
         title: '留言',
@@ -64,7 +64,7 @@ export default [
     },
     { 
         id: 6,
-        path: '/views/shopping-cart',
+        pathname: '/views/shopping-cart',
         name: 'ShoppingCart',
         component: ShoppingCart,
         title: '我的购物车',
@@ -72,7 +72,7 @@ export default [
     },
     { 
         id: 7,
-        path: '/views/order',
+        pathname: '/views/order',
         name: 'MyOrder',
         component: MyOrder,
         title: '我的订单',
@@ -80,7 +80,7 @@ export default [
     },
     { 
         id: 8,
-        path: '/views/collection',
+        pathname: '/views/collection',
         name: 'MyCollection',
         component: MyCollection,
         title: '我的收藏',
@@ -88,7 +88,7 @@ export default [
     },
     { 
         id: 9,
-        path: '/views/user',
+        pathname: '/views/user',
         name: 'UserCenter',
         component: UserCenter,
         title: '用户中心',
@@ -96,7 +96,7 @@ export default [
     },
     { 
         id: 10,
-        path: '/views/goods-detail/:id',
+        pathname: '/views/goods-detail/:id',
         name: 'GoodsDetail',
         component: GoodsDetail,
         title: '商品详情',
@@ -104,7 +104,7 @@ export default [
     },
     { 
         id: 11,
-        path: '/views/goods/cart/settlement',
+        pathname: '/views/goods/cart/settlement',
         name: 'SettlementPage',
         component: SettlementPage,
         title: '结算页',
@@ -112,7 +112,7 @@ export default [
     },
     { 
         id: 12,
-        path: '/views/order-details/:ordernum',
+        pathname: '/views/order-details/:ordernum',
         name: 'OrderDetails',
         component: OrderDetails,
         title: '订单详情',
@@ -120,7 +120,7 @@ export default [
     },
     { 
         id: 13,
-        path: '/views/goods/cart/evaluate',
+        pathname: '/views/goods/cart/evaluate',
         name: 'MyEvaluation',
         component: MyEvaluation,
         title: '我的评价',
@@ -128,14 +128,14 @@ export default [
     },
     { 
         id: 14,
-        path: '/views/admin',
+        pathname: '/views/admin',
         redirect: '/views/admin/brand',
         title: '商城后台',
         isOpen: false,
     },
     {
         id: 15,
-        path: '/views/admin/brand',
+        pathname: '/views/admin/brand',
         name: 'BrandList',
         component: BrandList,
         title: '商品管理-品牌',
@@ -143,7 +143,7 @@ export default [
     },
     {
         id: 16,
-        path: '/views/admin/product',
+        pathname: '/views/admin/product',
         name: 'ProductList',
         component: ProductList,
         title: '商品管理-商品',
@@ -151,7 +151,7 @@ export default [
     },
     {
         id: 17,
-        path: '/views/admin/order',
+        pathname: '/views/admin/order',
         name: 'OrdersList',
         component: OrdersList,
         title: '订单管理-订单',
@@ -159,7 +159,7 @@ export default [
     },
     {
         id: 18,
-        path: '/views/admin/user',
+        pathname: '/views/admin/user',
         name: 'UsersManageList',
         component: UsersManageList,
         title: '用户管理-用户',
@@ -167,7 +167,7 @@ export default [
     },
     {
         id: 19,
-        path: '/views/admin/comment',
+        pathname: '/views/admin/comment',
         name: 'CommentsManageList',
         component: CommentsManageList,
         title: '评论管理-评论',
@@ -175,7 +175,7 @@ export default [
     },
     {
         id: 20,
-        path: '/views/admin/admin',
+        pathname: '/views/admin/admin',
         name: 'AdminList',
         component: AdminList,
         title: '管理员列表',

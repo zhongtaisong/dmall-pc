@@ -1,4 +1,5 @@
 import { cacheKey } from "@utils";
+import ROUTE_LIST from '@router';
 
 /**
  * 获取用户信息
@@ -153,4 +154,15 @@ export const validResponseCode = (params: {
                 return data?.msg || "身份认证失败!";
             }
     }
+};
+
+/**
+ * 当前path是否属于开放访问
+ * @param pathname 
+ * @returns 
+ */
+export const isOpenPath = (pathname: string) => {
+    if(!pathname) return true;
+
+    return ROUTE_LIST.find(item => item?.pathname === pathname)?.isOpen ?? true;
 };

@@ -1,8 +1,8 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import { Button } from 'antd';
 // 全局公共方法
-import { ScrollToTop } from '@utils';
+import { ScrollToTop, history } from '@utils';
 // 首页
 import Index from '@pages';
 // 登录
@@ -12,12 +12,14 @@ import Register from '@pages/register';
 // 401、402、403、404
 import ResultPages from '@pages/result-pages';
 
-// App
+/**
+ * App
+ */
 class App extends React.PureComponent<any, any> {
     render() {
         return (
             <div className='dm_App'>
-                <BrowserRouter>
+                <Router history={ history }>
                     <ScrollToTop />
                     <Switch>
                         <Route path='/views' component={ Index } />
@@ -39,7 +41,7 @@ class App extends React.PureComponent<any, any> {
                             }} 
                         />
                     </Switch>
-                </BrowserRouter>
+                </Router>
             </div>
         );
     }
