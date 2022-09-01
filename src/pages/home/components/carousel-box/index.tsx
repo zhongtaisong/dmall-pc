@@ -2,11 +2,10 @@ import React from 'react';
 import { Carousel } from 'antd';
 import { observer } from "mobx-react";
 import { Link } from 'react-router-dom';
-import { toJS } from 'mobx';
 // url前缀
 import { PUBLIC_URL } from '@config';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -15,24 +14,19 @@ import './index.less';
  */
 @observer
 class CarouselBox extends React.PureComponent<any, any> {
-
-    componentDidMount() {
-        state.selectLargeScalePromotionFn();
-    }
-
     render() {
-        const { dataSource } = state;
+        const { carouselBoxList } = store?.homeStore || {};
         
         return (
             <div className='common_width'>
                 <div className='dm_CarouselBox'>
                     {
-                        dataSource.length ? (
+                        carouselBoxList?.length ? (
                             <Carousel autoplay effect="fade"
                                 dots={{ className: "dm_CarouselBox__dots" }}
                             >
                                 {
-                                    dataSource.map( item => {
+                                    carouselBoxList.map( item => {
                                         return (
                                             <Link key={ item.id } 
                                                 to={'/views/goods-detail/' + item.id}

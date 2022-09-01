@@ -3,20 +3,26 @@ import React from 'react';
 import CarouselBox from './components/carousel-box';
 // 热门推荐 - 组件
 import HotThisWeek from './components/hot-this-week';
+// mobx数据
+import store from '@store';
 import './index.less';
 
 /**
  * 首页
  */
-class Home extends React.PureComponent<any, any> {
+export default class Home extends React.PureComponent<any, any> {
+
+    componentDidMount(): void {
+        store.homeStore.largeScalePromotionServiceFn();
+        store.homeStore.hotRecommendationsServiceFn();
+    }
+
     render() {
         return (
             <div className='dm_Home'>
-                <CarouselBox {...this.props} />
-                <HotThisWeek {...this.props} />
+                <CarouselBox />
+                <HotThisWeek />
             </div>
         );
     }
-}
-
-export default Home;
+};

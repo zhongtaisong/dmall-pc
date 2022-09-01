@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
+import { history } from '@utils';
 // url前缀
 import { PUBLIC_URL } from '@config';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -13,21 +14,16 @@ import './index.less';
  */
 @observer
 class HotThisWeek extends React.PureComponent<any, any> {
-
-    componentDidMount(): void {
-        state.selectHotRecommendationsFn();
-    }
-
     render() {
-        const { dataSource } = state;
-        if(!dataSource.length) return null;
+        const { hotThisWeekList } = store?.homeStore || {};
+        if(!hotThisWeekList?.length) return null;
 
         return (
             <div className='common_width dm_HotThisWeek'>
                 <div className='dm_HotThisWeek__title'>热门推荐</div>
                 <ul className='dm_HotThisWeek__content'>
                     {
-                        dataSource.map(item => {
+                        hotThisWeekList.map(item => {
                             const price = !Number.isNaN(Number(item?.price)) ? Number(item.price).toFixed(2) : 0.00;
                             return (
                                 <li 
@@ -35,7 +31,7 @@ class HotThisWeek extends React.PureComponent<any, any> {
                                     className='dm_HotThisWeek__content--item'
                                 >
                                     <img src={ `${ PUBLIC_URL }${ item.mainPicture }` } alt="商品图片" 
-                                        onClick={() => this.props?.history?.push?.(`/views/goods-detail/${ item?.id }`)}
+                                        onClick={() => history?.push?.(`/views/goods-detail/${ item?.id }`)}
                                     />
                                     <div className='dm_HotThisWeek__content--item__text'>
                                         <div className='dm_HotThisWeek__content--item__text--title'>

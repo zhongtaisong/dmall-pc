@@ -153,6 +153,8 @@ export const validResponseCode = (params: {
             if(status === 401) {
                 return data?.msg || "身份认证失败!";
             }
+            
+            return data?.msg;
     }
 };
 
