@@ -9,10 +9,8 @@ import { HeaderBar, FooterCopyright } from '@com';
 import ROUTE_LIST from '@router';
 // 401、402、403、404
 import ResultPages from '@pages/result-pages';
-// 数据
-import state from './state';
-// 全局数据
-import $state from '@store';
+// mobx数据
+import store from '@store';
 import './index.less';
 
 /**
@@ -20,20 +18,14 @@ import './index.less';
  */
 @observer
 class Index extends React.PureComponent<RouteComponentProps, any> {
-
-    componentDidMount() {
-        state.adminData();
-    }
-
     render() {
-        const { isLoading } = $state;
         const isLogin = commonFn.isLogin();
 
         return (
             <div className='pages_index'>
                 <BackTop className='pages_index__backTop' />
                 <HeaderBar {...this.props} />
-                <Spin spinning={ isLoading } tip="加载中...">
+                <Spin spinning={ store?.pagesStore?.isLoading } tip="加载中...">
                     <div className='pages_index__content'>
                         <Switch>
                             {
@@ -42,7 +34,7 @@ class Index extends React.PureComponent<RouteComponentProps, any> {
 
                                     if(item.redirect){
                                         const redirectParams = {
-                                            from: isAuth ? item?.path :  "*",
+                                            from: isAuth ? item?.pathname :  "*",
                                             to: isAuth ? item?.redirect : '/login',
                                         }
                                         return (
@@ -54,7 +46,7 @@ class Index extends React.PureComponent<RouteComponentProps, any> {
                                         <Route 
                                             key={ item.id }
                                             exact
-                                            path={ item.path }
+                                            path={ item.pathname }
                                             render={
                                                 (props: RouteComponentProps) => {
                                                     if(!isAuth){

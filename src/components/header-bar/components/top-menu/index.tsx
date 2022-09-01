@@ -4,9 +4,10 @@ import { RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { SketchPicker } from 'react-color';
 import { commonFn } from '@utils';
+import { isOpenPath } from '@utils/common-fn';
 import { MENU_LIST } from './data';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -48,7 +49,7 @@ class TopMenu extends React.PureComponent<Partial<RouteComponentProps>, {
                                         <span onClick={() => this.props.history.push('/register')}>注册</span>
                                     </>
                                 ) : (
-                                    <span onClick={ this.logoutFn }>退出登录</span>
+                                    <span onClick={ this.onLogoutClick }>退出登录</span>
                                 )
                             }
                             {
@@ -92,9 +93,14 @@ class TopMenu extends React.PureComponent<Partial<RouteComponentProps>, {
     /**
      * 退出登录 - 操作
      */
-    logoutFn = () => {
-        state.logoutDataFn(() => {
-            this.setState({ isLoginAndRegister: true });
+    onLogoutClick = () => {
+        store?.headerBarStore?.logoutServiceFn?.(() => {
+            this.setState({ isLoginAndRegister: true }, () => {
+                const isOpen = isOpenPath(this.props.location.pathname);
+                if(!isOpen) {
+                    this.props.history.replace('/login');
+                }
+            });
         });
     }
 

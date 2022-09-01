@@ -5,8 +5,6 @@ import { makeAutoObservable } from "mobx";
 import { SUCCESS_CODE } from '@config';
 // 接口服务
 import { ILogin, login, forgetPwdData, newPwdData, } from './service';
-// 全局数据
-import $state from '@store';
 
 class State {
 

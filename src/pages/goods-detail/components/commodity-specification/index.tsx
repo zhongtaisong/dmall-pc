@@ -8,8 +8,6 @@ import { PUBLIC_URL } from '@config';
 import pageState from './../../state';
 // 当前组件数据
 import state from './state';
-// 全局数据
-import $state from '@store';
 // less样式
 import './index.less';
 const { Title, Paragraph } = Typography;
@@ -94,7 +92,6 @@ class CommoditySpecification extends React.PureComponent<Partial<RouteComponentP
         const { goodsInfo } = pageState;
         const { imageIndex } = this.state;
         const { id } = this.props?.match?.params || {};
-        const { oauthCode } = $state;
         const bigImgUrl = goodsInfo?.images?.[imageIndex];
         console.log('7777777', id)
 

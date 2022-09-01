@@ -8,8 +8,6 @@ import { PUBLIC_URL } from '@config';
 import { session } from '@utils';
 // 数据
 import state from './state';
-// 全局数据
-import $state from '@store';
 // 样式
 import './index.less';
 import { StaticContext } from 'react-router';
@@ -92,7 +90,6 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
     render() {
         const { current, pageSize, total, filterMap, } = state;
         const { numObj, filterParams, } = this.state;
-        const { oauthCode } = $state;
 
         return (
             <div className='dm_Products'>

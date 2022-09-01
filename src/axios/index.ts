@@ -3,11 +3,12 @@ import { message } from 'antd';
 import { commonFn } from "@utils";
 import { validResponseCode } from "@utils/common-fn";
 // 设置
-import { PUBLIC_URL, BLACK_LIST_PATH } from '@config';
+import { PUBLIC_URL, SUCCESS_CODE, } from '@config';
 // 全局数据
-import globalState from '@store';
+import store from '@store';
 
-const $axios = axios.create({
+/** 创建axios实例 */
+const axiosInstance = axios.create({
     baseURL: PUBLIC_URL,
     // 30s
     timeout: 30 * 1000,
@@ -20,11 +21,11 @@ let requestNum = 0;
 /**
  * 请求拦截器
  */
-$axios.interceptors.request.use(
+axiosInstance.interceptors.request.use(
     config => {
         if(!requestNum) {
             // 开启loading
-            globalState.setIsLoading(true);
+            store?.pagesStore?.setIsLoadingFn?.(true);
         }
 
         const headersParams = {};
@@ -46,7 +47,7 @@ $axios.interceptors.request.use(
     }, 
     error => {
         // 关闭loading
-        globalState.setIsLoading(false);
+        store?.pagesStore?.setIsLoadingFn?.(false);
 
         return Promise.reject(error);
     }
@@ -55,15 +56,24 @@ $axios.interceptors.request.use(
 /**
  * 响应拦截器
  */
-$axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     response => {
         // 接口请求次数减1
         requestNum--;
         if(requestNum <= 0) {
             // 关闭loading
-            globalState.setIsLoading(false);
+            store?.pagesStore?.setIsLoadingFn?.(false);
         }
         
+        // 统一处理提示
+        if(response?.data && Object.keys(response?.data).length) {
+            const { code, msg, } = response?.data || {};
+            if(code === SUCCESS_CODE) {
+                msg && message.success(msg);
+            }else {
+                msg && message.error(msg);
+            }
+        }
         return response;
     }, 
     error => {
@@ -77,11 +87,11 @@ $axios.interceptors.response.use(
         requestNum--;
         if(requestNum <= 0) {
             // 关闭loading
-            globalState.setIsLoading(false);
+            store?.pagesStore?.setIsLoadingFn?.(false);
         }
 
         return Promise.reject(error);
     }
 );
 
-export default $axios;
+export default axiosInstance;

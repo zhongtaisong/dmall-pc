@@ -57,25 +57,6 @@ class State {
         this.searchResultList = data;
     }
 
-    // 关键字搜索结果 - 发起请求
-    kwData = async (kw = '') => {
-        const res: any = await service.kwData({
-            kws: kw,
-        });
-        try{
-            if(res?.data?.code === SUCCESS_CODE){
-                if( res.data.data ){
-                    res.data.data.forEach((item, index) =>{
-                        item['key'] = index + 1;
-                    });
-                    this.setSearchResultList( res.data.data );
-                }
-            }
-        }catch(err) {
-            console.log(err);
-        }
-    }
-
 }
 
 export default new State();

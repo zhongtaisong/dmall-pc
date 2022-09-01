@@ -3,8 +3,6 @@ import { Row, Col } from 'antd';
 import { observer } from 'mobx-react';
 // 数据
 import state from './state';
-// 全局数据
-import $state from '@store';
 // less样式
 import './index.less';
 
@@ -32,7 +30,6 @@ class TopMenu extends React.PureComponent<any, any> {
     }
 
     render() {
-        const { uname } = $state;
         return (
             <div className='dm_topMenu_adm'>
                 <Row className='common_width'>

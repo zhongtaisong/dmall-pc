@@ -3,13 +3,8 @@ import { Row, Col, Input, Button, Badge } from 'antd';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import { toJS } from 'mobx';
 import lodash from 'lodash';
 import { MENU_LIST_01, MENU_LIST_02 } from './data';
-// 数据
-import state from './state';
-// 全局数据
-import $state from '@store';
 // less样式
 import './index.less';
 
@@ -18,20 +13,8 @@ import './index.less';
  */
 @observer
 class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> {
-    
-    componentDidMount() {
-        state.productNumData(); 
-    }
-
-    // 展示搜索框
-    showSearchInput = () => {
-        state.setIsShowSearchInput02();
-    }
-
     render() {
-        const { productNum } = state;
         const { history, location } = this.props;
-        const adminObj = toJS($state.adminObj);
         const keyword = location.pathname.split("/")?.[3] || '';
 
         return (
@@ -66,7 +49,7 @@ class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> 
                                     <>
                                         {
                                             MENU_LIST_02.map(item => {
-                                                if(!adminObj?.[item.authKey]) return null;
+                                                // if(!adminObj?.[item.authKey]) return null;
 
                                                 return (
                                                     <Link 
@@ -96,7 +79,7 @@ class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> 
                                                 />
                                             ) : null
                                         }
-                                        <Badge count={ productNum } overflowCount={ 99 }>
+                                        <Badge count={ 0 } overflowCount={ 99 }>
                                             <Button 
                                                 icon={ <ShoppingCartOutlined style={{ fontSize: 15 }} /> } 
                                                 type="primary" 
@@ -127,9 +110,8 @@ class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> 
      * 进入 - 购物车页面
      */
     goShopCartFn = () => {
-        const { oauthCode } = $state;
         const { history } = this.props;
-        const isAuth = oauthCode && oauthCode !== 401;
+        const isAuth = true;
         let pathname = "/views/cart";
         if(!isAuth) {
             pathname = "/login";

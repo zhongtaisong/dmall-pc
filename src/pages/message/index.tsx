@@ -9,8 +9,6 @@ import { PUBLIC_URL } from '@config';
 import { session } from '@utils';
 // 数据
 import state from './state';
-// 全局数据
-import $state from '@store';
 // less样式
 import './index.less';
 const { TextArea  } = Input;
@@ -59,11 +57,11 @@ class Index extends React.PureComponent<any, any> {
 
     // 发表留言
     handleSubmit = () => {
-        const { oauthCode } = $state;
-        if( oauthCode && oauthCode == 401 ){
-            message.error('请先登录，再发表留言，谢谢！');
-            return;
-        }
+        // const { oauthCode } = $state;
+        // if( oauthCode && oauthCode == 401 ){
+        //     message.error('请先登录，再发表留言，谢谢！');
+        //     return;
+        // }
 
         if( !this.state.value ){
             message.error('留言内容不能为空！');
@@ -94,7 +92,7 @@ class Index extends React.PureComponent<any, any> {
     render() {
         const { messageList, nums } = state;
         const { submitting, value } = this.state;
-        const { oauthCode } = $state;
+        // const { oauthCode } = $state;
         return (
             <div className='common_width dm_Message'>
                 <Comment
@@ -118,22 +116,22 @@ class Index extends React.PureComponent<any, any> {
                                     return (
                                         <Comment
                                             key={ item.id }
-                                            actions={ oauthCode && oauthCode != 401 ? [
-                                                <span key="comment-basic-agree">
-                                                    <LikeOutlined 
-                                                        // theme={ this.state[`action${index}`] === 'agree' ? 'filled' : 'outlined' }
-                                                        onClick={ this.handleLike.bind(this, 'agree', index, item) }
-                                                    />
-                                                    <span style={{ paddingLeft: 8, cursor: 'auto' }}>{ nums[index] && nums[index]['agree'] ? nums[index]['agree'] : 0 }</span>
-                                                </span>,
-                                                <span key="comment-basic-disagree">
-                                                    <DislikeOutlined 
-                                                        // theme={ this.state[`action${index}`] === 'disagree' ? 'filled' : 'outlined'}
-                                                        onClick={ this.handleLike.bind(this, 'disagree', index, item) }
-                                                    />
-                                                    <span style={{ paddingLeft: 8, cursor: 'auto' }}>{ nums[index] && nums[index]['disagree'] ? nums[index]['disagree'] : 0 }</span>
-                                                </span>
-                                            ] : [] }
+                                            // actions={ oauthCode && oauthCode != 401 ? [
+                                            //     <span key="comment-basic-agree">
+                                            //         <LikeOutlined 
+                                            //             // theme={ this.state[`action${index}`] === 'agree' ? 'filled' : 'outlined' }
+                                            //             onClick={ this.handleLike.bind(this, 'agree', index, item) }
+                                            //         />
+                                            //         <span style={{ paddingLeft: 8, cursor: 'auto' }}>{ nums[index] && nums[index]['agree'] ? nums[index]['agree'] : 0 }</span>
+                                            //     </span>,
+                                            //     <span key="comment-basic-disagree">
+                                            //         <DislikeOutlined 
+                                            //             // theme={ this.state[`action${index}`] === 'disagree' ? 'filled' : 'outlined'}
+                                            //             onClick={ this.handleLike.bind(this, 'disagree', index, item) }
+                                            //         />
+                                            //         <span style={{ paddingLeft: 8, cursor: 'auto' }}>{ nums[index] && nums[index]['disagree'] ? nums[index]['disagree'] : 0 }</span>
+                                            //     </span>
+                                            // ] : [] }
                                             author={ item.uname }
                                             avatar={ <Avatar src={ item.avatar ? PUBLIC_URL + item.avatar : '' } alt="avatar" /> }
                                             content={

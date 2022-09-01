@@ -41,14 +41,6 @@ class Login extends React.PureComponent<Partial<RouteComponentProps>, IComponent
         };
     }
 
-    componentDidMount() {
-        // indexState.oauthData();
-    }
-
-    componentWillUnmount() {
-        state.clearMobxData();
-    }
-
     render() {
         const { code } = this.state;
 
@@ -118,6 +110,7 @@ class Login extends React.PureComponent<Partial<RouteComponentProps>, IComponent
             return state.loginFn({
                 ...otherValues,
                 upwd: (window as any).$md5(values?.upwd + PWD_KEY),
+                isRemember,
             }, (data) => {
                 const key = cacheKey.USER_INFO;
                 const val = JSON.stringify(data);
