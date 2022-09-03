@@ -1,16 +1,14 @@
 import React from 'react';
-import { Button, InputNumber, Pagination, Tag, Empty } from 'antd';
+import { Button, Pagination, Tag, Empty } from 'antd';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react';
+import { StaticContext } from 'react-router';
 // 全局设置
 import { PUBLIC_URL } from '@config';
-// 全局公共方法
-import { session } from '@utils';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // 样式
 import './index.less';
-import { StaticContext } from 'react-router';
 
 interface IComponentPros {
     /**
@@ -26,8 +24,6 @@ interface IComponentState {
     filterParams: {
         [key: string]: string | number;
     };
-
-    [key: string]: any;
 }
 
 /**
@@ -40,7 +36,6 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
         super(props);
         this.state = {
             filterParams: {},
-            numObj: {},
         };
     }
 
@@ -48,48 +43,29 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
         const { keyword } = this.props?.match?.params || {};
         const { filterParams } = this.state;
 
-        state.selectGoodsListFn({
+        // 查询商品列表
+        this.goodsListSelectServiceFn({
             current: 0,
             keyword: keyword?.trim?.(),
             filterParams,
         });
-        state.selectGoodsListfilterParamsFn();
+        // 查询商品过滤条件
+        store.goodsListStore.goodsListSelectFilterServiceFn();
     }
 
     componentDidUpdate(prevProps: Readonly<RouteComponentProps<{ keyword?: string; }, StaticContext, unknown>>): void {
         const { keyword } = this.props?.match?.params || {};
         if(keyword !== prevProps?.match?.params?.keyword) {
-            state.selectGoodsListFn({
+            this.goodsListSelectServiceFn({
                 current: 0,
                 keyword: keyword?.trim?.(),
             });
         }
     }
 
-    // 加入购物车
-    handleAddCart = (item, key) => {
-        if( Object.keys(item).length ){
-            let num = !this.state.numObj[key] ? 1 : this.state.numObj[key];
-            // commoditySpecificationState.addcartData([{
-            //     pid: item.id,
-            //     num,
-            //     totalprice: Number(item.price) * num
-            // }]);
-        }
-    }
-
-    // 数量
-    watchNumber = (key, value) => {
-        let { numObj } = this.state;
-        numObj[key] = value;
-        this.setState({
-            numObj
-        });
-    }
-
     render() {
-        const { current, pageSize, total, filterMap, } = state;
-        const { numObj, filterParams, } = this.state;
+        const { current, pageSize, total, filterMap, } = store?.goodsListStore || {};
+        const { filterParams, } = this.state;
 
         return (
             <div className='dm_Products'>
@@ -169,7 +145,7 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
                         total={ total } 
                         pageSizeOptions={[8, 16, 32, 64, 100]}
                         onChange={(page, pageSize) => {
-                            state.selectGoodsListFn({
+                            this.goodsListSelectServiceFn({
                                 current: page - 1,
                                 pageSize,
                             });
@@ -179,6 +155,16 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
                 </div>
             </div>
         );
+    }
+
+    /**
+     * 查询 - 商品列表
+     * @param params 
+     */
+    goodsListSelectServiceFn = (params) => {
+        if(!params || !Object.keys(params).length) return;
+
+        store.goodsListStore.goodsListSelectServiceFn({...params});
     }
 
     /**
@@ -199,7 +185,7 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
         }
 
         this.setState({ filterParams }, () => {
-            state.selectGoodsListFn({
+            this.goodsListSelectServiceFn({
                 current: 0,
                 filterParams,
             });
@@ -211,7 +197,7 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
      * @returns 
      */
     renderGoodsList = () => {
-        const { dataSource } = state;
+        const { dataSource } = store?.goodsListStore || {};
         if(!Array.isArray(dataSource) || !dataSource?.length) {
             return (
                 <div className='dm_Products__content--empty'>
