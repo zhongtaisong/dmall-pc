@@ -9,7 +9,7 @@ const { BRAND_LIST } = session.getItem('selectDic');
 /**
  * 基本信息
  */
-class Index extends React.PureComponent<any, any> {
+class BasicInfo extends React.PureComponent<any, any> {
     render() {
         return (
             <>
@@ -95,4 +95,4 @@ class Index extends React.PureComponent<any, any> {
     }
 }
 
-export default Index;
+export default BasicInfo;

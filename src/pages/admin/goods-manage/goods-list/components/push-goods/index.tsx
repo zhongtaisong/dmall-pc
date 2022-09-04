@@ -7,7 +7,7 @@ import { UploadImg } from '@com';
 /**
  * 推广商品
  */
-class Index extends React.PureComponent<any, any> {
+class PushGoods extends React.PureComponent<any, any> {
 
     // banner推广选择是时，展示banner上传入口
     watchBanner = (value, option) => {
@@ -87,4 +87,4 @@ class Index extends React.PureComponent<any, any> {
     }
 }
 
-export default Index;
+export default PushGoods;

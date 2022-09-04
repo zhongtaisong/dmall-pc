@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 /**
  * 商品属性
  */
-class Index extends React.PureComponent<any, any> {
+class GoodsAttributes extends React.PureComponent<any, any> {
     render() {
         return (
             <>
@@ -193,4 +193,4 @@ class Index extends React.PureComponent<any, any> {
     }
 }
 
-export default Index;
+export default GoodsAttributes;

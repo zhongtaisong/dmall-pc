@@ -14,7 +14,7 @@ import './index.less';
  * 订单详情
  */
 @observer
-class Index extends React.PureComponent<any, any> {
+class OrderDetails extends React.PureComponent<any, any> {
 
     componentDidMount() {
         state.detailOrdersDataFn(this.props?.id);
@@ -136,4 +136,4 @@ class Index extends React.PureComponent<any, any> {
     }
 }
 
-export default Index;
+export default OrderDetails;

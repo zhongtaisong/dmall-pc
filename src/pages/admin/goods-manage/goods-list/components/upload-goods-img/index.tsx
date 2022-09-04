@@ -7,7 +7,7 @@ import { UploadImg } from '@com';
 /**
  * 上传商品图片
  */
-class Index extends React.PureComponent<any, any> {
+class UploadGoodsImg extends React.PureComponent<any, any> {
     render() {
         return (
             <Form.Item
@@ -33,4 +33,4 @@ class Index extends React.PureComponent<any, any> {
     }
 }
 
-export default Index;
+export default UploadGoodsImg;

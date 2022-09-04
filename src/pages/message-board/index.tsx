@@ -14,10 +14,10 @@ import './index.less';
 const { TextArea  } = Input;
 
 /**
- * 留言
+ * 留言板
  */
 @observer
-class Index extends React.PureComponent<any, any> {
+class MessageBoard extends React.PureComponent<any, any> {
 
     constructor(props) {
         super(props);
@@ -152,4 +152,4 @@ class Index extends React.PureComponent<any, any> {
     }
 }
 
-export default Index;
+export default MessageBoard;

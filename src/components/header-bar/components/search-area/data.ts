@@ -19,8 +19,8 @@ export const MENU_LIST_01 = [
     },
     {
         key: 4,
-        name: "留言",
-        pathname: "/views/message",
+        name: "留言板",
+        pathname: "/views/message-board",
     },
 ];
 

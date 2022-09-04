@@ -9,7 +9,7 @@ import MyEvaluation from '@pages/my-evaluation';
 import MyOrder from '@pages/my-order';
 import WebsiteDescription from '@pages/website-description';
 import UserCenter from '@pages/user-center';
-import Message from '@pages/message';
+import MessageBoard from '@pages/message-board';
 import BrandList from '@pages/admin/goods-manage/brand-list';
 import ProductList from '@pages/admin/goods-manage/goods-list';
 import OrdersList from '@pages/admin/orders-manage/order-list';
@@ -56,10 +56,10 @@ export default [
     },
     { 
         id: 5,
-        pathname: '/views/message',
-        name: 'Message',
-        component: Message,
-        title: '留言',
+        pathname: '/views/message-board',
+        name: 'MessageBoard',
+        component: MessageBoard,
+        title: '留言板',
         isOpen: true,
     },
     { 
