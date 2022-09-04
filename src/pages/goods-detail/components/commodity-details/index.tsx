@@ -1,34 +1,28 @@
 import React from 'react';
 import { Tabs } from 'antd';
 import { observer } from 'mobx-react';
-import { RouteComponentProps } from 'react-router-dom';
 // 商品信息 - 组件
 import GoodsInfo from '../goods-info';
 // 商品评价 - 组件
 import CommodityEvaluation from '../commodity-evaluation';
-// 页面组件 - 数据
-import pageState from './../../state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
-const { TabPane } = Tabs;
 
 
 /**
  * 商品介绍、商品评价
  */
 @observer
-class CommodityDetails extends React.PureComponent<Partial<RouteComponentProps<{
+class CommodityDetails extends React.PureComponent<{
     /**
      * 商品id
      */
     id: string;
-}>>, any> {
+}, any> {
 
     render() {
-        // const { params, detailsPic } = this.props;
-        // const { key } = this.state;
-        const { id } = this.props?.match?.params || {};
-
         return (
             <div className='commodity_details'>
                 <Tabs 
@@ -36,20 +30,20 @@ class CommodityDetails extends React.PureComponent<Partial<RouteComponentProps<{
                     className='commodity_details__tabs'
                     onChange={ this.onTabsChange }
                 >
-                    <TabPane 
+                    <Tabs.TabPane 
                         tab="商品信息" 
                         key="1"
                     >
                         {/* 商品信息 - 组件 */}
                         <GoodsInfo />
-                    </TabPane>
-                    <TabPane 
+                    </Tabs.TabPane>
+                    <Tabs.TabPane 
                         tab="评价" 
                         key="2"
                     >
                         {/* 商品评价 - 组件 */}
                         <CommodityEvaluation />
-                    </TabPane>
+                    </Tabs.TabPane>
                 </Tabs>
             </div>
         );
@@ -61,8 +55,8 @@ class CommodityDetails extends React.PureComponent<Partial<RouteComponentProps<{
      */
     onTabsChange = (activeKey) => {
         if(activeKey === "2") {
-            const { id } = this.props?.match?.params || {};
-            pageState.selectGoodsEvaluateFn({ id });
+            const { id } = this.props || {};
+            store.goodsDetailStore.goodsEvaluateSelectServiceFn({ id });
         }
     }
 

@@ -1,16 +1,13 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
-import { RouteComponentProps } from 'react-router-dom';
-import { Row, Col, Typography, InputNumber, Button, Tooltip, Image, } from 'antd';
+import { InputNumber, Button, Image, } from 'antd';
+import { history } from '@utils';
 // 设置
 import { PUBLIC_URL } from '@config';
-// 页面组件 - 数据
-import pageState from './../../state';
-// 当前组件数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
-const { Title, Paragraph } = Typography;
 
 interface IComponentState {
     /**
@@ -23,12 +20,12 @@ interface IComponentState {
  * 主图、商品规格
  */
 @observer
-class CommoditySpecification extends React.PureComponent<Partial<RouteComponentProps<{
+class CommoditySpecification extends React.PureComponent<{
     /**
      * 商品id
      */
     id: string;
-}>>, IComponentState> {
+}, IComponentState> {
 
     constructor(props) {
         super(props);
@@ -37,63 +34,11 @@ class CommoditySpecification extends React.PureComponent<Partial<RouteComponentP
         };
     }
 
-    // 选择预览图片
-    // handleTogglePic = (index) => {
-    //     this.setState(() => ({
-    //         actionIndex: index
-    //     }));
-    // }
-
-    // // 选择规格
-    // handleToggleSpecs = (id) => {
-    //     if( id ){
-    //         this.props.history.push(`/views/goods-detail/${id}`);
-    //         this.setState(() => ({
-    //             num: 1,
-    //             actionIndex: 0
-    //         }));
-    //     }
-    // }
-
-    // // 数量
-    // watchNumber = (value) => {
-    //     this.setState(() => ({
-    //         num: value
-    //     }));
-    // }
-
-    // // 加入购物车
-    // handleAddCart = () => {
-    //     const { basicInfo } = this.props;
-    //     if( basicInfo ){
-    //         state.addcartData([{
-    //             pid: basicInfo.id,
-    //             num: this.state.num,
-    //             totalprice: basicInfo.price ? Number(basicInfo.price) * this.state.num : basicInfo.price
-    //         }]);
-    //     }
-    // }
-
-    // // 立即购买
-    // immediatePurchase = () => {
-    //     let { basicInfo={} } = this.props;
-    //     const { id } = basicInfo;
-    //     id && this.props.history.push({
-    //         pathname: '/views/goods/cart/settlement',
-    //         state: {
-    //             id: [id],
-    //             num: this.state.num,
-    //             type: 'detail'
-    //         }
-    //     });
-    // }
-
     render() {
-        const { goodsInfo } = pageState;
+        const { goodsInfo } = store?.goodsDetailStore || {};
         const { imageIndex } = this.state;
-        const { id } = this.props?.match?.params || {};
+        const { id } = this.props || {};
         const bigImgUrl = goodsInfo?.images?.[imageIndex];
-        console.log('7777777', id)
 
         return (
             <div className='dm_commoditySpecification'>
@@ -156,7 +101,7 @@ class CommoditySpecification extends React.PureComponent<Partial<RouteComponentP
                                                 <span 
                                                     key={ item?.id }
                                                     className={ `single_line_ellipsis${ item?.id === Number(id) ? ' dm_commoditySpecification__right--row__specs--item' : '' }` }
-                                                    onClick={() => this.props.history.push(`/views/goods-detail/${ item?.id }`)}
+                                                    onClick={() => history.push(`/views/goods-detail/${ item?.id }`)}
                                                 >{ item?.spec }</span>
                                             );
                                         })
@@ -174,7 +119,6 @@ class CommoditySpecification extends React.PureComponent<Partial<RouteComponentP
                             max={ 99 } 
                             value={ 1 } 
                             precision={ 0 } 
-                            // onChange={ this.watchNumber } 
                         />
                     </div>
 
@@ -184,13 +128,11 @@ class CommoditySpecification extends React.PureComponent<Partial<RouteComponentP
                             <Button 
                                 type="primary" 
                                 size='large' 
-                                // onClick={ this.immediatePurchase }
                             >立即购买</Button>
                             <Button 
                                 type="primary" 
                                 size='large' 
                                 ghost 
-                                // onClick={ this.handleAddCart }
                             >加入购物车</Button>
                         </div>
                     </div>

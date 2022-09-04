@@ -6,8 +6,8 @@ import { StaticContext } from 'react-router';
 import CommoditySpecification from './components/commodity-specification';
 // 详情
 import CommodityDetails from './components/commodity-details';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // 样式
 import './index.less';
 
@@ -26,26 +26,27 @@ class ProductsDetail extends React.PureComponent<Partial<RouteComponentProps<ICo
 
     componentDidMount() {
         const { id } = this.props?.match?.params || {};
-        state.selectGoodsDetailFn({ id, });
+        store.goodsDetailStore.goodsDetailSelectServiceFn({ id, });
     }
 
     componentDidUpdate(prevProps: Readonly<Partial<RouteComponentProps<IComponentProps, StaticContext, unknown>>>, prevState: Readonly<any>, snapshot?: any): void {
         const { id } = this.props?.match?.params || {};
         const prevId = prevProps?.match?.params?.id;
         if(id && prevId && id != prevId) {
-            state.selectGoodsDetailFn({ id, });
+            store.goodsDetailStore.goodsDetailSelectServiceFn({ id, });
         }
     }
 
     render() {
-        const { goodsInfo } = state;
+        const { goodsInfo } = store?.goodsDetailStore || {};
+        const { id } = this.props?.match?.params || {};
         if(!goodsInfo || !Object.keys(goodsInfo)) return null;
 
         return (
             <div className='dm_ProductsDetail'>
                 <div className='common_width'>
-                    <CommoditySpecification {...this.props} />
-                    <CommodityDetails {...this.props} />
+                    <CommoditySpecification id={ id } />
+                    <CommodityDetails id={ id } />
                 </div>
             </div>
         );

@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { PUBLIC_URL } from '@config';
-// 页面组件 - 数据
-import pageState from '../../state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -31,7 +31,7 @@ const PARAMS_MAP = {
 @observer
 class GoodsInfo extends React.PureComponent<any, any> {
     render() {
-        const { goodsInfo } = pageState;
+        const { goodsInfo } = store?.goodsDetailStore || {};
 
         return (
             <div className='goods_detail_goods_info'>

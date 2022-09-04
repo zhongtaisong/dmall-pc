@@ -12,7 +12,7 @@ export interface ISelectGoodsDetail {
  * 查询 - 商品详情
  * @returns 
  */
-export const selectGoodsDetail = (params: ISelectGoodsDetail): Promise<IResponse> => {
+export const goodsDetailSelectService = (params: ISelectGoodsDetail): Promise<IResponse> => {
     return axios.get(`/goods-detail/public/select/${ params?.id }`);
 }
 
@@ -20,6 +20,6 @@ export const selectGoodsDetail = (params: ISelectGoodsDetail): Promise<IResponse
  * 查询 - 商品评价
  * @returns 
  */
-export const selectGoodsEvaluate = (params: ISelectGoodsDetail): Promise<IResponse> => {
+export const goodsEvaluateSelectService = (params: ISelectGoodsDetail): Promise<IResponse> => {
     return axios.get(`/goods-evaluate/public/select/${ params?.id }`);
 }

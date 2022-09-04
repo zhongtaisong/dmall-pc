@@ -2,12 +2,11 @@ import React, { createElement } from 'react';
 import { Comment, Avatar, Empty, Tooltip, } from 'antd';
 import { observer } from 'mobx-react';
 import { DislikeFilled, DislikeOutlined, LikeFilled, LikeOutlined } from '@ant-design/icons';
-import { RouteComponentProps } from 'react-router-dom';
 import lodash from 'lodash';
 // 设置
 import { PUBLIC_URL } from '@config';
-// 页面组件 - 数据
-import pageState from './../../state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -24,7 +23,7 @@ interface IComponentState {
  * 商品评价
  */
 @observer
-class CommodityEvaluation extends React.PureComponent<Partial<RouteComponentProps>, IComponentState> {
+class CommodityEvaluation extends React.PureComponent<any, IComponentState> {
 
     constructor(props) {
         super(props);
@@ -34,7 +33,7 @@ class CommodityEvaluation extends React.PureComponent<Partial<RouteComponentProp
     }
 
     render() {
-        const { evaluationList } = pageState;
+        const { evaluationList } = store?.goodsDetailStore || {};
         const { actionKeyMap } = this.state;
         if(!Array.isArray(evaluationList) || !evaluationList.length) {
             return (
