@@ -2,12 +2,15 @@ import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import type { FormInstance } from 'antd/es/form';
+import jsmd5 from 'js-md5';
+import { history } from '@utils';
 // 全局设置
 import { PWD_KEY } from '@config';
 // logo图片
 import logoImg from '@img/logo2.png';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -16,14 +19,7 @@ import './index.less';
  */
 @observer
 class Register extends React.PureComponent<any, any> {
-
-    componentDidMount() {
-        this.props.history && state.setHistory( this.props.history );
-    }
-
-    componentWillUnmount() {
-        state.setHistory();
-    }
+    formRef = React.createRef<FormInstance>();
 
     render() {
         return (
@@ -31,6 +27,7 @@ class Register extends React.PureComponent<any, any> {
                 <div className='dm_Register__content'>
                     <Form
                         autoComplete='off'
+                        ref={ this.formRef }
                         onFinish={ this.onFinish }
                     >
                         <Link 
@@ -42,9 +39,23 @@ class Register extends React.PureComponent<any, any> {
                         <Form.Item 
                             name="uname"
                             rules={[{ 
-                                required: true, 
-                                message: '请输入用户名', 
-                                whitespace: true 
+                                validator: (rule, value) => {
+                                    value = value?.trim?.();
+                                    if(!value) {
+                                        return Promise.reject('请输入用户名');
+                                    }
+
+                                    const reg = /[A-Za-z0-9]{2,64}/;
+                                    if (!reg.test(value)) {
+                                        if(value?.length >= 2 && value?.length <= 64) {
+                                            return Promise.reject('用户名仅支持输入大小写英文、数字及其组合');
+                                        }
+
+                                        return Promise.reject('用户名限制在2到64个字符');
+                                    }
+                            
+                                    return Promise.resolve();
+                                } 
                             }]}
                         >
                             <Input placeholder='请输入用户名' />
@@ -61,7 +72,7 @@ class Register extends React.PureComponent<any, any> {
                             <Input.Password placeholder='请输入密码' />
                         </Form.Item>
                         <Form.Item 
-                            name="confirm"
+                            name="confirmUpwd"
                             dependencies={['upwd']}
                             required
                             hasFeedback
@@ -133,7 +144,10 @@ class Register extends React.PureComponent<any, any> {
                         <Form.Item
                             colon={ false }
                         >
-                            <Link to="/login" className='dm_Register__login'>已有账号，直接登录</Link>
+                            <span 
+                                className='dm_Register__login'
+                                onClick={() => history.push("/login")}
+                            >已有账号，直接登录</span>
                         </Form.Item>
                     </Form>
                 </div>
@@ -146,10 +160,13 @@ class Register extends React.PureComponent<any, any> {
      * @param values 表单值
      */
     onFinish = (values) => {
-        state.registerData({
+        store.registerStore.userRegisterServiceFn({
             ...values,
-            upwd: (window as any).$md5(values.upwd + PWD_KEY),
-            confirm: (window as any).$md5(values.confirm + PWD_KEY),
+            upwd: jsmd5(`${values['upwd']}${PWD_KEY}`),
+            confirmUpwd: jsmd5(`${values['confirmUpwd']}${PWD_KEY}`),
+        }, () => {
+            this.formRef.current?.resetFields?.();
+            history.push("/login");
         });
     };
 

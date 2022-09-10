@@ -88,7 +88,7 @@ class Login extends React.PureComponent<Partial<RouteComponentProps>, any> {
         if(componentKey === 0) {
             return store.loginStore.userLoginServiceFn({
                 ...values,
-                upwd: (window as any).$md5(values?.upwd + PWD_KEY),
+                upwd: jsmd5(`${values['upwd']}${PWD_KEY}`),
             });
         }
         

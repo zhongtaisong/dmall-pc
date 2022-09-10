@@ -5,6 +5,7 @@ import GoodsListStore from './goods-list/store';
 import GoodsDetailStore from './goods-detail/store';
 import MessageBoardStore from './message-board/store';
 import LoginStore from './login/store';
+import RegisterStore from './register/store';
 
 export default {
     pagesStore: new PagesStore(),
@@ -14,4 +15,5 @@ export default {
     goodsDetailStore: new GoodsDetailStore(),
     messageBoardStore: new MessageBoardStore(),
     loginStore: new LoginStore(),
+    registerStore: new RegisterStore(),
 };

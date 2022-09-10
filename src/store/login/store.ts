@@ -30,6 +30,7 @@ export default class Store {
                 sessionStorage.setItem(key, val);
             }
             
+            localStorage.setItem("uname", params?.uname);
             history.replace("/");
         }
     }

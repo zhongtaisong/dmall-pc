@@ -40,9 +40,8 @@ class Logins extends React.PureComponent<any, any> {
                         whitespace: true 
                     }]}
                 >
-                    <Input
+                    <Input.Password
                         prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        type="password"
                         placeholder="请输入密码"
                     />
                 </Form.Item>
