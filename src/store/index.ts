@@ -4,6 +4,7 @@ import HomeStore from './home/store';
 import GoodsListStore from './goods-list/store';
 import GoodsDetailStore from './goods-detail/store';
 import MessageBoardStore from './message-board/store';
+import LoginStore from './login/store';
 
 export default {
     pagesStore: new PagesStore(),
@@ -12,4 +13,5 @@ export default {
     goodsListStore: new GoodsListStore(),
     goodsDetailStore: new GoodsDetailStore(),
     messageBoardStore: new MessageBoardStore(),
+    loginStore: new LoginStore(),
 };

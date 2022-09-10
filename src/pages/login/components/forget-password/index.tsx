@@ -1,25 +1,27 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { observer } from 'mobx-react';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
-
-interface IComponentProps {
-    handleTarget: Function;
-}
 
 /**
  * 忘记密码 - 表单
  */
 @observer
-class ForgetPassword extends React.PureComponent<IComponentProps, any> {
+class ForgetPassword extends React.PureComponent<{
+    onLoginClick: Function;
+}, any> {
     render() {
-        const { handleTarget } = this.props;
+        const { componentKey, } = store?.loginStore || {};
+        const { onLoginClick } = this.props;
+        if(componentKey !== 1) return null;
 
         return (
             <div className='dm_ForgetPassword'>
                 <Form.Item 
-                    name="uName"
+                    name="uname"
                     rules={[{ 
                         required: true, 
                         message: '请输入用户名', 
@@ -78,7 +80,10 @@ class ForgetPassword extends React.PureComponent<IComponentProps, any> {
                 <Form.Item
                     colon={ false }
                 >
-                    <span className='dm_ForgetPassword__login' onClick={() => handleTarget?.()}>直接登录</span>
+                    <span 
+                        className='dm_ForgetPassword__login' 
+                        onClick={() => onLoginClick?.()}
+                    >直接登录</span>
                 </Form.Item>
             </div>
         );

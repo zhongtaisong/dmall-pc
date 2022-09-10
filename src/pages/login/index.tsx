@@ -1,97 +1,77 @@
 import React from 'react';
-import { Form } from 'antd';
+import { Form, Spin } from 'antd';
 import { observer } from 'mobx-react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { cacheKey } from '@utils';
-// 登录 - 表单
+import type { FormInstance } from 'antd/es/form';
+import jsmd5 from 'js-md5';
+// 登录 - 表单组件
 import Logins from './components/logins';
-// 忘记密码 - 表单
+// 忘记密码 - 表单组件
 import ForgetPassword from './components/forget-password';
-// 新密码
+// 新密码 - 表单组件
 import NewPassword from './components/new-password';
 // 设置
 import { PWD_KEY } from '@config';
 // logo图片
 import logoImg from '@img/logo2.png';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
-
-interface IComponentState {
-    /**
-     * 组件code
-     * 
-     * 0登录表单，1忘记密表单，2新密码表单
-     */
-    code: 0 | 1 | 2;
-}
 
 
 /**
  * 登录、忘记密码、新密码
  */
 @observer
-class Login extends React.PureComponent<Partial<RouteComponentProps>, IComponentState> {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            code: 0
-        };
-    }
+class Login extends React.PureComponent<Partial<RouteComponentProps>, any> {
+    formRef = React.createRef<FormInstance>();
 
     render() {
-        const { code } = this.state;
+        const { isLoading, } = store?.pagesStore || {};
+        const { setMobxStoreFn, } = store?.loginStore || {};
 
         return (
             <div className='dm_Login'>
-                <div className='dm_Login__content' >
-                    <Form 
-                        autoComplete='off'
-                        onFinish={ this.onFinish }
-                    >
-                        <Link 
-                            to='/' 
-                            className='dm_Login__content--logo'
+                <Spin spinning={ isLoading } tip="加载中...">
+                    <div className='dm_Login__content' >
+                        <Form 
+                            autoComplete='off'
+                            ref={ this.formRef }
+                            onFinish={ this.onFinish }
                         >
-                            <img src={ logoImg } alt='logo' />
-                        </Link>
-                        { 
-                            code === 0 && (
-                                <Logins 
-                                    handleTarget={() => {
-                                        this.setState({
-                                            code: 1
-                                        });
-                                    }} 
-                                /> 
-                            )
-                        }
-                        { 
-                            code === 1 && (
-                                <ForgetPassword 
-                                    handleTarget={() => {
-                                        this.setState({
-                                            code: 0
-                                        });
-                                    }} 
-                                /> 
-                            )
-                        }
-                        { 
-                            code === 2 && (
-                                <NewPassword 
-                                    handleTarget={() => {
-                                        this.setState({
-                                            code: 0
-                                        });
-                                    }} 
-                                /> 
-                            )
-                        }
-                    </Form>
-                </div>
+                            <Link 
+                                to='/' 
+                                className='dm_Login__content--logo'
+                            >
+                                <img src={ logoImg } alt='logo' />
+                            </Link>
+
+                            {/* 登录 - 表单组件 */}
+                            <Logins /> 
+                            {/* 忘记密码 - 表单组件 */}
+                            <ForgetPassword
+                                onLoginClick={() => {
+                                    this.formRef.current?.resetFields?.(['phone', 'email']);
+                                    setMobxStoreFn?.({
+                                        key: 'componentKey',
+                                        value: 0,
+                                    });
+                                }}
+                            /> 
+                            {/* 新密码 - 表单组件 */}
+                            <NewPassword
+                                onLoginClick={() => {
+                                    this.formRef.current?.resetFields?.(['newPwd', 'confirmPwd']);
+                                    setMobxStoreFn?.({
+                                        key: 'componentKey',
+                                        value: 0,
+                                    });
+                                }}
+                            />
+                        </Form>
+                    </div>
+                </Spin>
             </div>
         );
     }
@@ -102,50 +82,28 @@ class Login extends React.PureComponent<Partial<RouteComponentProps>, IComponent
      * @returns 
      */
     onFinish = (values) => {
-        const { code } = this.state;
+        const { componentKey } = store?.loginStore || {};
         if(!values || !Object.keys(values).length) return;
         
-        if(code === 0) {
-            const { isRemember, ...otherValues } = values;
-            return state.loginFn({
-                ...otherValues,
+        if(componentKey === 0) {
+            return store.loginStore.userLoginServiceFn({
+                ...values,
                 upwd: (window as any).$md5(values?.upwd + PWD_KEY),
-                isRemember,
-            }, (data) => {
-                const key = cacheKey.USER_INFO;
-                const val = JSON.stringify(data);
-                if(isRemember) {
-                    localStorage.setItem(key, val);
-                }else {
-                    sessionStorage.setItem(key, val);
-                }
-                
-                this.props.history.replace("/");
             });
         }
         
-        if(code === 1) {
-            values['uname'] = values.uName;
-            delete values.uName;
-
-            return state.forgetPwdData(values).then(status => {
-                if(status === 200) {
-                    this.setState({
-                        code: 2
-                    });
-                }
+        if(componentKey === 1) {
+            return store.loginStore.userValidateServiceFn(values, () => {
+                this.formRef.current?.resetFields?.(['phone', 'email']);
             });
         }
         
-        if(code === 2) {
-            state.newPwdData({ 
-                newUpwd: (window as any).$md5( values.confirm + PWD_KEY ),
-            }).then(status => {
-                if(status === 200) {
-                    this.setState({
-                        code: 0
-                    });
-                }
+        if(componentKey === 2) {
+            for(const val in values) {
+                values[val] = jsmd5(`${values[val]}${PWD_KEY}`);
+            }
+            return store.loginStore.userUpdatePasswordServiceFn(values, () => {
+                this.formRef.current?.resetFields?.(['newPwd', 'confirmPwd']);
             });
         }
     };

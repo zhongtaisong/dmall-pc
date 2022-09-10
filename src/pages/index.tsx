@@ -64,8 +64,8 @@ class Index extends React.PureComponent<RouteComponentProps, any> {
                             <Route component={ ResultPages } />
                         </Switch>
                     </div>
+                    <FooterCopyright {...this.props} />
                 </Spin>
-                <FooterCopyright {...this.props} />
             </div>
         );
     }

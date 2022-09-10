@@ -1,6 +1,5 @@
-import { cacheKey, history, } from "@utils";
+import { cacheKey, } from "@utils";
 import ROUTE_LIST from '@router';
-import store from '@store'
 
 /**
  * 获取用户信息
@@ -152,9 +151,8 @@ export const validResponseCode = (params: {
             return "请求超时!";
         case "ERR_BAD_REQUEST":
             if(status === 401) {
-                store.headerBarStore.logoutServiceFn(() => {
-                    history.replace("/login");
-                });
+                localStorage.removeItem(cacheKey.USER_INFO);
+                sessionStorage.removeItem(cacheKey.USER_INFO);
                 return data?.msg || "身份认证失败!";
             }
             

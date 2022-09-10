@@ -1,24 +1,26 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { observer } from 'mobx-react';
+// mobx数据
+import store from '@store';
 import './index.less';
-
-interface IComponentProps {
-    handleTarget: Function;
-}
 
 /**
  * 新密码 - 表单
  */
 @observer
-class NewPassword extends React.PureComponent<IComponentProps, any> {
+class NewPassword extends React.PureComponent<{
+    onLoginClick: Function;
+}, any> {
     render() {
-        const { handleTarget } = this.props;
+        const { componentKey, } = store?.loginStore || {};
+        const { onLoginClick } = this.props;
+        if(componentKey !== 2) return null;
 
         return (
             <div className='dm_ForgetPassword'>
                 <Form.Item 
-                    name="uPwd"
+                    name="newPwd"
                     hasFeedback
                     rules={[
                         {
@@ -31,8 +33,8 @@ class NewPassword extends React.PureComponent<IComponentProps, any> {
                     <Input.Password placeholder='请输入密码' />
                 </Form.Item>
                 <Form.Item 
-                    name="confirm"
-                    dependencies={['uPwd']}
+                    name="confirmPwd"
+                    dependencies={['newPwd']}
                     required
                     hasFeedback
                     rules={[
@@ -43,7 +45,7 @@ class NewPassword extends React.PureComponent<IComponentProps, any> {
                                     return Promise.reject("请输入确认密码");
                                 };
 
-                                if (getFieldValue('uPwd') !== value) {
+                                if (getFieldValue('newPwd') !== value) {
                                     return Promise.reject("两次输入的密码不一致");
                                 }
 
@@ -67,7 +69,10 @@ class NewPassword extends React.PureComponent<IComponentProps, any> {
                 <Form.Item
                     colon={ false }
                 >
-                    <span className='dm_ForgetPassword__login' onClick={() => handleTarget?.()}>直接登录</span>
+                    <span 
+                        className='dm_ForgetPassword__login' 
+                        onClick={() => onLoginClick?.()}
+                    >直接登录</span>
                 </Form.Item>
             </div>
         );

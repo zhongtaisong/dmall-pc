@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, observable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 /**
  * 全局共享数据
