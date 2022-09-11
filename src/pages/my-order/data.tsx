@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import type { ColumnsType } from 'antd/es/table';
 // 全局设置
 import { PUBLIC_URL } from '@config';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 
 export const columns: ColumnsType<any> = [
     {
@@ -57,7 +57,7 @@ export const columns: ColumnsType<any> = [
         width: '16%',
         onCell: (_, index) => {
             if (index === 0) {
-              return { rowSpan: state?.dataSource?.length || 0 };
+              return { rowSpan: store.myOrderStore?.dataSource?.length || 0 };
             }else {
                 return { rowSpan: 0 };
             }
@@ -70,6 +70,13 @@ export const columns: ColumnsType<any> = [
         key: 'operation',
         align: 'center',
         width: '148px',
+        onCell: (_, index) => {
+            if (index === 0) {
+              return { rowSpan: store.myOrderStore?.dataSource?.length || 0 };
+            }else {
+                return { rowSpan: 0 };
+            }
+        },
         render: (text, record) => {
             return (              
                 <div className='operation-btn'>

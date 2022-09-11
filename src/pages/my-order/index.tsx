@@ -4,8 +4,8 @@ import { Table, Popconfirm, Pagination } from 'antd';
 import { QuestionCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 // 各种表头
 import { columns } from './data';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -16,13 +16,13 @@ import './index.less';
 class MyOrder extends React.PureComponent<any, any> {
 
     componentDidMount() {
-        state.selOrdersDataFn({
+        store.myOrderStore.orderSelectServiceFn({
             current: 0,
         });
     }
     
     render() {
-        const { dataSource, total, } = state;
+        const { dataSource, total, } = store?.myOrderStore || {};
 
         return (
             <div className='common_width dm_MyOrder'>
@@ -33,7 +33,7 @@ class MyOrder extends React.PureComponent<any, any> {
 
                 {/* 表头 */}
                 <Table 
-                    className='dm_MyOrder__columns'
+                    className={ dataSource?.length ? 'dm_MyOrder__columns' : '' }
                     columns={ columns } 
                     dataSource={[]} 
                     pagination={ false }
@@ -58,7 +58,7 @@ class MyOrder extends React.PureComponent<any, any> {
                                         return (
                                             <div className='dm_MyOrder__table'>
                                                 <div className='dm_MyOrder__table--left'>
-                                                    <span>订单号：{ item?.ordernum }</span>
+                                                    <span>订单编号：{ item?.ordernum }</span>
                                                     <span>下单时间：{ item?.submitTime }</span>
                                                 </div>
 
@@ -66,7 +66,7 @@ class MyOrder extends React.PureComponent<any, any> {
                                                     <Popconfirm
                                                         title="你确定要删除这条数据？"
                                                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                                                        onConfirm={() => state.deleteOrderDataFn(item?.id)}
+                                                        onConfirm={() => store.myOrderStore.orderDeleteServiceFn(item?.id)}
                                                         okText="是"
                                                         cancelText="否"
                                                     >
@@ -92,7 +92,7 @@ class MyOrder extends React.PureComponent<any, any> {
                                 showTotal={total => `共 ${ total } 条`}
                                 onChange={
                                     (current, pageSize) => {
-                                        state.selOrdersDataFn({
+                                        store.myOrderStore.orderSelectServiceFn({
                                             current: current - 1,
                                             pageSize,
                                         });
