@@ -3,8 +3,8 @@ import { observer } from 'mobx-react';
 import { Table } from 'antd';
 import { RouteComponentProps } from 'react-router-dom';
 import { columns } from './data';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -21,19 +21,19 @@ class OrderDetails extends React.PureComponent<RouteComponentProps<{
 
     componentDidMount() {
         const { ordernum } = this.props?.match?.params || {};
-        state.detailOrdersDataFn(ordernum);
+        store.orderDetailsStore.orderSelectDetailServiceFn(ordernum);
     }
 
     componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<any>, snapshot?: any): void {
         const { ordernum } = this.props?.match?.params || {};
         const prevOrdernum = prevProps?.match?.params?.id;
         if(ordernum && prevOrdernum && ordernum !== prevOrdernum) {
-            state.detailOrdersDataFn(ordernum);
+            store.orderDetailsStore.orderSelectDetailServiceFn(ordernum);
         }
     }
 
     render() {
-        const { dataSource, orderInfo, consignees, } = state;
+        const { dataSource, orderInfo, consignees, } = store?.orderDetailsStore || {};
 
         return (
             <div className="common_width dm_OrderDetails">
@@ -49,8 +49,8 @@ class OrderDetails extends React.PureComponent<RouteComponentProps<{
                 <Table 
                     columns={ columns } 
                     dataSource={ dataSource }
-                    showHeader={ false }
                     pagination={ false }
+                    bordered
                     rowKey="id"
                 />
                     
@@ -71,7 +71,7 @@ class OrderDetails extends React.PureComponent<RouteComponentProps<{
                         </div>
                         <div className='dm_OrderDetails__bottom--list__item'>
                             <div>商品总数：</div>
-                            <span>{ orderInfo?.num || 0 }</span>
+                            <span>{ orderInfo?.num || 0 }件</span>
                         </div>
                         <div className='dm_OrderDetails__bottom--list__item'>
                             <div>商品总额：</div>

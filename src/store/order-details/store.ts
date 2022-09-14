@@ -1,19 +1,16 @@
-import { observable, action } from "mobx";
-import { makeAutoObservable } from "mobx";
-import { SUCCESS_CODE } from '@config';
-// 接口服务
-import service from './service';
+import { makeAutoObservable, runInAction } from "mobx";
+import { 
+    orderSelectDetailService,
+} from './service';
 
-class State {
+export default class Store {
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    /**
-     * 收货人信息
-     */
-    @observable consignees: {
+    /** 收货人信息 */
+    consignees: {
         /**
          * 详细地址
          */
@@ -31,14 +28,9 @@ class State {
          */
         region?: "上海浦东";
     } = {};
-    @action setConsignees = (data = {}) => {
-        this.consignees = data;
-    }
 
-    /**
-     * 商品列表
-     */
-    @observable dataSource: Array<{
+    /** 商品列表 */
+    dataSource: Array<{
         /**
          * 购买量
          */
@@ -64,20 +56,9 @@ class State {
          */
         spec: string;
     }> = [];
-    @action setDataSource = (data = []) => {
-        this.dataSource = data;
-    }
 
-    // 付款信息
-    @observable paymentInfo = {};
-    @action setPaymentInfo = (data = {}) => {
-        this.paymentInfo = data;
-    }
-
-    /**
-     * 订单信息
-     */
-    @observable orderInfo: {
+    /** 订单信息 */
+    orderInfo: {
         /**
          * 订单购买量
          */
@@ -95,23 +76,22 @@ class State {
          */
         totalprice?: number;
     } = {};
-    @action setOrderInfo = (data = {}) => {
-        this.orderInfo = data;
-    }
 
     /**
      * 查询 - 订单详情 - 操作
      * @param ordernum 
      */
-    detailOrdersDataFn = async (ordernum: string) => {
-        const res = await service.detailOrdersData(ordernum);
-        const { addressInfos, orderInfos, goodsInfos } = res?.data?.content || {};
+    orderSelectDetailServiceFn = async (ordernum: string) => {
+        if(!ordernum) return;
 
-        this.setConsignees(addressInfos || {});
-        this.setOrderInfo(orderInfos || {});
-        this.setDataSource(goodsInfos || []);
+        const result = await orderSelectDetailService(ordernum);
+
+        const { addressInfos, orderInfos, goodsInfos } = result?.data?.content || {};
+        runInAction(() => {
+            this.consignees = addressInfos || {};
+            this.dataSource = goodsInfos || [];
+            this.orderInfo = orderInfos || {};
+        });
     }
-
-}
-
-export default new State();
+    
+};

@@ -1,0 +1,69 @@
+.dm_goods_evaluation_center {
+    height: 100%;
+    background: #fff;
+    margin-bottom: 30px !important;
+    border: solid 1px var(--dm-border-color-eee);
+    padding: 10px 10px 20px;
+
+    &__title {
+        display: flex;
+        align-items: center;
+        padding: 6px 10px 10px;
+        >span {
+            font-size: 20px;
+            font-weight: bold;
+            padding-right: 4px;
+        }
+        >div {
+            display: flex;
+            >i {
+                font-style: normal;
+                font-weight: bold;
+                padding: 0 4px;
+            }
+        }
+    }
+    
+    &__columns {
+        padding-bottom: 10px;
+        .ant-table-placeholder {
+            display: none;
+        }
+
+        &--description {
+            >span {
+                display: block;
+                text-align: left;
+            }
+            span + span {
+                color: #999;
+                font-size: 13px;
+            }
+        }
+    }
+
+    &__table {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &--left {
+            >span {
+                margin-right: 12px;
+            }
+        }
+
+        &--right {
+            >span {                
+                cursor: pointer;
+            }
+            &:hover {
+                color: #40A9FF;
+            }
+        }
+    }
+
+    &__pagination {
+        text-align: right;
+    }
+}

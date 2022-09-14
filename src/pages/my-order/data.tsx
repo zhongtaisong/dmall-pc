@@ -20,7 +20,6 @@ export const columns: ColumnsType<any> = [
         dataIndex: 'description',
         key: 'description',
         align: 'center',
-        width: '34%',
         render: (text, record) => {
             return (
                 <Link 
@@ -38,7 +37,7 @@ export const columns: ColumnsType<any> = [
         dataIndex: 'price',
         key: 'price',
         align: 'center',
-        width: '16%',
+        width: '10%',
         render: (text) => `￥${ Number(text || 0)?.toFixed?.(2) || "0.00" }`,
     },
     {
@@ -46,7 +45,7 @@ export const columns: ColumnsType<any> = [
         dataIndex: 'buyCount',
         key: 'buyCount',
         align: 'center',
-        width: '14%',
+        width: '10%',
         render: (text) => `x ${text}`
     },
     {
@@ -54,7 +53,7 @@ export const columns: ColumnsType<any> = [
         dataIndex: 'totalprice',
         key: 'totalprice',
         align: 'center',
-        width: '16%',
+        width: '14%',
         onCell: (_, index) => {
             if (index === 0) {
               return { rowSpan: store.myOrderStore?.dataSource?.length || 0 };
@@ -69,7 +68,7 @@ export const columns: ColumnsType<any> = [
         dataIndex: 'operation',
         key: 'operation',
         align: 'center',
-        width: '148px',
+        width: '10%',
         onCell: (_, index) => {
             if (index === 0) {
               return { rowSpan: store.myOrderStore?.dataSource?.length || 0 };
@@ -80,12 +79,7 @@ export const columns: ColumnsType<any> = [
         render: (text, record) => {
             return (              
                 <div className='operation-btn'>
-                    <Link 
-                        to={{ 
-                            pathname: '/views/goods/cart/evaluate', 
-                            state: { id: record?.id },
-                        }}
-                    >评价</Link>
+                    <Link to={`/views/goods-evaluate/${ record?.ordernum }`} >评价</Link>
                     <Link to={`/views/order-details/${ record?.ordernum }`} >详情</Link>
                 </div>
             );

@@ -5,7 +5,7 @@ import ShoppingCart from '@pages/shopping-cart';
 import SettlementPage from '@pages/settlement-page';
 import OrderDetails from '@pages/order-details';
 import MyCollection from '@pages/my-collection';
-import MyEvaluation from '@pages/my-evaluation';
+import GoodsEvaluate from '@pages/goods-evaluate';
 import MyOrder from '@pages/my-order';
 import WebsiteDescription from '@pages/website-description';
 import UserCenter from '@pages/user-center';
@@ -120,10 +120,10 @@ export default [
     },
     { 
         id: 13,
-        pathname: '/views/goods/cart/evaluate',
-        name: 'MyEvaluation',
-        component: MyEvaluation,
-        title: '我的评价',
+        pathname: '/views/goods-evaluate/:ordernum',
+        name: 'GoodsEvaluate',
+        component: GoodsEvaluate,
+        title: '商品评价中心',
         isOpen: false,
     },
     { 

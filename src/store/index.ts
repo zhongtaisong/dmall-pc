@@ -7,6 +7,9 @@ import MessageBoardStore from './message-board/store';
 import LoginStore from './login/store';
 import RegisterStore from './register/store';
 import MyOrderStore from './my-order/store';
+import OrderDetailsStore from './order-details/store';
+import GoodsEvaluateStore from './goods-evaluate/store';
+import MyCollectionStore from './my-collection/store';
 
 export default {
     pagesStore: new PagesStore(),
@@ -18,4 +21,7 @@ export default {
     loginStore: new LoginStore(),
     registerStore: new RegisterStore(),
     myOrderStore: new MyOrderStore(),
+    orderDetailsStore: new OrderDetailsStore(),
+    goodsEvaluateStore: new GoodsEvaluateStore(),
+    myCollectionStore: new MyCollectionStore(),
 };

@@ -9,13 +9,15 @@ export const columns: ColumnsType<any> = [
         title: '图片',
         dataIndex: 'mainPicture',
         key: 'mainPicture',
-        width: '12%',
+        align: 'center',
+        width: '10%',
         render: (text, record, index) => <img width='100%' src={ `${ PUBLIC_URL }${ text }` } alt={ text } />
     },
     {
         title: '商品',
         dataIndex: 'description',
         key: 'description',
+        align: 'center',
         render: (text, record) => {
             return (
                 <Link 
@@ -32,7 +34,7 @@ export const columns: ColumnsType<any> = [
         title: '单价',
         dataIndex: 'price',
         key: 'price',
-        width: '15%',
+        width: '10%',
         align: 'center',
         render: (text, record, index) => Number(text) ? `￥${Number(text).toFixed(2)}` : 0
     },
@@ -40,7 +42,7 @@ export const columns: ColumnsType<any> = [
         title: '数量',
         dataIndex: 'buyCount',
         key: 'buyCount',
-        width: '15%',
+        width: '10%',
         align: 'center',
         render: (text, record, index) => `x ${text}`
     },
