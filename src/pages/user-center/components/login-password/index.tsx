@@ -9,48 +9,49 @@ class LoginPassword extends React.PureComponent<any, any> {
             <>
                 <Form.Item
                     label="旧密码"
-                    name="oldUpwd"
+                    name="oldPwd"
                     rules={[{ 
                         required: true, 
-                        message: '必填', 
+                        message: '请输入旧密码', 
                         whitespace: true 
                     }]}
                 >
-                    <Input placeholder='请输入' />
+                    <Input placeholder='请输入旧密码' />
                 </Form.Item>
 
                 <Form.Item
                     label="新密码"
-                    name="newUpwd"
+                    name="newPwd"
                     rules={[{ 
                         required: true, 
-                        message: '必填', 
+                        message: '请输入新密码', 
                         whitespace: true 
                     }]}
                 >
-                    <Input placeholder='请输入' />
+                    <Input placeholder='请输入新密码' />
                 </Form.Item>
 
                 <Form.Item
-                    label="确认新密码"
-                    name="confirmNewUpwd"
+                    label="再次输入新密码"
+                    name="confirmNewPwd"
+                    required
                     rules={[({ getFieldValue }) => ({
                         validator(_, value) {
                             value = value?.trim?.();
                             if(!value) {
-                                return Promise.reject("请输入确认新密码！");
+                                return Promise.reject("请再次输入新密码！");
                             };
 
-                            if (getFieldValue('newUpwd') !== value) {
+                            if (getFieldValue('newPwd') !== value) {
                                 return Promise.reject("两次输入的密码不一致！");
                             }
 
                             return Promise.resolve();
                         },
                     })]}
-                    dependencies={['newUpwd']}
+                    dependencies={['newPwd']}
                 >
-                    <Input placeholder='请输入' />
+                    <Input placeholder='请再次输入新密码' />
                 </Form.Item>
             </>
         );

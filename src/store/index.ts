@@ -9,7 +9,8 @@ import RegisterStore from './register/store';
 import MyOrderStore from './my-order/store';
 import OrderDetailsStore from './order-details/store';
 import GoodsEvaluateStore from './goods-evaluate/store';
-import MyCollectionStore from './my-collection/store';
+import UserCenterStore from './user-center/store';
+// import MyCollectionStore from './my-collection/store';
 
 export default {
     pagesStore: new PagesStore(),
@@ -23,5 +24,6 @@ export default {
     myOrderStore: new MyOrderStore(),
     orderDetailsStore: new OrderDetailsStore(),
     goodsEvaluateStore: new GoodsEvaluateStore(),
-    myCollectionStore: new MyCollectionStore(),
+    userCenterStore: new UserCenterStore(),
+    // myCollectionStore: new MyCollectionStore(),
 };

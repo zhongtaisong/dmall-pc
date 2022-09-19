@@ -2,52 +2,31 @@ import React from 'react';
 import { Modal, Form, Input, Radio } from 'antd';
 import { observer } from 'mobx-react';
 import {FormInstance} from 'antd/es/form';
+import { validatePhone } from '@utils/common-fn';
+// mobx数据
+import store from '@store';
 
 /**
  * 添加收货地址 - Modal
  */
 @observer
-class AddressModal extends React.PureComponent<{
-    /**
-     * AddressModal是否可见
-     */
-     visible: boolean;
-    /**
-     * AddressModal外部入参
-     */
-    addressModalData: {
-        id?: number;
-        [key: string]: any;
-    };
-    /**
-     * Modal - 确定操作
-     */
-    onOk: Function;
-    /**
-     * Modal - 取消操作
-     */
-    onCancel: Function;
-}, any> {
+class AddressModal extends React.PureComponent<any, any> {
     formRef = React.createRef<FormInstance>();
 
-    componentDidUpdate(prevProps: Readonly<{ visible: boolean; addressModalData: { [key: string]: any; }; }>, prevState: Readonly<any>, snapshot?: any): void {
-        const { visible, addressModalData, } = this.props;
-
-        if(visible) {
-            this.formRef.current.setFieldsValue({
-                ...addressModalData,
-            });
-        }
+    componentDidMount(): void {
+        const { addressItem, } = store?.userCenterStore || {};
+        this.formRef.current.setFieldsValue({
+            ...addressItem,
+        });
     }
 
     render() {
-        const { visible, addressModalData } = this.props;
-        const title = typeof addressModalData?.id === 'number' ? '更新' : '添加';
+        const { isAddressModal, addressItem, } = store?.userCenterStore || {};
 
         return (
             <Modal
-                title={ `${ title }收货地址` }
-                visible={ visible }
+                title={ `${ !addressItem?.id ? '添加' : '更新' }收货地址` }
+                visible={ isAddressModal }
                 onOk={ this.onOk }
                 onCancel={ this.onCancel }
             >                    
@@ -62,11 +41,11 @@ class AddressModal extends React.PureComponent<{
                         name="name"
                         rules={[{ 
                             required: true, 
-                            message: '必填', 
+                            message: '请输入收货人', 
                             whitespace: true 
                         }]}
                     >
-                        <Input placeholder='请输入' />
+                        <Input placeholder='请输入收货人' />
                     </Form.Item>
 
                     <Form.Item
@@ -74,11 +53,11 @@ class AddressModal extends React.PureComponent<{
                         name="region"
                         rules={[{ 
                             required: true, 
-                            message: '必填', 
+                            message: '请输入所在地区', 
                             whitespace: true 
                         }]}
                     >
-                        <Input placeholder='请输入' />
+                        <Input placeholder='请输入所在地区' />
                     </Form.Item>
 
                     <Form.Item
@@ -86,31 +65,18 @@ class AddressModal extends React.PureComponent<{
                         name="detail"
                         rules={[{ 
                             required: true, 
-                            message: '必填', 
+                            message: '请输入详情地址', 
                             whitespace: true 
                         }]}
                     >
-                        <Input placeholder='请输入' />
+                        <Input placeholder='请输入详情地址' />
                     </Form.Item>
 
                     <Form.Item 
                         label="联系电话"
                         name="phone"
                         required
-                        rules={[{ 
-                            validator: (rule, value) => {
-                                if(!value?.trim?.()) {
-                                    return Promise.reject('请输入联系电话！');
-                                }
-
-                                const reg = /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/;
-                                if (!reg.test(value)) {
-                                    return Promise.reject('请输入合法的联系电话！');
-                                }
-                        
-                                return Promise.resolve();
-                            } 
-                        }]}
+                        rules={[{ validator: (rule, value) => validatePhone?.(value), }]}
                     >
                         <Input placeholder='请输入联系电话' />
                     </Form.Item>
@@ -120,7 +86,7 @@ class AddressModal extends React.PureComponent<{
                         name="isDefault"
                         rules={[{ 
                             required: true, 
-                            message: '必选', 
+                            message: '是否为默认地址', 
                         }]}
                     >
                         <Radio.Group>
@@ -137,26 +103,33 @@ class AddressModal extends React.PureComponent<{
      * AddressModal - 确定 - 操作
      */
     onOk = () => {
-        const { onOk, addressModalData } = this.props;
+        const { addressItem, } = store?.userCenterStore || {};
+
         this.formRef.current.validateFields().then(values => {
             if(!values || !Object.keys(values).length) return;
 
-            this.onCancel();
-            onOk?.({
-                ...addressModalData,
-                ...values,
-            })
+            if(!addressItem.id) {
+                store.userCenterStore.addAddressServiceFn(values, () => {
+                    this.onCancel();
+                });
+
+            }else {
+                store.userCenterStore.updateAddressServiceFn({
+                    ...values,
+                    id: addressItem.id,
+                }, () => {
+                    this.onCancel();
+                });
+            }
         });
     }
 
     /**
-     * AddressModal - 取消 - 操作
+     * 取消 - 操作
      */
     onCancel = () => {
-        const { onCancel } = this.props;
-
         this.formRef.current.resetFields();
-        onCancel?.();
+        store.userCenterStore.onToggleAddressModalClick(false);
     }
 
 }

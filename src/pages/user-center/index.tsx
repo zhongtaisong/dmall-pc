@@ -1,20 +1,19 @@
 import React from 'react';
-import { Form, Button, Radio, message } from 'antd';
+import { Form, Button, Radio } from 'antd';
 import { observer } from 'mobx-react';
-import { toJS } from 'mobx';
 import moment from 'moment';
 import {FormInstance} from 'antd/es/form';
-import { RouteComponentProps } from 'react-router-dom';
+import jsmd5 from 'js-md5';
 import { PWD_KEY } from '@config';
-import { cacheKey } from '@utils';
+import { cacheKey, history } from '@utils';
 // 个人信息
 import PersonalInformation from './components/personal-information';
 // 修改登录密码
 import LoginPassword from './components/login-password';
 // 收货地址
 import ReceivingAddress from './components/receiving-address';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -22,54 +21,55 @@ import './index.less';
  * 用户中心
  */
 @observer
-class UserCenter extends React.PureComponent<RouteComponentProps, {
+class UserCenter extends React.PureComponent<any, {
     /**
      * 当前菜单key
      */
-    menuKey: "personalInformation" | "loginPassword" | "receivingAddress";
+    radioValue: 0 | 1 | 2;
+    /** 用户id */
+    userId: number;
 }> {
     formRef = React.createRef<FormInstance>();
 
     constructor(props) {
         super(props);
         this.state = {
-            menuKey: "personalInformation",
+            radioValue: 0,
+            userId: null,
         };
     }
 
     componentDidMount() {
-        this.init();
+        store.userCenterStore.selectUserInformationServiceFn((data) => {
+            this.setState({ userId: data?.id, }, () => {
+                this.formRef.current.setFieldsValue({...data});
+            });
+        });
     }
 
     render() {
-        const { menuKey } = this.state;
-        const { setFileListArr, fileListArr } = state;
+        const { radioValue } = this.state;
+
         return (
             <div className='common_width dm_UserCenter'>
                 <div className='dm_UserCenter__title'>
                     <Radio.Group
-                        defaultValue={ menuKey }
-                        onChange={e => {
-                            const key = e?.target?.value;
-                            if(key === 'personalInformation') {
-                                this.init();
-                            }
-                            this.setState({ menuKey: key },);
-                        }}
+                        value={ radioValue }
+                        onChange={ this.onRadioChange }
                     >
-                        <Radio.Button value="personalInformation">个人资料</Radio.Button>
-                        <Radio.Button value="loginPassword">修改登录密码</Radio.Button>
-                        <Radio.Button value="receivingAddress">收货地址</Radio.Button>
+                        <Radio.Button value={ 0 }>个人资料</Radio.Button>
+                        <Radio.Button value={ 1 }>修改登录密码</Radio.Button>
+                        <Radio.Button value={ 2 }>收货地址</Radio.Button>
                     </Radio.Group>
                 </div>
                 
                 <div className='dm_UserCenter__content'>
                     {
-                        menuKey !== "receivingAddress" ? (
+                        [0, 1].includes(radioValue) ? (
                             <div className='dm_UserCenter__content--form'>
                                 <Form 
-                                    labelCol={{ span: 4 }}
-                                    wrapperCol={{ span: 20 }}
+                                    labelCol={{ span: 5 }}
+                                    wrapperCol={{ span: 19 }}
                                     autoComplete="off"
                                     ref={ this.formRef }
                                     onFinish={ this.onFinish }
@@ -77,38 +77,30 @@ class UserCenter extends React.PureComponent<RouteComponentProps, {
             
                                     {/* 个人资料 */}
                                     {
-                                        menuKey === "personalInformation" && (
-                                            <PersonalInformation 
-                                                fileListArr={ toJS(fileListArr) } 
-                                                onUploadCallBack={(val) => {
-                                                    if(!Array.isArray(val) || !val.length) {
-                                                        this.formRef.current.resetFields(["avatar"]);
-                                                    }else {
-                                                        this.formRef.current.setFieldsValue({
-                                                            "avatar": val
-                                                        });
-                                                    }
-                                                    setFileListArr(val);
-                                                }}
-                                            />
-                                        )
+                                        radioValue === 0 ? (
+                                            <PersonalInformation />
+                                        ) : null
                                     }
-            
+
                                     {/* 修改登录密码 */}
                                     {
-                                        menuKey === "loginPassword" && (
+                                        radioValue === 1 ? (
                                             <LoginPassword />
-                                        )
+                                        ) : null
                                     }
             
-                                    <Form.Item wrapperCol={{ offset: 4, span: 20 }}>
-                                        <Button type="primary" htmlType="submit">提交</Button>
+                                    <Form.Item wrapperCol={{ offset: 5, span: 19 }}>
+                                        <Button type="primary" htmlType="submit">更新</Button>
                                     </Form.Item>
                                 </Form>
                             </div>
-                        ) : (
+                        ) : null
+                    }
+
+                    {
+                        radioValue === 2 ? (
                             <ReceivingAddress />
-                        )
+                        ) : null
                     }
                 </div>
             </div>
@@ -116,79 +108,59 @@ class UserCenter extends React.PureComponent<RouteComponentProps, {
     }
 
     /**
-     * 初始化
-     */
-    init = () => {
-        state.selectUserInfoData().then(res => {
-            this.formRef.current.setFieldsValue({...res});
-        });
-    }
-
-    /**
-     * 更新 - 个人资料 - 操作
-     * @param values 
+     * 监听 - Radio变化
+     * @param e 
      * @returns 
      */
-    updateUserInfoDataFn = (values) => {
-        const formData = new FormData();
-        const { avatar } = values || {};
-        if(!avatar) {
-            return message.error("请上传头像！");
-        }else if(Array.isArray(avatar)) {
-            if(!avatar.length) {
-                return message.error("请上传头像！");
-            }else {
-                const { originFileObj } = avatar?.[0] || {};
-                formData.append('avatar', originFileObj || {});
-            }
-        }else if(typeof avatar === 'string') {
-            formData.append('avatar', avatar);
-        }
-
-        // 表单
-        formData.append('userInfo', JSON.stringify({
-            ...values,
-            birthday: moment(values['birthday']).format('YYYY-MM-DD'),
-        }));
-        state?.updateUserInfoData?.(formData);
-    }
-
-    /**
-     * 更新 - 登录密码 - 操作
-     * @param values 
-     * @returns 
-     */
-     updateUpwdDataFn = (values) => {
-        state.updateUpwdData({
-            oldUpwd: (window as any).$md5(values?.oldUpwd + PWD_KEY),
-            newUpwd: (window as any).$md5(values?.newUpwd + PWD_KEY),
-        }).then(bol => {
-            if(bol) {
-                localStorage.removeItem(cacheKey.USER_INFO);
-                sessionStorage.removeItem(cacheKey.USER_INFO);
-                this.props.history.push("/login");
-            }
+    onRadioChange = (e) => {
+        const key = e?.target?.value;
+        this.setState({ radioValue: key }, () => {
+            const callBack = {
+                0: () => {
+                    store.userCenterStore.selectUserInformationServiceFn((data) => {
+                        this.setState({ userId: data?.id, }, () => {
+                            this.formRef.current.setFieldsValue({...data});
+                        });
+                    });
+                },
+                2: () => {
+                    store.userCenterStore.selectAddressListServiceFn();
+                }
+            }[key];
+            if(!callBack) return;
+            callBack?.();
         });
     }
 
     /**
      * 表单提交 - 操作
      */
-     onFinish = (values) => {
+    onFinish = (values) => {
         if(!values || !Object.keys(values).length) return;
 
-        const { menuKey } = this.state;
-        if(menuKey === 'personalInformation') {
-            return this.updateUserInfoDataFn(values);
-        }
+        const { radioValue, userId, } = this.state;
+        const callBack = {
+            0: () => {
+                store.userCenterStore.updateUserInformationServiceFn({
+                    ...values,
+                    birthday:values['birthday'] ? moment(values['birthday']).format('YYYY-MM-DD') : null,
+                    id: userId,
+                });
+            },
+            1: () => {
+                store.userCenterStore.updateUserPasswordServiceFn({
+                    oldPwd: jsmd5(values?.oldPwd + PWD_KEY),
+                    newPwd: jsmd5(values?.newPwd + PWD_KEY),
+                }).then(res => {
+                    localStorage.removeItem(cacheKey.USER_INFO);
+                    sessionStorage.removeItem(cacheKey.USER_INFO);
+                    history.replace("/login");
+                });
+            }
+        }[radioValue];
+        if(!callBack) return;
 
-        if(menuKey === 'loginPassword') {
-            return this.updateUpwdDataFn(values);
-        }
-
-        if(menuKey === 'receivingAddress') {
-            return this.updateUserInfoDataFn(values);
-        }
+        callBack?.();
     }
 }
 

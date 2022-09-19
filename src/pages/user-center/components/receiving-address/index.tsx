@@ -1,13 +1,12 @@
 import React from 'react';
 import { Table, Button } from 'antd';
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
-// 添加收货地址
+// 收货地址弹窗 - 组件
 import AddressModal from './components/address-modal';
 // 表头
 import columns from './data';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -15,99 +14,38 @@ import './index.less';
  * 收货地址
  */
 @observer
-class EditableTable extends React.PureComponent<any, {
-    /**
-     * AddressModal是否可见
-     */
-    isVisible: boolean;
-    /**
-     * AddressModal外部入参
-     */
-    addressModalData: {
-        [key: string]: any;
-    };
-}> {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            isVisible: false,
-            addressModalData: {},
-        };
-    }
-
-    componentDidMount() {
-        state.selAddressData();
-    }
-
+class EditableTable extends React.PureComponent<any, any> {
     render() {
-        const { isVisible, addressModalData, } = this.state;
+        const { dataSource, isAddressModal, } = store?.userCenterStore || {};
         
         return (
             <div className='dm_ReceivingAddress'>
                 <div className='dm_ReceivingAddress__btn'>
                     <Button type="primary"                         
-                        onClick={() => {
-                            this.setState({ 
-                                isVisible: true,
-                                addressModalData: {},
-                            });
-                        }}
-                    >添加</Button>
+                        onClick={() => store.userCenterStore.onToggleAddressModalClick(true)}
+                    >添加收货地址</Button>
                 </div>
 
                 <div className='dm_ReceivingAddress__table'>
                     <Table
+                        columns={ columns() }
+                        dataSource={ dataSource }
                         bordered
-                        dataSource={toJS(state?.dataSource)}
-                        columns={ 
-                            columns({
-                                onDeleteAddressClick: (id) => {
-                                    state.delAddressData({ id });
-                                },
-                                onEditAddressClick: (visible, obj) => {
-                                    this.setState({ 
-                                        isVisible: visible,
-                                        addressModalData: obj,
-                                    });
-                                },
-                            }) as any
-                        }
+                        rowKey="id"
                         pagination={ false }
                         size='middle'
-                        rowKey="id"
                     />
                 </div>
 
-                {/* 地址弹窗 */}
-                <AddressModal 
-                    visible={ isVisible } 
-                    addressModalData={ addressModalData }
-                    onOk={ this.onAddressModalOk }
-                    onCancel={ this.onAddressModalCancel }
-                 />
+                {/* 收货地址弹窗 - 组件 */}
+                {
+                    isAddressModal ? (
+                        <AddressModal />
+                    ) : null
+                }
             </div>
         );
     }
-
-    /**
-     * AddressModal - 确定 - 操作
-     */
-    onAddressModalOk = (values) => {
-        state.editAddressData(values);
-        this.onAddressModalCancel();
-    }
-
-    /**
-     * AddressModal - 取消 - 操作
-     */
-    onAddressModalCancel = () => {
-        this.setState({ 
-            isVisible: false,
-            addressModalData: {},
-        });
-    }
-
 }
 
 export default EditableTable;
