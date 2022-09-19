@@ -31,14 +31,15 @@ class TopMenu extends React.PureComponent<Partial<RouteComponentProps>, {
 
     render() {
         const { pathname } = this.props.location;
-        const { admin, uname } = commonFn?.getUserInfo?.() || {};
+        const { admin, nickName, uname } = commonFn?.getUserInfo?.() || {};
         const { isLoginAndRegister } = this.state;
+        const left_value = nickName || uname;
 
         return (
             <div className='dm_topMenu'>
                 <div className='common_width dm_topMenu__content'>
                     <div className='dm_topMenu__content--left'>
-                        { uname ? `欢迎您，${ uname }` : null }
+                        欢迎您{ left_value ? `，${ left_value }` : null }
                     </div>
                     { !pathname.includes('/views/admin') && (
                         <div className='dm_topMenu__content--right'>

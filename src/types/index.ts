@@ -1,7 +1,7 @@
 /**
  * 响应数据
  */
-export interface IResponse {
+export interface IResponse<T = any> {
     data: {
         /**
          * 响应code
@@ -10,7 +10,7 @@ export interface IResponse {
         /**
          * 主体内容
          */
-        content: any;
+        content: T;
         /**
          * 操作提示
          */

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { observer } from 'mobx-react';
+import { validatePhone } from '@utils/common-fn';
 // mobx数据
 import store from '@store';
 // less样式
@@ -34,20 +35,7 @@ class ForgetPassword extends React.PureComponent<{
                 <Form.Item 
                     name="phone"
                     required
-                    rules={[{ 
-                        validator: (rule, value) => {
-                            if(!value?.trim?.()) {
-                                return Promise.reject('请输入手机号码');
-                            }
-
-                            const reg = /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/;
-                            if (!reg.test(value)) {
-                                return Promise.reject('请输入合法的手机号码');
-                            }
-                    
-                            return Promise.resolve();
-                        } 
-                    }]}
+                    rules={[{ validator: (rule, value) => validatePhone?.(value), }]}
                 >
                     <Input placeholder='请输入手机号码' />
                 </Form.Item>

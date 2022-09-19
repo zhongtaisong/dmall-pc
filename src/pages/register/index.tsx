@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import type { FormInstance } from 'antd/es/form';
 import jsmd5 from 'js-md5';
 import { history } from '@utils';
+import { validatePhone } from '@utils/common-fn';
 // 全局设置
 import { PWD_KEY } from '@config';
 // logo图片
@@ -98,20 +99,7 @@ class Register extends React.PureComponent<any, any> {
                         <Form.Item 
                             name="phone"
                             required
-                            rules={[{ 
-                                validator: (rule, value) => {
-                                    if(!value?.trim?.()) {
-                                        return Promise.reject('请输入手机号码');
-                                    }
-
-                                    const reg = /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/;
-                                    if (!reg.test(value)) {
-                                        return Promise.reject('请输入合法的手机号码');
-                                    }
-                            
-                                    return Promise.resolve();
-                                } 
-                            }]}
+                            rules={[{ validator: (rule, value) => validatePhone?.(value), }]}
                         >
                             <Input placeholder='请输入手机号码' />
                         </Form.Item>
