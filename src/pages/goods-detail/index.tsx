@@ -11,29 +11,25 @@ import store from '@store';
 // 样式
 import './index.less';
 
-interface IComponentProps {
-    /**
-     * 商品id
-     */
-    id: string;
-}
-
 /**
  * 商品详情
  */
 @observer
-class ProductsDetail extends React.PureComponent<Partial<RouteComponentProps<IComponentProps>>, any> {
+class ProductsDetail extends React.PureComponent<RouteComponentProps<{
+    /** 商品id */
+    id: string;
+}>, any> {
 
     componentDidMount() {
         const { id } = this.props?.match?.params || {};
-        store.goodsDetailStore.goodsDetailSelectServiceFn({ id, });
+        store.goodsDetailStore.init(Number(id));
     }
 
-    componentDidUpdate(prevProps: Readonly<Partial<RouteComponentProps<IComponentProps, StaticContext, unknown>>>, prevState: Readonly<any>, snapshot?: any): void {
+    componentDidUpdate(prevProps: Readonly<RouteComponentProps<{ id: string; }, StaticContext, unknown>>): void {
         const { id } = this.props?.match?.params || {};
         const prevId = prevProps?.match?.params?.id;
         if(id && prevId && id != prevId) {
-            store.goodsDetailStore.goodsDetailSelectServiceFn({ id, });
+            store.goodsDetailStore.init(Number(id));
         }
     }
 
@@ -45,8 +41,8 @@ class ProductsDetail extends React.PureComponent<Partial<RouteComponentProps<ICo
         return (
             <div className='dm_ProductsDetail'>
                 <div className='common_width'>
-                    <CommoditySpecification id={ id } />
-                    <CommodityDetails id={ id } />
+                    <CommoditySpecification />
+                    <CommodityDetails />
                 </div>
             </div>
         );

@@ -1,4 +1,4 @@
-import { cacheKey, } from "@utils";
+import { cacheKey, history, } from "@utils";
 import ROUTE_LIST from '@router';
 
 /**
@@ -111,6 +111,7 @@ export const checkSize = (file, width: Array<number>, height: Array<number>): Pr
 /**
  * 校验 - 接口响应内容
  * @param params 
+ * @param requestNum 
  */
 export const validResponseCode = (params: {
     /**
@@ -139,7 +140,7 @@ export const validResponseCode = (params: {
          */
         status: number;
     };
-}) => {
+}, requestNum?: number) => {
     if(!params || !Object.keys(params).length) return;
 
     const { code, } = params;
@@ -153,6 +154,10 @@ export const validResponseCode = (params: {
             if(status === 401) {
                 localStorage.removeItem(cacheKey.USER_INFO);
                 sessionStorage.removeItem(cacheKey.USER_INFO);
+                
+                if(requestNum <= 0 && !["/login"].includes(history?.location?.pathname)) {
+                    history.push("/login");
+                }
                 return data?.msg || "身份认证失败!";
             }
             

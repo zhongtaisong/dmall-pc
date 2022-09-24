@@ -23,5 +23,5 @@ export const orderSelectService = (params: IOrderSelectService): Promise<IRespon
  * @returns 
  */
 export const orderDeleteService = (id: number | string): Promise<IResponse> => {
-    return axios.delete(`order/delete/${ id }`);
+    return axios.delete(`/order/delete/${ id }`);
 }

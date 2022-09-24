@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs } from 'antd';
 import { observer } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 // 商品信息 - 组件
 import GoodsInfo from '../goods-info';
 // 商品评价 - 组件
@@ -15,13 +16,10 @@ import './index.less';
  * 商品介绍、商品评价
  */
 @observer
-class CommodityDetails extends React.PureComponent<{
-    /**
-     * 商品id
-     */
+class CommodityDetails extends React.PureComponent<RouteComponentProps<{
+    /** 商品id */
     id: string;
-}, any> {
-
+}>, any> {
     render() {
         return (
             <div className='commodity_details'>
@@ -55,11 +53,11 @@ class CommodityDetails extends React.PureComponent<{
      */
     onTabsChange = (activeKey) => {
         if(activeKey === "2") {
-            const { id } = this.props || {};
-            store.goodsDetailStore.goodsEvaluateSelectServiceFn({ id });
+            const { id } = this.props?.match?.params || {};
+            store.goodsDetailStore.goodsEvaluateSelectServiceFn({ id: Number(id), });
         }
     }
 
 }
 
-export default CommodityDetails;
+export default withRouter(CommodityDetails);

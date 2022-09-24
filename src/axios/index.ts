@@ -77,14 +77,15 @@ axiosInstance.interceptors.response.use(
         return response;
     }, 
     error => {
+        // 接口请求次数减1
+        requestNum--;
+
         // 校验 - 接口响应内容
-        const msg = validResponseCode(error);
+        const msg = validResponseCode(error, requestNum);
         if(msg) {
             message.error(msg);
         }
         
-        // 接口请求次数减1
-        requestNum--;
         if(requestNum <= 0) {
             // 关闭loading
             store?.pagesStore?.setIsLoadingFn?.(false);

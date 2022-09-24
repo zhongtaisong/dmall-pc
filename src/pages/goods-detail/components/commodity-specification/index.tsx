@@ -1,6 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { InputNumber, Button, Image, } from 'antd';
+import { HeartFilled, HeartOutlined, } from '@ant-design/icons';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { history } from '@utils';
 // 设置
 import { PUBLIC_URL } from '@config';
@@ -20,12 +22,10 @@ interface IComponentState {
  * 主图、商品规格
  */
 @observer
-class CommoditySpecification extends React.PureComponent<{
-    /**
-     * 商品id
-     */
+class CommoditySpecification extends React.PureComponent<RouteComponentProps<{
+    /** 商品id */
     id: string;
-}, IComponentState> {
+}>, IComponentState> {
 
     constructor(props) {
         super(props);
@@ -35,9 +35,10 @@ class CommoditySpecification extends React.PureComponent<{
     }
 
     render() {
-        const { goodsInfo } = store?.goodsDetailStore || {};
+        const { goodsInfo, isGoodsCollection, } = store?.goodsDetailStore || {};
         const { imageIndex } = this.state;
-        const { id } = this.props || {};
+        const { id } = this.props?.match?.params || {};
+        const _id = Number(id);
         const bigImgUrl = goodsInfo?.images?.[imageIndex];
 
         return (
@@ -100,7 +101,7 @@ class CommoditySpecification extends React.PureComponent<{
                                             return (
                                                 <span 
                                                     key={ item?.id }
-                                                    className={ `single_line_ellipsis${ item?.id === Number(id) ? ' dm_commoditySpecification__right--row__specs--item' : '' }` }
+                                                    className={ `single_line_ellipsis${ item?.id === _id ? ' dm_commoditySpecification__right--row__specs--item' : '' }` }
                                                     onClick={() => history.push(`/views/goods-detail/${ item?.id }`)}
                                                 >{ item?.spec }</span>
                                             );
@@ -135,10 +136,32 @@ class CommoditySpecification extends React.PureComponent<{
                                 ghost 
                             >加入购物车</Button>
                         </div>
+                        <div className='dm_commoditySpecification__right--row__collection'
+                            onClick={() => this.onGoodsCollectionClick([_id])}
+                        >
+                            { isGoodsCollection ? <HeartFilled style={{ color: "var(--dm-main-color)", }} /> : <HeartOutlined /> }
+                            <div>{ isGoodsCollection ? '已' : '' }收藏</div>
+                        </div>
                     </div>
                 </div>
             </div>
         );
+    }
+
+    /**
+     * 加入收藏、取消收藏 - 操作
+     * @param pids 
+     * @returns 
+     */
+    onGoodsCollectionClick = (pids: Array<number>) => {
+        if(!Array.isArray(pids) || !pids.length) return;
+
+        const { isGoodsCollection, } = store?.goodsDetailStore || {};
+        if(!isGoodsCollection) {
+            store.goodsDetailStore.goodsCollectionAddServiceFn(pids)
+        }else {
+            store.goodsDetailStore.goodsCollectionDeleteServiceFn(pids)
+        }
     }
 
     /**
@@ -151,4 +174,4 @@ class CommoditySpecification extends React.PureComponent<{
     }
 }
 
-export default CommoditySpecification;
+export default withRouter(CommoditySpecification);
