@@ -1,5 +1,5 @@
 import { cacheKey, history, } from "@utils";
-import ROUTE_LIST from '@router';
+import { PAGE_ROUTER, } from '@router';
 
 /**
  * 获取用户信息
@@ -173,7 +173,7 @@ export const validResponseCode = (params: {
 export const isOpenPath = (pathname: string) => {
     if(!pathname) return true;
 
-    return ROUTE_LIST.find(item => item?.pathname === pathname)?.isOpen ?? true;
+    return PAGE_ROUTER.find(item => item?.pathname === pathname)?.isOpen ?? true;
 };
 
 /**

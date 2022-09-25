@@ -6,7 +6,7 @@ import { commonFn } from '@utils';
 // 公共组件
 import { HeaderBar, FooterCopyright } from '@com';
 // 各级页面路由
-import ROUTE_LIST from '@router';
+import { PAGE_ROUTER, } from '@router';
 // 401、402、403、404
 import ResultPages from '@pages/result-pages';
 // mobx数据
@@ -29,7 +29,7 @@ class Index extends React.PureComponent<RouteComponentProps, any> {
                     <div className='pages_index__content'>
                         <Switch>
                             {
-                                ROUTE_LIST.map(item => {
+                                PAGE_ROUTER.map(item => {
                                     const isAuth = isLogin || item?.isOpen;
 
                                     if(item.redirect){
@@ -38,13 +38,13 @@ class Index extends React.PureComponent<RouteComponentProps, any> {
                                             to: isAuth ? item?.redirect : '/login',
                                         }
                                         return (
-                                            <Redirect key={ item.id } exact {...redirectParams} />
+                                            <Redirect key={ item.pathname } exact {...redirectParams} />
                                         );
                                     }
 
                                     return (
                                         <Route 
-                                            key={ item.id }
+                                            key={ item.pathname }
                                             exact
                                             path={ item.pathname }
                                             render={
@@ -53,6 +53,9 @@ class Index extends React.PureComponent<RouteComponentProps, any> {
                                                         return (<Redirect to={ '/login' } />);
                                                     }
 
+                                                    if(item.title) {
+                                                        document.title = item.title;
+                                                    }
                                                     return (<item.component {...props} />);
                                                 }
                                             }

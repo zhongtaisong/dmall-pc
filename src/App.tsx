@@ -1,14 +1,10 @@
 import React from 'react';
-import { Router, Switch, Route, Redirect } from 'react-router-dom';
+import { Router, Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import { Button } from 'antd';
 // 全局公共方法
 import { ScrollToTop, history } from '@utils';
-// 首页
-import Index from '@pages';
-// 登录
-import Login from '@pages/login';
-// 注册
-import Register from '@pages/register';
+// 各级页面路由
+import { ROOT_ROUTER, } from '@router';
 // 401、402、403、404
 import ResultPages from '@pages/result-pages';
 
@@ -22,10 +18,36 @@ class App extends React.PureComponent<any, any> {
                 <Router history={ history }>
                     <ScrollToTop />
                     <Switch>
-                        <Route path='/views' component={ Index } />
-                        <Redirect exact from="/" to="/views" />
-                        <Route path='/login' component={ Login } />
-                        <Route path='/register' component={ Register } />
+                        {
+                            ROOT_ROUTER.map(item => {
+                                if(item?.redirect) {
+                                    return (
+                                        <Redirect 
+                                            key={ item?.pathname }
+                                            exact
+                                            from={ item?.pathname }
+                                            to={ item?.redirect } 
+                                        />
+                                    );
+                                }
+
+                                return (
+                                    <Route 
+                                        key={ item?.pathname }
+                                        path={ item?.pathname }
+                                        render={
+                                            (props: RouteComponentProps) => {
+                                                if(item.title) {
+                                                    document.title = item.title;
+                                                }
+                                                return (<item.component {...props} />);
+                                            }
+                                        }
+                                    />
+                                );
+                            })
+                        }
+                        
                         <Route
                             render={props => {
                                 return (
