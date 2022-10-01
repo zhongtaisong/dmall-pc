@@ -12,10 +12,10 @@ import store from '@store';
 import './index.less';
 
 interface IComponentState {
-    /**
-     * 大主图索引
-     */
+    /** 大主图索引 */
     imageIndex: number;
+    /** 购买数量 */
+    buyCount: number;
 }
 
 /**
@@ -31,12 +31,16 @@ class CommoditySpecification extends React.PureComponent<RouteComponentProps<{
         super(props);
         this.state = {
             imageIndex: 0,
+            buyCount: 1,
         };
     }
 
     render() {
-        const { goodsInfo, isGoodsCollection, } = store?.goodsDetailStore || {};
-        const { imageIndex } = this.state;
+        const { 
+            goodsInfo, isGoodsCollection, 
+            shoppingCartAddServiceFn, 
+        } = store?.goodsDetailStore || {};
+        const { imageIndex, buyCount, } = this.state;
         const { id } = this.props?.match?.params || {};
         const _id = Number(id);
         const bigImgUrl = goodsInfo?.images?.[imageIndex];
@@ -118,8 +122,9 @@ class CommoditySpecification extends React.PureComponent<RouteComponentProps<{
                             className='dm_commoditySpecification__right--row__number'
                             min={ 1 } 
                             max={ 99 } 
-                            value={ 1 } 
-                            precision={ 0 } 
+                            value={ buyCount } 
+                            precision={ 0 }
+                            onChange={(val) => this.setState({ buyCount: val, })}
                         />
                     </div>
 
@@ -134,6 +139,10 @@ class CommoditySpecification extends React.PureComponent<RouteComponentProps<{
                                 type="primary" 
                                 size='large' 
                                 ghost 
+                                onClick={() => shoppingCartAddServiceFn?.([{
+                                    pid: _id,
+                                    num: buyCount,
+                                }])}
                             >加入购物车</Button>
                         </div>
                         <div className='dm_commoditySpecification__right--row__collection'

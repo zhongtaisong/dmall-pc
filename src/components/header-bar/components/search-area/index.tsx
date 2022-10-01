@@ -5,6 +5,8 @@ import { observer } from 'mobx-react';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import lodash from 'lodash';
 import { MENU_LIST_01, MENU_LIST_02 } from './data';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -15,6 +17,7 @@ import './index.less';
 class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> {
     render() {
         const { history, location } = this.props;
+        const { shoppingCartNum, } = store?.commonStore || {};
         const keyword = location.pathname.split("/")?.[3] || '';
 
         return (
@@ -79,7 +82,7 @@ class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> 
                                                 />
                                             ) : null
                                         }
-                                        <Badge count={ 0 } overflowCount={ 99 }>
+                                        <Badge count={ shoppingCartNum } overflowCount={ 99 }>
                                             <Button 
                                                 icon={ <ShoppingCartOutlined style={{ fontSize: 15 }} /> } 
                                                 type="primary" 
@@ -112,7 +115,7 @@ class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> 
     goShopCartFn = () => {
         const { history } = this.props;
         const isAuth = true;
-        let pathname = "/views/cart";
+        let pathname = "/views/shopping-cart";
         if(!isAuth) {
             pathname = "/login";
         }

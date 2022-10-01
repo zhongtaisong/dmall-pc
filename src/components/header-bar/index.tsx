@@ -5,6 +5,8 @@ import { Anchor } from 'antd';
 import TopMenu from './components/top-menu';
 // 搜索区域
 import SearchArea from './components/search-area';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -13,6 +15,11 @@ import './index.less';
  */
 @observer
 class HeaderBar extends React.PureComponent<any, any> {
+
+    componentDidMount(): void {
+        store.commonStore.shoppingCartSelectNumServiceFn();
+    }
+
     render() {
         return (
             <div className='dm_HeaderBar'>

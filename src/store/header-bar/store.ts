@@ -1,7 +1,9 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, } from "mobx";
 import { SUCCESS_CODE } from "@config";
 import { cacheKey } from '@utils';
-import { logoutService } from './service';
+import { 
+    logoutService,
+} from './service';
 
 export default class Store {
 

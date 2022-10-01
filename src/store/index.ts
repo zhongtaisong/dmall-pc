@@ -1,3 +1,4 @@
+import CommonStore from './common/store';
 import PagesStore from './pages/store';
 import HeaderBarStore from './header-bar/store';
 import HomeStore from './home/store';
@@ -10,9 +11,11 @@ import MyOrderStore from './my-order/store';
 import OrderDetailsStore from './order-details/store';
 import GoodsEvaluateStore from './goods-evaluate/store';
 import UserCenterStore from './user-center/store';
-// import MyCollectionStore from './my-collection/store';
+import MyCollectionStore from './my-collection/store';
+import ShoppingCartStore from './shopping-cart/store';
 
 export default {
+    commonStore: new CommonStore(),
     pagesStore: new PagesStore(),
     headerBarStore: new HeaderBarStore(),
     homeStore: new HomeStore(),
@@ -25,5 +28,6 @@ export default {
     orderDetailsStore: new OrderDetailsStore(),
     goodsEvaluateStore: new GoodsEvaluateStore(),
     userCenterStore: new UserCenterStore(),
-    // myCollectionStore: new MyCollectionStore(),
+    myCollectionStore: new MyCollectionStore(),
+    shoppingCartStore: new ShoppingCartStore(),
 };

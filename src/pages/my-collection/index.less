@@ -8,7 +8,7 @@
     &__title {
         display: flex;
         align-items: center;
-        padding: 0px 0 6px 10px;
+        padding: 6px 10px 10px;
         >span {
             font-size: 20px;
             font-weight: bold;
@@ -16,7 +16,6 @@
         }
         >div {
             display: flex;
-            padding: 10px 0;
             >i {
                 font-style: normal;
                 font-weight: bold;
@@ -25,24 +24,24 @@
         }
     }
     
-    .operation {
-        >span {
-            cursor: pointer;
-            padding: 0 4px;
-            &:hover {
-                color: #40A9FF;
+    &__columns {
+        padding-bottom: 10px;
+        .ant-table-placeholder {
+            display: none;
+        }
+
+        &--description {
+            >span {
+                display: block;
+                text-align: left;
+            }
+            span + span {
+                color: #999;
+                font-size: 13px;
             }
         }
     }
-    .imgs_style {
-        width: 100%;
-    }
-    .title_style {
-        text-align: left;
-        max-height: 36px;
-        overflow: hidden;
-        display: inline-block;
-    }
+    
     .ant-table-footer {
         height: 55px;
         line-height: 55px;

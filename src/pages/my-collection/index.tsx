@@ -1,11 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Table, Typography, Row, Col, message, Button } from 'antd';
-import { toJS } from 'mobx';
+import { Table, Row, Col, message, Button } from 'antd';
 // 各种表头
 import { columns } from './data';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -18,58 +17,17 @@ class MyCollection extends React.PureComponent<any, any> {
     constructor(props) {
         super(props);
         this.state = {
-            selectedRowKeys: [],
-            selectedRows: [],
             cartId: []
         };
     }
 
     componentDidMount() {
-        state.cartLisData();        
-    }
-
-    // 表格底部
-    footer = () => {
-        return (
-            <Row>
-                <Col span={ 12 } className='left'>
-                    <Button onClick={ this.handleDeleteProduct }>批量删除</Button>
-                    <Button onClick={ this.handleCollectionProduct }>批量加入购物车</Button>
-                </Col>
-                <Col span={ 12 } className='right'>
-                    <span className='num'>已选择<i>{ this.state.selectedRowKeys.length }</i>件商品</span>
-                </Col>
-            </Row>
-        );
-    }
-
-
-    // 删除
-    handleDeleteProduct = () => {
-        const { cartId } = this.state;
-        if( cartId.length ){
-            state.delcartData(cartId);
-            this.setState(() => ({
-                selectedRowKeys: [],
-                selectedRows: []
-            }));
-        }else{
-            message.warning('请选择需要删除的商品！');
-        }
-    }
-
-    // 加入购物车
-    handleCollectionProduct = () => {
-        const { cartId } = this.state;
-        if( cartId.length ){
-            state.addcolsData(cartId);
-        }else{
-            message.warning('请选择需要加入购物车的商品！');
-        }
+        store.myCollectionStore.goodsCollectionSelectServiceFn();
     }
 
     render() {
-        const { dataSource } = state;
+        const { dataSource } = store?.myCollectionStore || {};
+        
         return (
             <div className='common_width dm_MyCollection'>
                 <div className='dm_MyCollection__title'>
@@ -79,34 +37,68 @@ class MyCollection extends React.PureComponent<any, any> {
 
                 <Table 
                     columns={ columns } 
-                    dataSource={ toJS(dataSource) } 
+                    dataSource={ dataSource } 
                     pagination={ false }
-                    scroll={{ x: '100%', y: 330 }}
                     footer={ this.footer }
                     bordered
                     rowSelection={{
-                        // fixed: true,
                         type: 'checkbox',
-                        onChange: (selectedRowKeys, selectedRows) => {
-                            this.setState(() => ({
-                                selectedRowKeys,
-                                selectedRows
-                            }));
-                            let data = selectedRows.map(item => {
-                                if( selectedRowKeys.includes(item.id) ){
-                                    return item.id;
-                                }
-                            });
-                            this.setState({
-                                cartId: data
-                            });
-                        }
+                        onChange: (selectedRowKeys) => store.myCollectionStore.onRowSelectionChange(selectedRowKeys),
                     }} 
-                    rowKey={ (record) => record.id }
+                    scroll={{ x: '100%', y: 380 }}
+                    rowKey={record => record?.goodsInfo?.id}
                 />
             </div>
         );
     }
+
+    /**
+     * 表格底部按钮
+     * @returns 
+     */
+    footer = () => {
+        const { selectedRowKeys } = store?.myCollectionStore || {};
+        return (
+            <Row>
+                <Col span={ 12 } className='left'>
+                    <Button onClick={ this.onDeleteClick }>批量删除</Button>
+                    <Button onClick={ this.onAddShoppingCartClick }>批量加入购物车</Button>
+                </Col>
+                <Col span={ 12 } className='right'>
+                    <span className='num'>已选择<i>{ selectedRowKeys?.length ?? 0 }</i>件商品</span>
+                </Col>
+            </Row>
+        );
+    }
+
+    /**
+     * 批量删除 - 操作
+     */
+    onDeleteClick = () => {
+        const { selectedRowKeys } = store?.myCollectionStore || {};
+        if(!Array.isArray(selectedRowKeys) || !selectedRowKeys.length) {
+            return message.warning('请选择需要删除的商品!');
+        }
+
+        store.myCollectionStore.goodsCollectionDeleteServiceFn(selectedRowKeys);
+    }
+
+    /**
+     * 批量加入购物车 - 操作
+     */
+    onAddShoppingCartClick = () => {
+        const { selectedRowKeys } = store?.myCollectionStore || {};
+        if(!Array.isArray(selectedRowKeys) || !selectedRowKeys.length) {
+            return message.warning('请选择需要加入购物车的商品!');
+        }
+
+        const goodsInfo = selectedRowKeys.reduce((res, item) => {
+            res.push({ pid: item, num: 1, });
+            return res;
+        }, []);
+        store.myCollectionStore.shoppingCartAddServiceFn(goodsInfo);
+    }
+
 }
 
 export default MyCollection;

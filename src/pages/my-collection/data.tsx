@@ -5,8 +5,8 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/lib/table';
 // 全局设置
 import { PUBLIC_URL } from '@config';
-// 数据
-import state from './state';
+// mobx数据
+import store from '@store';
 
 export const columns: ColumnsType<any> = [
     {
@@ -15,7 +15,17 @@ export const columns: ColumnsType<any> = [
         key: 'mainPicture',
         align: 'center',
         width: '10%',
-        render: (text) => <img style={{ width: '100%', }} src={ `${ PUBLIC_URL }${ text }` } alt={ text } />
+        render: (text, record) => {
+            if(!record?.goodsInfo?.mainPicture) return '-';
+
+            return (
+                <img 
+                    style={{ width: '100%', }} 
+                    src={ `${ PUBLIC_URL }${ record?.goodsInfo?.mainPicture }` } 
+                    alt="图片"
+                />
+            );
+        },
     },
     {
         title: '商品详情',
@@ -25,11 +35,11 @@ export const columns: ColumnsType<any> = [
         render: (text, record) => {
             return (
                 <Link 
-                    className='dm_MyOrder__columns--description' 
-                    to={ `/views/goods-detail/${ record?.id }` }
+                    className='dm_MyCollection__columns--description' 
+                    to={ `/views/goods-detail/${ record?.goodsInfo?.id }` }
                 >
-                    <span className='two_line_ellipsis' title={ text }>{ text }</span>
-                    <span className='single_line_ellipsis'>规格：{ record?.spec }</span>
+                    <span className='two_line_ellipsis'>{ record?.goodsInfo?.description }</span>
+                    <span className='single_line_ellipsis'>规格：{ record?.goodsInfo?.spec }</span>
                 </Link>
             );
         }
@@ -39,15 +49,17 @@ export const columns: ColumnsType<any> = [
         dataIndex: 'price',
         key: 'price',
         align: 'center',
-        width: '16%',
-        render: (text) => `￥${ Number(text || 0)?.toFixed?.(2) || "0.00" }`,
+        width: '10%',
+        render: (text, record) => {
+            return `￥${ Number(record?.goodsInfo?.price || 0)?.toFixed?.(2) || "0.00" }`;
+        },
     },
     {
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
         align: 'center',
-        width: '148px',
+        width: '14%',
         render: (text, record) => {
             return (
                 <div className='operation-btn'>
@@ -55,7 +67,7 @@ export const columns: ColumnsType<any> = [
                         title="你确定要删除这条数据？"
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                         onConfirm={() => {
-                            state.delcartData( [record.id] );
+                            store.myCollectionStore.goodsCollectionDeleteServiceFn([record?.goodsInfo?.id]);
                         }}
                         okText="是"
                         cancelText="否"
@@ -63,7 +75,10 @@ export const columns: ColumnsType<any> = [
                         <span>删除</span>
                     </Popconfirm>
                     <span onClick={() => {
-                        state.addcolsData( [ record.id ]);
+                        store.myCollectionStore.shoppingCartAddServiceFn([{
+                            pid: record?.pid,
+                            num: 1,
+                        }]);
                     }}>加入购物车</span>
                 </div>
             );

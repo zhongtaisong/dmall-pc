@@ -9,6 +9,9 @@ import {
     goodsCollectionDeleteService,
 } from './service';
 import { IGoodsInfo } from './type';
+// mobx数据
+import store from '@store';
+import { IBuyGoodsInfo } from "@store/common/type";
 
 export default class Store {
 
@@ -82,14 +85,12 @@ export default class Store {
      * @returns 
      */
     goodsCollectionAddServiceFn = async (pids: Array<number>) => {
-        if(!Array.isArray(pids) || !pids.length) return;
-
-        const result = await goodsCollectionAddService({ pids, });
-        if(result?.data?.code === SUCCESS_CODE) {
-            runInAction(() => {
-                this.isGoodsCollection = true;
-            });
-        }
+        const result = await store.commonStore.goodsCollectionAddServiceFn(pids);
+        if(!result) return;
+        
+        runInAction(() => {
+            this.isGoodsCollection = true;
+        });
     }
 
     /**
@@ -106,6 +107,15 @@ export default class Store {
                 this.isGoodsCollection = false;
             });
         }
+    }
+
+    /**
+     * 加入购物车 - 操作
+     * @param goodsInfo 
+     * @returns 
+     */
+    shoppingCartAddServiceFn = async (goodsInfo: Array<IBuyGoodsInfo>) => {
+        await store.commonStore.shoppingCartAddServiceFn(goodsInfo);
     }
     
 };

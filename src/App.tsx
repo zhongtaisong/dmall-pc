@@ -7,11 +7,25 @@ import { ScrollToTop, history } from '@utils';
 import { ROOT_ROUTER, } from '@router';
 // 401、402、403、404
 import ResultPages from '@pages/result-pages';
+// mobx数据
+import store from '@store';
 
 /**
  * App
  */
 class App extends React.PureComponent<any, any> {
+
+    componentDidMount(): void {
+        history.listen((location, action) => {
+            if(!location || !Object.keys(location).length) return;
+
+            const bol = ROOT_ROUTER.some(item => item.pathname === location.pathname);
+            if(!bol) {
+                store.commonStore.shoppingCartSelectNumServiceFn();
+            }
+        });
+    }
+
     render() {
         return (
             <div className='dm_App'>

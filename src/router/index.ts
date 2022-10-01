@@ -60,7 +60,7 @@ export const PAGE_ROUTER = [
     { 
         pathname: '/views/shopping-cart',
         component: ShoppingCart,
-        title: '我的购物车',
+        title: '购物车',
         isOpen: false,
     },
     { 
