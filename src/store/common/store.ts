@@ -5,6 +5,7 @@ import {
     shoppingCartSelectNumService,
     shoppingCartAddService,
     goodsCollectionDeleteService,
+    selectAddressListService,
 } from './service';
 import { IBuyGoodsInfo } from "./type";
 
@@ -69,5 +70,13 @@ export default class Store {
             this.shoppingCartNum = result?.data?.content ?? 0;
         })
     };
+
+    /**
+     * 查询 - 收货地址 - 操作
+     */
+    selectAddressListServiceFn = async () => {
+        const result = await selectAddressListService();
+        return result?.data?.content || [];
+    }
     
 };

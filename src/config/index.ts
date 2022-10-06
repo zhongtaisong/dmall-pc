@@ -11,9 +11,9 @@ export const BLACK_LIST_PATH = [
     // 我的收藏
     '/views/goods/collection',
     // 用户中心
-    '/views/user',
+    '/views/user-center',
     // 结算页
-    '/views/goods/cart/settlement',
+    '/views/confirm-order',
     // 订单详情
     '/views/goods/cart/orderDetails'
 ];

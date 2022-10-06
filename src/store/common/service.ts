@@ -1,5 +1,6 @@
 import axios from '@axios';
 import { IResponse } from '@types';
+import { commonFn } from '@utils';
 import { IBuyGoodsInfo } from './type';
 
 export interface IPids {
@@ -41,5 +42,16 @@ export const shoppingCartAddService = (goodsInfo: Array<IBuyGoodsInfo>, url: str
  * @returns 
  */
 export const shoppingCartSelectNumService = (): Promise<IResponse> => {
+    const isLogin = commonFn.isLogin();
+    if(!isLogin) return;
+    
     return axios.get("/shopping-cart/select/num");
 };
+
+/**
+ * 查询 - 收货地址
+ * @returns 
+ */
+export const selectAddressListService = (): Promise<IResponse> => {
+    return axios.get("/address/select");
+}

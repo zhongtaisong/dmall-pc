@@ -48,14 +48,6 @@ export const updateUserPasswordService = (params: IUpdateUserPassword): Promise<
     return axios.patch("/user/update/password", params);
 }
 
-/**
- * 查询 - 收货地址
- * @returns 
- */
-export const selectAddressListService = (): Promise<IResponse> => {
-    return axios.get("/address/select");
-}
-
 export interface IAddAddressService {
     /** 收件人 */
     name: string;

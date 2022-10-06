@@ -21,7 +21,7 @@ class TopMenu extends React.PureComponent<any, any> {
         }else if( that == 'collection' ){
             this.props.history.push('/views/goods/collection');
         }else if( that == 'userCenter' ){
-            this.props.history.push('/views/user');
+            this.props.history.push('/views/user-center');
         }else if( that == 'logout' ){
 
         }else if( that == 'admin' ){

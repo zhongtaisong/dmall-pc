@@ -17,15 +17,15 @@ class MyOrder extends React.PureComponent<any, any> {
     formRef = React.createRef<FormInstance>();
 
     componentDidMount() {
-        const { ordernum } = this.props?.match?.params || {};
-        store.goodsEvaluateStore.goodsEvaluateSelectServiceFn(ordernum);
+        const { order_no } = this.props?.match?.params || {};
+        store.goodsEvaluateStore.goodsEvaluateSelectServiceFn(order_no);
     }
 
     componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<any>, snapshot?: any): void {
-        const { ordernum } = this.props?.match?.params || {};
+        const { order_no } = this.props?.match?.params || {};
         const prevOrdernum = prevProps?.match?.params?.id;
-        if(ordernum && prevOrdernum && ordernum !== prevOrdernum) {
-            store.goodsEvaluateStore.goodsEvaluateSelectServiceFn(ordernum);
+        if(order_no && prevOrdernum && order_no !== prevOrdernum) {
+            store.goodsEvaluateStore.goodsEvaluateSelectServiceFn(order_no);
         }
     }
     
@@ -33,7 +33,6 @@ class MyOrder extends React.PureComponent<any, any> {
         const { 
             dataSource, isModalVisible, goodsEvaluateMap,
             onGoodsEvaluateClick, 
-            onModalCancelClick,
         } = store?.goodsEvaluateStore || {};
         const num = dataSource.filter(item => !item?.content).length ?? 0;
 
@@ -69,7 +68,7 @@ class MyOrder extends React.PureComponent<any, any> {
                     title={ `${ !goodsEvaluateMap?.content ? '添加' : '修改' }评价` } 
                     visible={ isModalVisible }
                     onOk={ this.onOk }
-                    onCancel={() => onModalCancelClick?.()}
+                    onCancel={ this.onCancel }
                 >
                     <Form ref={ this.formRef } >
                         <Form.Item 
@@ -101,8 +100,22 @@ class MyOrder extends React.PureComponent<any, any> {
         this.formRef.current.validateFields().then(values => {
             if(!values || !Object.keys(values).length) return;
 
-            onModalOkClick?.(values);
+            onModalOkClick?.(values, () => {
+                this.onCancel();
+            });
         })
+    }
+
+    /**
+     * Modal - 取消 - 操作
+     */
+    onCancel= () => {
+        const { 
+            onModalCancelClick,
+        } = store?.goodsEvaluateStore || {};
+
+        this.formRef.current.resetFields();
+        onModalCancelClick?.();
     }
 }
 

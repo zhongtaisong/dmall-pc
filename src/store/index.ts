@@ -13,6 +13,7 @@ import GoodsEvaluateStore from './goods-evaluate/store';
 import UserCenterStore from './user-center/store';
 import MyCollectionStore from './my-collection/store';
 import ShoppingCartStore from './shopping-cart/store';
+import ConfirmOrderStore from './confirm-order/store';
 
 export default {
     commonStore: new CommonStore(),
@@ -30,4 +31,5 @@ export default {
     userCenterStore: new UserCenterStore(),
     myCollectionStore: new MyCollectionStore(),
     shoppingCartStore: new ShoppingCartStore(),
+    confirmOrderStore: new ConfirmOrderStore(),
 };

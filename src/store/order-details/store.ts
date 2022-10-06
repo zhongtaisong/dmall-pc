@@ -10,24 +10,26 @@ export default class Store {
     }
 
     /** 收货人信息 */
-    consignees: {
+    consignees: Partial<{
         /**
          * 详细地址
          */
-        detail?: string;
+        detail: string;
         /**
          * 收货人姓名
          */
-        name?: string;
+        name: string;
         /**
          * 收货人电话
          */
-        phone?: "18312345678";
+        phone: string;
         /**
          * 收货人地区
          */
-        region?: "上海浦东";
-    } = {};
+        region: string;
+        /** 完整地址 */
+        address: string;
+    }> = {};
 
     /** 商品列表 */
     dataSource: Array<{
@@ -60,34 +62,37 @@ export default class Store {
     /** 订单信息 */
     orderInfo: {
         /**
-         * 订单购买量
+         * 订单购买总量
          */
-        num?: number;
+        total_num?: number;
         /**
          * 订单编号
          */
-        ordernum?: string;
+        order_no?: string;
         /**
          * 创建订单时间
          */
-        submitTime?: string;
+        create_time?: string;
         /**
          * 订单总金额
          */
-        totalprice?: number;
+        total_price?: number;
     } = {};
 
     /**
      * 查询 - 订单详情 - 操作
-     * @param ordernum 
+     * @param order_no 
      */
-    orderSelectDetailServiceFn = async (ordernum: string) => {
-        if(!ordernum) return;
+    orderSelectDetailServiceFn = async (order_no: string) => {
+        if(!order_no) return;
 
-        const result = await orderSelectDetailService(ordernum);
+        const result = await orderSelectDetailService(order_no);
 
         const { addressInfos, orderInfos, goodsInfos } = result?.data?.content || {};
         runInAction(() => {
+            if(addressInfos && Object.keys(addressInfos).length) {
+                addressInfos['address'] = `${addressInfos?.region || ''}${addressInfos?.detail || ''}`;
+            }
             this.consignees = addressInfos || {};
             this.dataSource = goodsInfos || [];
             this.orderInfo = orderInfos || {};

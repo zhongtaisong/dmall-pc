@@ -108,7 +108,10 @@ export default class Store {
     shoppingCartUpdateNumServiceFn = async (params: IShoppingCartUpdateNum) => {
         if(!params || !Object.keys(params).length) return;
 
-        await shoppingCartUpdateNumService(params);
+        const result = await shoppingCartUpdateNumService(params);
+        if(result?.data?.code === SUCCESS_CODE) {
+            store.commonStore.shoppingCartSelectNumServiceFn()
+        }
     }
 
     /**

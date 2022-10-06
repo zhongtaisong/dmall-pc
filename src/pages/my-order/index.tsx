@@ -34,7 +34,7 @@ class MyOrder extends React.PureComponent<any, any> {
                 {/* 表头 */}
                 <Table 
                     className={ dataSource?.length ? 'dm_MyOrder__columns' : '' }
-                    columns={ columns } 
+                    columns={ columns() } 
                     dataSource={[]} 
                     pagination={ false }
                     bordered
@@ -44,11 +44,11 @@ class MyOrder extends React.PureComponent<any, any> {
                     dataSource.map(item => {
                         return (
                             <div 
-                                key={ item.id }
+                                key={ item?.order_id }
                                 style={{ marginBottom: '20px' }} 
                             >
                                 <Table 
-                                    columns={ columns } 
+                                    columns={ columns(item?.goods_infos?.length ?? 0) } 
                                     dataSource={ item?.goods_infos || [] } 
                                     pagination={ false }
                                     showHeader={ false }
@@ -58,8 +58,8 @@ class MyOrder extends React.PureComponent<any, any> {
                                         return (
                                             <div className='dm_MyOrder__table'>
                                                 <div className='dm_MyOrder__table--left'>
-                                                    <span>订单编号：{ item?.ordernum }</span>
-                                                    <span>下单时间：{ item?.submitTime }</span>
+                                                    <span>订单编号：{ item?.order_no }</span>
+                                                    <span>下单时间：{ item?.create_time }</span>
                                                 </div>
 
                                                 <div className='dm_MyOrder__table--right'>

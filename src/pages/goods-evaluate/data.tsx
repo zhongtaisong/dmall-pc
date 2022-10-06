@@ -43,8 +43,8 @@ export default function columns({ onGoodsEvaluateClick, } : {
         },
         {
             title: '数量',
-            dataIndex: 'buyCount',
-            key: 'buyCount',
+            dataIndex: 'num',
+            key: 'num',
             align: 'center',
             width: '10%',
             render: (text) => `x ${text}`

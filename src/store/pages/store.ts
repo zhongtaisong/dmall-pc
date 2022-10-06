@@ -23,7 +23,7 @@ export default class Store {
                 runInAction(() => {
                     this.isLoading = false;
                 });
-            }, 1000);
+            }, 100);
         }else {
             this.isLoading = true;
         }

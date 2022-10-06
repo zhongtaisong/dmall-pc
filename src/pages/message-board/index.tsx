@@ -57,7 +57,7 @@ class MessageBoard extends React.PureComponent<any, {
                                 author={ props.uname }
                                 avatar={ <Avatar src={ props?.avatar ? `${ PUBLIC_URL }${ props?.avatar }` : null } alt="头像" /> }
                                 content={ props?.content  }
-                                datetime={ props?.submitTime }
+                                datetime={ props?.create_time }
                             />
                         );
                     }}

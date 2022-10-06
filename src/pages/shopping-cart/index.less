@@ -8,7 +8,7 @@
     &__title {
         display: flex;
         align-items: center;
-        padding: 6px 10px 10px;
+        padding: 6px 10px 20px;
         >span {
             font-size: 20px;
             font-weight: bold;
@@ -67,10 +67,14 @@
         }
     }
     .ant-table-footer {
-        height: 55px;
-        line-height: 55px;
+        height: 60px;
+        line-height: 60px;
         padding: 0;
         .ant-row {
+            height: 100%;
+            .left, .right {
+                height: 100%;
+            }
             .left {
                 button {
                     margin: 0 16px;
@@ -82,7 +86,7 @@
                 align-items: center;
                 .num {
                     display: flex;
-                    padding-right: 20px;
+                    padding-right: 10px;
                     i {
                         color: #40A9FF;
                         font-weight: bold;
@@ -93,11 +97,20 @@
                 }
                 >div {
                     display: flex;
-                    padding-right: 20px;
-                    span {
-                        color: #40A9FF;
-                        font-size: 18px;
+                    align-items: center;
+                    padding-right: 10px;
+                    >div {
                         font-weight: bold;
+                        color: var(--dm-main-color);
+                        padding: 0 3px;
+                        >span {
+                            width: 14px;
+                            display: inline-block;
+                            text-align: center;
+                        }
+                        >i {
+                            font-size: 24px;
+                        }
                     }
                 }
                 .go-pay {

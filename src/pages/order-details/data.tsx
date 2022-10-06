@@ -14,7 +14,7 @@ export const columns: ColumnsType<any> = [
         render: (text, record, index) => <img width='100%' src={ `${ PUBLIC_URL }${ text }` } alt={ text } />
     },
     {
-        title: '商品',
+        title: '商品详情',
         dataIndex: 'description',
         key: 'description',
         align: 'center',
@@ -40,8 +40,8 @@ export const columns: ColumnsType<any> = [
     },
     {
         title: '数量',
-        dataIndex: 'buyCount',
-        key: 'buyCount',
+        dataIndex: 'num',
+        key: 'num',
         width: '10%',
         align: 'center',
         render: (text, record, index) => `x ${text}`

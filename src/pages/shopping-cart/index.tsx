@@ -1,6 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 import { Table, Row, Col, message, Button } from 'antd';
+import { RouteComponentProps } from 'react-router-dom';
 // 各种表头
 import { columns } from './data';
 // mobx数据
@@ -12,7 +14,7 @@ import './index.less';
  * 我的购物车
  */
 @observer
-class MyShoppingCart extends React.PureComponent<any, any> {
+class MyShoppingCart extends React.PureComponent<RouteComponentProps, any> {
 
     constructor(props) {
         super(props);
@@ -24,22 +26,6 @@ class MyShoppingCart extends React.PureComponent<any, any> {
 
     componentDidMount() {
         store.shoppingCartStore.shoppingCartSelectServiceFn();        
-    }
-
-    // 结算
-    handleGoPay = () => {
-        // const { selectedRows, pidArr } = this.state;
-        // if( selectedRows.length ){
-        //     this.props.history.push({
-        //         pathname: '/views/goods/cart/settlement',
-        //         state: {
-        //             id: pidArr,
-        //             type: 'cart'
-        //         }
-        //     });
-        // }else{
-        //     message.warning('请选择需要结算的商品！');
-        // }
     }
 
     render() {
@@ -85,9 +71,27 @@ class MyShoppingCart extends React.PureComponent<any, any> {
                 <Col span={ 12 } className='right'>
                     <span className='num'>已选择<i>{ selectedRowKeys.length }</i>件商品</span>
                     <div>
-                        总价：<span>¥{ buyTotalPrice?.toFixed?.(2) || 0.00 }</span>
+                        <p>合计:</p>
+                        <div>
+                            <span>¥</span>
+                            <i>{ buyTotalPrice?.toFixed?.(2) || 0.00 }</i>
+                        </div>
                     </div>
-                    <span className='go-pay' onClick={ this.handleGoPay }>去结算</span>
+                    <span 
+                        className='go-pay' 
+                        onClick={() => {
+                            if(!Array.isArray(selectedRowKeys) || !selectedRowKeys.length) {
+                                return message.warning('请选择需要结算的商品!');
+                            }
+
+                            this.props.history.push({
+                                pathname: '/views/confirm-order',
+                                state: {
+                                    pids: toJS(selectedRowKeys),
+                                }
+                            });
+                        }}
+                    >去结算</span>
                 </Col>
             </Row>
         );

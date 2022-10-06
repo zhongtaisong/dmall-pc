@@ -16,19 +16,19 @@ class OrderDetails extends React.PureComponent<RouteComponentProps<{
     /**
      * 订单编号
      */
-     ordernum: string;
+     order_no: string;
 }>, any> {
 
     componentDidMount() {
-        const { ordernum } = this.props?.match?.params || {};
-        store.orderDetailsStore.orderSelectDetailServiceFn(ordernum);
+        const { order_no } = this.props?.match?.params || {};
+        store.orderDetailsStore.orderSelectDetailServiceFn(order_no);
     }
 
     componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<any>, snapshot?: any): void {
-        const { ordernum } = this.props?.match?.params || {};
+        const { order_no } = this.props?.match?.params || {};
         const prevOrdernum = prevProps?.match?.params?.id;
-        if(ordernum && prevOrdernum && ordernum !== prevOrdernum) {
-            store.orderDetailsStore.orderSelectDetailServiceFn(ordernum);
+        if(order_no && prevOrdernum && order_no !== prevOrdernum) {
+            store.orderDetailsStore.orderSelectDetailServiceFn(order_no);
         }
     }
 
@@ -40,8 +40,8 @@ class OrderDetails extends React.PureComponent<RouteComponentProps<{
                 <div className='dm_OrderDetails__title'>
                     <span>订单详情</span>
                     {
-                        orderInfo?.ordernum && (
-                            <div>( 订单编号：<i>{ orderInfo?.ordernum }</i> )</div>
+                        orderInfo?.order_no && (
+                            <div>( 订单编号：<i>{ orderInfo?.order_no }</i> )</div>
                         )
                     }
                 </div>
@@ -52,37 +52,47 @@ class OrderDetails extends React.PureComponent<RouteComponentProps<{
                     pagination={ false }
                     bordered
                     rowKey="id"
+                    footer={() => {
+                        return (
+                            <div className='dm_OrderDetails__bottom'>
+                                <div className='dm_OrderDetails__bottom--title'>订单信息</div>
+                                <div className='dm_OrderDetails__bottom--list'>
+                                    <div className='dm_OrderDetails__bottom--list__item'>
+                                        <div>
+                                            <div>收货人：</div>
+                                            <span>{ consignees?.name || '-' }</span>
+                                        </div>
+                                        <div>
+                                            <div>联系电话：</div>
+                                            <span>{ consignees?.phone || '-' }</span>
+                                        </div>
+                                        <div>
+                                            <div>收货地址：</div>
+                                            <span>{ consignees?.address || '-' }</span>
+                                        </div>
+                                    </div>
+
+                                    <div className='dm_OrderDetails__bottom--list__item'>
+                                        <div>
+                                            <div>下单时间：</div>
+                                            <span>{ orderInfo?.create_time || '-' }</span>
+                                        </div>
+                                        <div>
+                                            <div>商品件数：</div>
+                                            <span>共 { orderInfo?.total_num || 0 } 件</span>
+                                        </div>
+                                        <div>
+                                            <div>合计：</div>
+                                            <span 
+                                                className='dm_OrderDetails__bottom--list__item--totalPrice'
+                                            >￥{ Number?.(orderInfo?.total_price || 0)?.toFixed?.(2) || 0.00 }</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    }}
                 />
-                    
-                <div className='dm_OrderDetails__bottom'>
-                    <div className='dm_OrderDetails__bottom--title'>订单信息</div>
-                    <div className='dm_OrderDetails__bottom--list'>
-                        <div className='dm_OrderDetails__bottom--list__item'>
-                            <div>收货地址：</div>
-                            <ul>
-                                <li>{ consignees?.name }</li>
-                                <li>{ consignees?.phone }</li>
-                                <li>{ consignees?.region }{ consignees?.detail }</li>
-                            </ul>
-                        </div>
-                        <div className='dm_OrderDetails__bottom--list__item'>
-                            <div>付款时间：</div>
-                            <span>{ orderInfo?.submitTime || '-' }</span>
-                        </div>
-                        <div className='dm_OrderDetails__bottom--list__item'>
-                            <div>商品总数：</div>
-                            <span>{ orderInfo?.num || 0 }件</span>
-                        </div>
-                        <div className='dm_OrderDetails__bottom--list__item'>
-                            <div>商品总额：</div>
-                            <span>￥{ Number?.(orderInfo?.totalprice || 0)?.toFixed?.(2) || 0.00 }</span>
-                        </div>
-                        <div className='dm_OrderDetails__bottom--list__item'>
-                            <div>支付金额：</div>
-                            <span>￥{ Number?.(orderInfo?.totalprice || 0)?.toFixed?.(2) || 0.00 }</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         );
     }

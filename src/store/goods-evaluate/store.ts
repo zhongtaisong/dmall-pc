@@ -48,13 +48,13 @@ export default class Store {
 
     /**
      * 查询 - 评价列表 - 操作
-     * @param ordernum 
+     * @param order_no 
      */
-    goodsEvaluateSelectServiceFn = async (ordernum?: string) => {
-        ordernum = this.goodsEvaluateMap?.ordernum || ordernum;
-        if(!ordernum) return;
+    goodsEvaluateSelectServiceFn = async (order_no?: string) => {
+        order_no = this.goodsEvaluateMap?.order_no || order_no;
+        if(!order_no) return;
 
-        const result = await goodsEvaluateSelectService(ordernum);
+        const result = await goodsEvaluateSelectService(order_no);
         runInAction(() => {
             this.dataSource = result?.data?.content || [];
         });
@@ -69,7 +69,7 @@ export default class Store {
         /** 评价内容 */
         content?: string;
         /** 订单编号 */
-        ordernum?: string;
+        order_no?: string;
         [key: string]: any;
     } = {};
 
@@ -115,12 +115,12 @@ export default class Store {
      * Modal - 确定操作
      * @param values 
      */
-    onModalOkClick = (values) => {
-        const { pid, id, ordernum, content, } = this.goodsEvaluateMap || {};
+    onModalOkClick = (values, callBack: Function) => {
+        const { pid, id, order_no, content, } = this.goodsEvaluateMap || {};
         if(!content) {
             this.goodsEvaluateAddServiceFn({
                 pid,
-                ordernum,
+                order_no,
                 ...values,
             });
         }else {
@@ -129,7 +129,8 @@ export default class Store {
                 ...values,
             });
         }
-        this.onModalCancelClick();
+        
+        callBack?.();
     }
 
     /**

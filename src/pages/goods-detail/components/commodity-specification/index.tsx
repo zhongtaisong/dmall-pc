@@ -134,6 +134,19 @@ class CommoditySpecification extends React.PureComponent<RouteComponentProps<{
                             <Button 
                                 type="primary" 
                                 size='large' 
+                                onClick={() => {
+                                    shoppingCartAddServiceFn?.([{
+                                        pid: _id,
+                                        num: buyCount,
+                                    }], () => {
+                                        this.props.history.push({
+                                            pathname: '/views/confirm-order',
+                                            state: {
+                                                pids: [_id],
+                                            }
+                                        });
+                                    });
+                                }}
                             >立即购买</Button>
                             <Button 
                                 type="primary" 

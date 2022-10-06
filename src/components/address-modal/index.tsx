@@ -1,32 +1,39 @@
 import React from 'react';
 import { Modal, Form, Input, Radio } from 'antd';
-import { observer } from 'mobx-react';
 import {FormInstance} from 'antd/es/form';
 import { validatePhone } from '@utils/common-fn';
-// mobx数据
-import store from '@store';
 
 /**
  * 添加收货地址 - Modal
  */
-@observer
-class AddressModal extends React.PureComponent<any, any> {
+class AddressModal extends React.PureComponent<{
+    /** 弹窗是否可见 */
+    visible: boolean;
+    /** 表单数据 */
+    formData?: {
+        [key: string]: any;
+    };
+    /** 确定操作 - 回调函数 */
+    onOk: Function;
+    /** 取消操作 - 回调函数 */
+    onCancel: Function;
+}, any> {
     formRef = React.createRef<FormInstance>();
 
     componentDidMount(): void {
-        const { addressItem, } = store?.userCenterStore || {};
+        const { formData, } = this.props || {};
         this.formRef.current.setFieldsValue({
-            ...addressItem,
+            ...formData,
         });
     }
 
     render() {
-        const { isAddressModal, addressItem, } = store?.userCenterStore || {};
+        const { visible, formData, } = this.props || {};
 
         return (
             <Modal
-                title={ `${ !addressItem?.id ? '添加' : '更新' }收货地址` }
-                visible={ isAddressModal }
+                title={ `${ !formData?.id ? '添加' : '更新' }收货地址` }
+                visible={ visible }
                 onOk={ this.onOk }
                 onCancel={ this.onCancel }
             >                    
@@ -103,24 +110,12 @@ class AddressModal extends React.PureComponent<any, any> {
      * AddressModal - 确定 - 操作
      */
     onOk = () => {
-        const { addressItem, } = store?.userCenterStore || {};
-
         this.formRef.current.validateFields().then(values => {
             if(!values || !Object.keys(values).length) return;
 
-            if(!addressItem.id) {
-                store.userCenterStore.addAddressServiceFn(values, () => {
-                    this.onCancel();
-                });
-
-            }else {
-                store.userCenterStore.updateAddressServiceFn({
-                    ...values,
-                    id: addressItem.id,
-                }, () => {
-                    this.onCancel();
-                });
-            }
+            this.props.onOk?.(values, () => {
+                this.onCancel();
+            });
         });
     }
 
@@ -129,7 +124,7 @@ class AddressModal extends React.PureComponent<any, any> {
      */
     onCancel = () => {
         this.formRef.current.resetFields();
-        store.userCenterStore.onToggleAddressModalClick(false);
+        this.props.onCancel?.();
     }
 
 }

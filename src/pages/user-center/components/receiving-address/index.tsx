@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Button } from 'antd';
 import { observer } from 'mobx-react';
 // 收货地址弹窗 - 组件
-import AddressModal from './components/address-modal';
+import AddressModal from '@com/address-modal';
 // 表头
 import columns from './data';
 // mobx数据
@@ -16,7 +16,10 @@ import './index.less';
 @observer
 class EditableTable extends React.PureComponent<any, any> {
     render() {
-        const { dataSource, isAddressModal, } = store?.userCenterStore || {};
+        const { 
+            dataSource, isAddressModal, 
+            addressItem,
+        } = store?.userCenterStore || {};
         
         return (
             <div className='dm_ReceivingAddress'>
@@ -40,7 +43,28 @@ class EditableTable extends React.PureComponent<any, any> {
                 {/* 收货地址弹窗 - 组件 */}
                 {
                     isAddressModal ? (
-                        <AddressModal />
+                        <AddressModal 
+                            visible={ isAddressModal }
+                            formData={ addressItem }
+                            onOk={(values, callBack) => {
+                                if(!addressItem?.id) {
+                                    store.userCenterStore.addAddressServiceFn(values, () => {
+                                        callBack?.();
+                                    });
+                    
+                                }else {
+                                    store.userCenterStore.updateAddressServiceFn({
+                                        ...values,
+                                        id: addressItem?.id,
+                                    }, () => {
+                                        callBack?.();
+                                    });
+                                }
+                            }}
+                            onCancel={() => {
+                                store.userCenterStore.onToggleAddressModalClick(false);
+                            }}
+                        />
                     ) : null
                 }
             </div>

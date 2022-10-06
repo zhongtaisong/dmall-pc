@@ -3,9 +3,9 @@ import { IResponse } from '@types';
 
 /**
  * 查询 - 订单详情
- * @param ordernum 
+ * @param order_no 
  * @returns 
  */
-export const orderSelectDetailService = (ordernum: string): Promise<IResponse> => {
-    return axios.get(`order/select/${ ordernum }`);
+export const orderSelectDetailService = (order_no: string): Promise<IResponse> => {
+    return axios.get(`order/select/${ order_no }`);
 }

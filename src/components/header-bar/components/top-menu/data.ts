@@ -19,7 +19,7 @@ export const MENU_LIST: Array<{
     {
         key: 5,
         name: '用户中心',
-        pathName: '/views/user'
+        pathName: '/views/user-center'
     },
     {
         key: 6,

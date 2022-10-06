@@ -114,8 +114,11 @@ export default class Store {
      * @param goodsInfo 
      * @returns 
      */
-    shoppingCartAddServiceFn = async (goodsInfo: Array<IBuyGoodsInfo>) => {
-        await store.commonStore.shoppingCartAddServiceFn(goodsInfo);
+    shoppingCartAddServiceFn = async (goodsInfo: Array<IBuyGoodsInfo>, callBack?: Function) => {
+        const result = await store.commonStore.shoppingCartAddServiceFn(goodsInfo);
+        if(!result) return;
+
+        callBack?.();
     }
     
 };

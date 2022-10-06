@@ -6,7 +6,7 @@ import Home from '@pages/home';
 import GoodsList from '@pages/goods-list';
 import GoodsDetail from '@pages/goods-detail';
 import ShoppingCart from '@pages/shopping-cart';
-import SettlementPage from '@pages/settlement-page';
+import ConfirmOrder from '@pages/confirm-order';
 import OrderDetails from '@pages/order-details';
 import MyCollection from '@pages/my-collection';
 import GoodsEvaluate from '@pages/goods-evaluate';
@@ -76,7 +76,7 @@ export const PAGE_ROUTER = [
         isOpen: false,
     },
     { 
-        pathname: '/views/user',
+        pathname: '/views/user-center',
         component: UserCenter,
         title: '用户中心',
         isOpen: false,
@@ -88,19 +88,19 @@ export const PAGE_ROUTER = [
         isOpen: true,
     },
     { 
-        pathname: '/views/goods/cart/settlement',
-        component: SettlementPage,
-        title: '结算页',
+        pathname: '/views/confirm-order',
+        component: ConfirmOrder,
+        title: '确认订单',
         isOpen: false,
     },
     { 
-        pathname: '/views/order-details/:ordernum',
+        pathname: '/views/order-details/:order_no',
         component: OrderDetails,
         title: '订单详情',
         isOpen: false,
     },
     { 
-        pathname: '/views/goods-evaluate/:ordernum',
+        pathname: '/views/goods-evaluate/:order_no',
         component: GoodsEvaluate,
         title: '商品评价中心',
         isOpen: false,

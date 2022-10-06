@@ -7,13 +7,14 @@ import {
     IUserInformation,
     updateUserPasswordService,
     IUpdateUserPassword,
-    selectAddressListService,
     IAddAddressService,
     addAddressService,
     IUpdateAddressService,
     updateAddressService,
     deleteAddressService,
 } from './service';
+// mobx数据
+import store from '@store';
 
 export default class Store {
 
@@ -57,9 +58,9 @@ export default class Store {
      * 查询 - 收货地址 - 操作
      */
     selectAddressListServiceFn = async () => {
-        const result = await selectAddressListService();
+        const result = await store.commonStore.selectAddressListServiceFn();
         runInAction(() => {
-            this.dataSource = result?.data?.content || [];
+            this.dataSource = result;
         });
     }
 
