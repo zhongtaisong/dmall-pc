@@ -1,6 +1,6 @@
 import axios from '@axios';
 import { IResponse } from '@types';
-import { commonFn } from '@utils';
+import { commonFn, history } from '@utils';
 import { IBuyGoodsInfo } from './type';
 
 export interface IPids {
@@ -34,6 +34,12 @@ export const goodsCollectionDeleteService = (params: IPids): Promise<IResponse> 
  * @returns 
  */
 export const shoppingCartAddService = (goodsInfo: Array<IBuyGoodsInfo>, url: string): Promise<IResponse> => {
+    const isLogin = commonFn.isLogin();
+    if(!isLogin) {
+        history.push("/login");
+        return;
+    };
+
     return axios.post(`/shopping-cart/add${ url || '' }`, { goodsInfo, });
 }
 

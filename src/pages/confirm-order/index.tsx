@@ -158,7 +158,9 @@ class ConfirmOrder extends React.PureComponent<RouteComponentProps<unknown, unkn
                             onOk={(values, callBack) => {
                                 store.userCenterStore.addAddressServiceFn(values, () => {
                                     callBack?.();
-                                    store.confirmOrderStore.selectAddressListServiceFn();
+                                    store.confirmOrderStore.selectAddressListServiceFn((addressId) => {
+                                        this.formRef.current.setFieldsValue({ addressId });
+                                    });
                                 });
                             }}
                             onCancel={() => {

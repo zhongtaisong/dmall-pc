@@ -15,6 +15,8 @@ import {
 } from './service';
 // mobx数据
 import store from '@store';
+import { cacheKey } from "@utils";
+import { getUserInfo } from "@utils/common-fn";
 
 export default class Store {
 
@@ -40,7 +42,24 @@ export default class Store {
      * @param params 
      */
     updateUserInformationServiceFn = async (params: IUserInformation) => {
-        await updateUserInformationService(params);
+        const result = await updateUserInformationService(params);
+        if(result?.data?.code === SUCCESS_CODE) {
+            const user_info = {
+                ...getUserInfo(),
+                ...result?.data?.content,
+            };
+            
+            const key = cacheKey.USER_INFO;
+            const val = JSON.stringify(user_info || {});
+            localStorage.setItem(key, val);
+            sessionStorage.setItem(key, val);
+            runInAction(() => {
+                store.headerBarStore.setMobxStoreFn({
+                    key: 'welcomeObjectName',
+                    value: user_info?.nickName || user_info?.uname,
+                });
+            })
+        }
     }
 
     /**

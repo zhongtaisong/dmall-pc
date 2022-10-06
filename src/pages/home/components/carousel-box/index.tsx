@@ -22,7 +22,9 @@ class CarouselBox extends React.PureComponent<any, any> {
                 <div className='dm_CarouselBox'>
                     {
                         carouselBoxList?.length ? (
-                            <Carousel autoplay effect="fade"
+                            <Carousel 
+                                autoplay
+                                effect="fade"
                                 dots={{ className: "dm_CarouselBox__dots" }}
                             >
                                 {

@@ -4,15 +4,28 @@
     background: #fff;
     border-radius: 2px;
     overflow: hidden;
-    &__dots {
-        z-index: 9 !important;
-        >li {
-            >button {
-                opacity: 1 !important;
-            }
-            &.slick-active {
-                >button {   
-                    background: var(--dm-main-color) !important;
+
+    >.ant-carousel {
+        >.slick-slider {
+            >.slick-dots {
+                bottom: 20px;
+                z-index: 9;
+                >li {
+                    width: 10px;
+                    height: 10px;
+                    margin: 0 6px;
+                    >button {
+                        opacity: 1;
+                        height: 100%;
+                        border-radius: 50%;
+                        background: var(--dm-bg-color-alpha);
+                    }
+                    &.slick-active {
+                        width: 10px;
+                        >button {   
+                            background: var(--dm-main-color);
+                        }
+                    }
                 }
             }
         }
