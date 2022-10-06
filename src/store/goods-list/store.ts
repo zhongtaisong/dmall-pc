@@ -1,5 +1,8 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { goodsListSelectService, goodsListSelectFilterService } from './service';
+// mobx数据
+import store from '@store';
+import { IBuyGoodsInfo } from "@store/common/type";
 
 const PAGE_SIZE = 8;
 export default class Store {
@@ -62,6 +65,15 @@ export default class Store {
         runInAction(() => {
             this.filterMap = result?.data?.content || {};
         });
+    }
+
+    /**
+     * 加入购物车 - 操作
+     * @param goodsInfo 
+     * @returns 
+     */
+    shoppingCartAddServiceFn = async (goodsInfo: Array<IBuyGoodsInfo>) => {
+        store.commonStore.shoppingCartAddServiceFn(goodsInfo);
     }
     
 };

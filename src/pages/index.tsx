@@ -25,7 +25,11 @@ class Index extends React.PureComponent<RouteComponentProps, any> {
             <div className='pages_index'>
                 <BackTop className='pages_index__backTop' />
                 <HeaderBar {...this.props} />
-                <Spin spinning={ store?.pagesStore?.isLoading } tip="加载中...">
+                <Spin 
+                    spinning={ store?.pagesStore?.isLoading } 
+                    tip="加载中..."
+                    delay={ 500 }
+                >
                     <div className='pages_index__content'>
                         <Switch>
                             {

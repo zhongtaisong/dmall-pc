@@ -9,6 +9,7 @@ import {
 import store from '@store';
 import { IAddressInfo } from "./type";
 import { history } from "@utils";
+import { IBuyGoodsInfo } from "@store/common/type";
 
 export default class Store {
 
@@ -25,7 +26,7 @@ export default class Store {
     /**
      * 查询 - 收货地址 - 操作
      */
-    selectAddressListServiceFn = async () => {
+    selectAddressListServiceFn = async (callBack?: Function) => {
         const result = await store.commonStore.selectAddressListServiceFn();
         runInAction(() => {
             let addressDataSource = result;
@@ -39,6 +40,7 @@ export default class Store {
             }
             this.addressDataSource = addressDataSource;
             this.currentAddress = currentAddress;
+            callBack?.(this.currentAddress?.id);
         });
     }
 
@@ -72,12 +74,12 @@ export default class Store {
 
     /**
      * 根据指定商品id查询 - 购物车
-     * @param pids 
+     * @param goodsInfo 
      */
-    shoppingCartSelectPidsServiceFn = async (pids: Array<number>) => {
-        if(!Array.isArray(pids) || !pids.length) return;
+    shoppingCartSelectPidsServiceFn = async (goodsInfo: Array<IBuyGoodsInfo>) => {
+        if(!Array.isArray(goodsInfo) || !goodsInfo.length) return;
 
-        const result = await shoppingCartSelectPidsService(pids);
+        const result = await shoppingCartSelectPidsService(goodsInfo);
         runInAction(() => {
             const goodsDataSource = result?.data?.content || [];
             let buyTotalNum = 0;

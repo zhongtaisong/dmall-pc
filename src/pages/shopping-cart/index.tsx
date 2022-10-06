@@ -1,6 +1,5 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { toJS } from 'mobx';
 import { Table, Row, Col, message, Button } from 'antd';
 import { RouteComponentProps } from 'react-router-dom';
 // 各种表头
@@ -60,7 +59,7 @@ class MyShoppingCart extends React.PureComponent<RouteComponentProps, any> {
      * @returns 
      */
     footer = () => {
-        const { selectedRowKeys, buyTotalPrice, } = store?.shoppingCartStore || {};
+        const { selectedRowKeys, buyTotalPrice, selectedRows, } = store?.shoppingCartStore || {};
 
         return (
             <Row>
@@ -87,7 +86,10 @@ class MyShoppingCart extends React.PureComponent<RouteComponentProps, any> {
                             this.props.history.push({
                                 pathname: '/views/confirm-order',
                                 state: {
-                                    pids: toJS(selectedRowKeys),
+                                    goodsInfo: selectedRows.map(item => ({
+                                        pid: item?.pid,
+                                        num: item?.num,
+                                    })),
                                 }
                             });
                         }}

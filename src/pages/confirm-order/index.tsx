@@ -1,7 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Table, Form, Select, } from 'antd';
+import { Table, Form, Select, message, } from 'antd';
 import { RouteComponentProps } from 'react-router-dom';
+import {FormInstance} from 'antd/es/form';
+import { IBuyGoodsInfo } from '@store/common/type';
 // 收货地址弹窗 - 组件
 import AddressModal from '@com/address-modal';
 // 各种表头
@@ -17,14 +19,17 @@ import './index.less';
 @observer
 class ConfirmOrder extends React.PureComponent<RouteComponentProps<unknown, unknown, {
     /** 商品id */
-    pids: Array<number>;
+    goodsInfo: Array<IBuyGoodsInfo>;
 }>, any> {
+    formRef = React.createRef<FormInstance>();
 
     componentDidMount() {
-        store.confirmOrderStore.selectAddressListServiceFn();
-        const { pids, } = this.props.location?.state || {};
-        if(Array.isArray(pids)) {
-            store.confirmOrderStore.shoppingCartSelectPidsServiceFn(pids);
+        store.confirmOrderStore.selectAddressListServiceFn((addressId) => {
+            this.formRef.current.setFieldsValue({ addressId });
+        });
+        const { goodsInfo, } = this.props.location?.state || {};
+        if(Array.isArray(goodsInfo)) {
+            store.confirmOrderStore.shoppingCartSelectPidsServiceFn(goodsInfo);
         }
     }
 
@@ -55,48 +60,45 @@ class ConfirmOrder extends React.PureComponent<RouteComponentProps<unknown, unkn
                                     <div className='dm_confirm_order__bottom--info__list'>
                                         <div className='dm_confirm_order__bottom--info__list--item'>
                                             <div>选择收货地址：</div>
-                                            {
-                                                addressDataSource?.length ? (
-                                                    <div className='dm_confirm_order__bottom--info__list--item__address'>
-                                                        <Form 
-                                                            layout="inline"
-                                                            onValuesChange={(changedValues, values) => onValuesChange?.(changedValues, values)}
+                                                <div className='dm_confirm_order__bottom--info__list--item__address'>
+                                                    <Form 
+                                                        ref={ this.formRef }
+                                                        layout="inline"
+                                                        onValuesChange={(changedValues, values) => onValuesChange?.(changedValues, values)}
+                                                    >
+                                                        <Form.Item 
+                                                            noStyle
+                                                            name="addressId" 
+                                                            rules={[{ 
+                                                                required: true,
+                                                                message: "请选择收货地址!",
+                                                            }]}
+                                                            initialValue={ currentAddress?.id }
                                                         >
-                                                            <Form.Item 
-                                                                noStyle
-                                                                name="addressId" 
-                                                                rules={[{ 
-                                                                    required: true,
-                                                                    message: "请选择收货地址!",
-                                                                }]}
-                                                                initialValue={ currentAddress?.id }
+                                                            <Select 
+                                                                placeholder="请选择"
+                                                                style={{ width: 360, }}
                                                             >
-                                                                <Select 
-                                                                    placeholder="请选择"
-                                                                    style={{ width: 360, }}
-                                                                >
-                                                                    {
-                                                                        addressDataSource?.map?.(item => {
-                                                                            if(!item?.address) return null;
-        
-                                                                            return (
-                                                                                <Select.Option 
-                                                                                    key={ item?.id }
-                                                                                    value={ item?.id } 
-                                                                                >{ item?.address }</Select.Option>
-                                                                            );
-                                                                        })
-                                                                    }
-                                                                </Select>
-                                                            </Form.Item>
-                                                        </Form>
-                                                        <div 
-                                                            className='dm_confirm_order__bottom--info__list--item__address--btn'
-                                                            onClick={() => store.userCenterStore.onToggleAddressModalClick(true)}
-                                                        >新增收货地址</div>
-                                                    </div>
-                                                ) : null
-                                            }
+                                                                {
+                                                                    addressDataSource?.map?.(item => {
+                                                                        if(!item?.address) return null;
+    
+                                                                        return (
+                                                                            <Select.Option 
+                                                                                key={ item?.id }
+                                                                                value={ item?.id } 
+                                                                            >{ item?.address }</Select.Option>
+                                                                        );
+                                                                    })
+                                                                }
+                                                            </Select>
+                                                        </Form.Item>
+                                                    </Form>
+                                                    <div 
+                                                        className='dm_confirm_order__bottom--info__list--item__address--btn'
+                                                        onClick={() => store.userCenterStore.onToggleAddressModalClick(true)}
+                                                    >新增收货地址</div>
+                                                </div>
                                         </div>
                                         <div className='dm_confirm_order__bottom--info__list'>
                                             <div className='dm_confirm_order__bottom--info__list--item'>
@@ -177,17 +179,22 @@ class ConfirmOrder extends React.PureComponent<RouteComponentProps<unknown, unkn
             orderAddServiceFn, currentAddress,
             goodsDataSource,
         } = store?.confirmOrderStore || {};
+        this.formRef.current.validateFields().then(values => {
+            if(!values || !Object.keys(values).length) return;
 
-        const orderInfos = goodsDataSource.map(item => ({
-            pid: item?.pid,
-            num: item?.num,
-            price: item?.goodsInfo.price,
-            totalprice: item?.totalprice,
-        }));
-
-        orderAddServiceFn?.({
-            addressId: currentAddress?.id,
-            orderInfos,
+            const orderInfos = goodsDataSource.map(item => ({
+                pid: item?.pid,
+                num: item?.num,
+                price: item?.goodsInfo.price,
+                totalprice: item?.totalprice,
+            }));
+    
+            orderAddServiceFn?.({
+                addressId: currentAddress?.id,
+                orderInfos,
+            });
+        }).catch(err => {
+            message.error("请选择收货地址!");
         });
     }
 

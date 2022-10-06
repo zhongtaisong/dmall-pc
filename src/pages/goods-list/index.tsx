@@ -197,7 +197,7 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
      * @returns 
      */
     renderGoodsList = () => {
-        const { dataSource } = store?.goodsListStore || {};
+        const { dataSource, shoppingCartAddServiceFn, } = store?.goodsListStore || {};
         if(!Array.isArray(dataSource) || !dataSource?.length) {
             return (
                 <div className='dm_Products__content--empty'>
@@ -233,6 +233,10 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
                                             type="primary"
                                             size="small"
                                             ghost
+                                            onClick={() => shoppingCartAddServiceFn?.([{
+                                                pid: item?.id,
+                                                num: 1,
+                                            }])}
                                         >+采购</Button>
                                     </div>
                                 </div>

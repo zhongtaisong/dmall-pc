@@ -1,12 +1,13 @@
 import axios from '@axios';
+import { IBuyGoodsInfo } from '@store/common/type';
 import { IResponse } from '@types';
 
 /**
  * 根据指定商品id查询 - 购物车
  * @returns 
  */
-export const shoppingCartSelectPidsService = (pids: Array<number>): Promise<IResponse> => {
-    return axios.post("/shopping-cart/select/pids", { pids, });
+export const shoppingCartSelectPidsService = (goodsInfo: Array<IBuyGoodsInfo>): Promise<IResponse> => {
+    return axios.post("/shopping-cart/select/pids", { goodsInfo, });
 }
 
 export interface IOrderAdd {

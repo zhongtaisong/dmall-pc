@@ -138,11 +138,14 @@ class CommoditySpecification extends React.PureComponent<RouteComponentProps<{
                                     shoppingCartAddServiceFn?.([{
                                         pid: _id,
                                         num: buyCount,
-                                    }], () => {
+                                    }], "/goods-detail", () => {
                                         this.props.history.push({
                                             pathname: '/views/confirm-order',
                                             state: {
-                                                pids: [_id],
+                                                goodsInfo: [{
+                                                    pid: _id,
+                                                    num: buyCount,
+                                                }],
                                             }
                                         });
                                     });

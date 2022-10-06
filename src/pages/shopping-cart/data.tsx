@@ -66,6 +66,7 @@ export const columns: ColumnsType<any> = [
 
             return (
                 <InputNumber 
+                    key={ record?.update_time }
                     min={ 1 } 
                     max={ 99 } 
                     defaultValue={ text }
