@@ -64,13 +64,13 @@ export const PAGE_ROUTER = [
         isOpen: false,
     },
     { 
-        pathname: '/views/order',
+        pathname: '/views/my-order',
         component: MyOrder,
         title: '我的订单',
         isOpen: false,
     },
     { 
-        pathname: '/views/collection',
+        pathname: '/views/my-collection',
         component: MyCollection,
         title: '我的收藏',
         isOpen: false,

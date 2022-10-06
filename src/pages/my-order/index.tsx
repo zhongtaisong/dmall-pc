@@ -66,7 +66,7 @@ class MyOrder extends React.PureComponent<any, any> {
                                                     <Popconfirm
                                                         title="你确定要删除这条数据？"
                                                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                                                        onConfirm={() => store.myOrderStore.orderDeleteServiceFn(item?.id)}
+                                                        onConfirm={() => store.myOrderStore.orderDeleteServiceFn(item?.order_id)}
                                                         okText="是"
                                                         cancelText="否"
                                                     >

@@ -9,12 +9,12 @@ export const MENU_LIST: Array<{
     {
         key: 3,
         name: '我的订单',
-        pathName: '/views/order'
+        pathName: '/views/my-order'
     },
     {
         key: 4,
         name: '我的收藏',
-        pathName: '/views/collection'
+        pathName: '/views/my-collection'
     },
     {
         key: 5,
