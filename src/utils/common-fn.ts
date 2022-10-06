@@ -158,6 +158,11 @@ export const validResponseCode = (params: {
                 if(requestNum <= 0 && !["/login"].includes(history?.location?.pathname)) {
                     history.push("/login");
                 }
+
+                if(!isLogin?.()) {
+                    return;
+                }
+
                 return data?.msg || "身份认证失败!";
             }
             

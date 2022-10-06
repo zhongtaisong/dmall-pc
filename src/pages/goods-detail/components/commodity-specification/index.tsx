@@ -76,16 +76,8 @@ class CommoditySpecification extends React.PureComponent<RouteComponentProps<{
                 </div>
 
                 <div className='dm_commoditySpecification__right'>
-                    {
-                        goodsInfo?.description ? (
-                            <div className='dm_commoditySpecification__right--title'>{ goodsInfo?.description }</div>
-                        ) : null
-                    }
-                    {
-                        goodsInfo?.copywriting ? (
-                            <div className='dm_commoditySpecification__right--subTitle'>{ goodsInfo?.copywriting }</div>
-                        ) : null
-                    }
+                    <div className='two_line_ellipsis dm_commoditySpecification__right--title'>{ goodsInfo?.description }</div>
+                    <div className='single_line_ellipsis dm_commoditySpecification__right--subTitle'>{ goodsInfo?.copywriting }</div>
 
                     <div className='dm_commoditySpecification__right--row'>
                         <span>售价：</span>
