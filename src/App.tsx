@@ -6,7 +6,7 @@ import { ScrollToTop, history } from '@utils';
 // 各级页面路由
 import { ROOT_ROUTER, } from '@router';
 // 401、402、403、404
-import ResultPages from '@pages/result-pages';
+import ResultPages from '@com/result-pages';
 // mobx数据
 import store from '@store';
 

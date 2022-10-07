@@ -1,5 +1,4 @@
 import React from 'react';
-import { observer } from 'mobx-react';
 import { Result } from 'antd';
 // less样式
 import './index.less';
@@ -7,8 +6,7 @@ import './index.less';
 /**
  * 401、402、403、404等页面
  */
-@observer
-class ResultPages extends React.PureComponent<any, any> {
+export default class ResultPages extends React.PureComponent<any, any> {
     render() {
         return (
             <Result
@@ -20,6 +18,4 @@ class ResultPages extends React.PureComponent<any, any> {
             />
         );
     }
-}
-
-export default ResultPages;
+};
