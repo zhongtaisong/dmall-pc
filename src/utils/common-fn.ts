@@ -1,5 +1,6 @@
 import { cacheKey, history, } from "@utils";
 import { PAGE_ROUTER, } from '@router';
+import { ADMIN_PATH_NAME } from "@config";
 
 /**
  * 获取用户信息
@@ -11,7 +12,7 @@ export const getUserInfo = (): {
      * 
      * 1是，0否
      */
-    admin: string;
+    admin_status: 0 | 1;
     /**
      * 用户头像
      */
@@ -198,3 +199,13 @@ export const validatePhone = (value) => {
 
     return Promise.resolve();
 };
+
+/**
+ * 是否为管理后台页面
+ * @param pathname 
+ */
+export const isAdminPage = (pathname: string): boolean => {
+    if(!pathname) return false;
+
+    return pathname?.includes?.(ADMIN_PATH_NAME);
+}

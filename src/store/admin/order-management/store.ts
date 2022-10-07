@@ -1,8 +1,10 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { PAGE_SIZE } from "@config";
-import { 
-    orderSelectService, IOrderSelectService,
+import {
+    adminOrderSelectService, 
+    IAdminOrderSelectParams,
 } from './service';
+import { PAGE_SIZE, } from "@config";
+import { IOrderInfo } from "./type";
 import store from "@store";
 
 export default class Store {
@@ -11,36 +13,35 @@ export default class Store {
         makeAutoObservable(this);
     }
 
-    /** 一页多少条数据 */
-    pageSize = PAGE_SIZE;
-
     /** 数据总数 */
     total = 0;
 
     /** 列表数据 */
-    dataSource = [];
+    dataSource: Array<IOrderInfo> = [];
 
     /** 查询商品 - 接口入参 */
-    requestParams = {};
+    requestParams: Partial<IAdminOrderSelectParams> = {
+        current: 0,
+        pageSize: PAGE_SIZE,
+    };
 
     /**
-     * 查询 - 订单列表 - 操作
+     * 查询 - 订单列表
      * @param params 
      */
-    orderSelectServiceFn = async (params?: Partial<IOrderSelectService>) => {
+    adminOrderSelectServiceFn = async (params?: IAdminOrderSelectParams) => {
         const requestParams = {
             ...this.requestParams,
-            pageSize: PAGE_SIZE,
             ...params,
         };
-        const result = await orderSelectService(requestParams);
 
-        const { dataSource, total } = result?.data?.content || {};
+        const result = await adminOrderSelectService(requestParams);
+
+        const { dataSource, total, } = result?.data?.content || {};
         runInAction(() => {
             this.dataSource = dataSource || [];
-            this.total = total || 0;
-            this.requestParams = requestParams || {};
-            this.pageSize = requestParams?.pageSize || PAGE_SIZE;
+            this.total = total ?? 0;
+            this.requestParams = requestParams;
         });
     }
 
@@ -53,7 +54,7 @@ export default class Store {
         const result = await store.commonStore.orderDeleteServiceFn(id);
         if(!result) return;
 
-        this.orderSelectServiceFn();
+        this.adminOrderSelectServiceFn();
     }
     
 };

@@ -6,6 +6,7 @@ import {
     shoppingCartAddService,
     goodsCollectionDeleteService,
     selectAddressListService,
+    orderDeleteService,
 } from './service';
 import { IBuyGoodsInfo } from "./type";
 
@@ -77,6 +78,16 @@ export default class Store {
     selectAddressListServiceFn = async () => {
         const result = await selectAddressListService();
         return result?.data?.content || [];
+    }
+
+    /**
+     * 删除 - 订单 - 操作
+     * @param id 
+     * @returns 
+     */
+    orderDeleteServiceFn = async (id) => {
+        const result = await orderDeleteService(id);
+        return result?.data?.code === SUCCESS_CODE;
     }
     
 };

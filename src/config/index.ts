@@ -45,4 +45,9 @@ export const INIT_PWD = Math.random().toString().slice(2, 8);
  * 接口请求成功code
  */
 export const SUCCESS_CODE = "DM-000000";
+
+/** 
+ * 管理后台页面 - 主页路由
+ */
+export const ADMIN_PATH_NAME = "/views/admin";
     

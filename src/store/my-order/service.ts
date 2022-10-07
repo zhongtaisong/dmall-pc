@@ -16,12 +16,3 @@ export interface IOrderSelectService {
 export const orderSelectService = (params: IOrderSelectService): Promise<IResponse> => {
     return axios.post("/order/select", params);
 }
-
-/**
- * 删除 - 订单
- * @param id 
- * @returns 
- */
-export const orderDeleteService = (id: number | string): Promise<IResponse> => {
-    return axios.delete(`/order/delete/${ id }`);
-}

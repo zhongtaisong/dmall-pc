@@ -1,6 +1,7 @@
 import React from 'react';
 import { Router, Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import { Button } from 'antd';
+import { ADMIN_PATH_NAME } from '@config';
 // 全局公共方法
 import { ScrollToTop, history } from '@utils';
 // 各级页面路由
@@ -18,6 +19,7 @@ class App extends React.PureComponent<any, any> {
     componentDidMount(): void {
         history.listen((location, action) => {
             if(!location || !Object.keys(location).length) return;
+            if(location?.pathname?.includes?.(ADMIN_PATH_NAME)) return;
 
             const bol = ROOT_ROUTER.some(item => item.pathname === location.pathname);
             if(!bol) {

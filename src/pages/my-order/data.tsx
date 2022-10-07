@@ -78,8 +78,16 @@ export const columns = (dataSourceLenth: number = 0): ColumnsType<any> => {
             render: (text, record) => {
                 return (              
                     <div className='operation-btn'>
-                        <Link to={`/views/goods-evaluate/${ record?.order_no }`} >评价</Link>
-                        <Link to={`/views/order-details/${ record?.order_no }`} >详情</Link>
+                        <span
+                            onClick={() => {
+                                window.open(`/views/goods-evaluate/${ record?.order_no }`);
+                            }}
+                        >评价</span>
+                        <span
+                            onClick={() => {
+                                window.open(`/views/order-details/${ record?.order_no }`);
+                            }}
+                        >详情</span>
                     </div>
                 );
             }

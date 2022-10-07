@@ -2,28 +2,23 @@
  * 菜单
  */
 export const MENU_LIST: Array<{
-    key: number;
     name: string;
-    pathName?: string;
+    pathname?: string;
 }> = [
     {
-        key: 3,
         name: '我的订单',
-        pathName: '/views/my-order'
+        pathname: '/views/my-order'
     },
     {
-        key: 4,
         name: '我的收藏',
-        pathName: '/views/my-collection'
+        pathname: '/views/my-collection'
     },
     {
-        key: 5,
         name: '用户中心',
-        pathName: '/views/user-center'
+        pathname: '/views/user-center'
     },
     {
-        key: 6,
-        name: '后台管理',
-        pathName: '/views/admin'
+        name: 'DemoMall管理后台',
+        pathname: '/views/admin'
     },
 ];

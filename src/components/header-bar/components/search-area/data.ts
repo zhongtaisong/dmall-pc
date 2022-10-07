@@ -1,7 +1,7 @@
 /**
  * 前台菜单
  */
-export const MENU_LIST_01 = [
+export const MENU_LIST_FRONT = [
     {
         key: 1,
         name: "首 页",
@@ -27,11 +27,11 @@ export const MENU_LIST_01 = [
 /**
  * 后台菜单
  */
- export const MENU_LIST_02 = [
+ export const MENU_LIST_BACK = [
     {
         key: 1,
         name: "品牌管理",
-        pathname: "/views/admin/brand",
+        pathname: "/views/admin/brand-management",
         authKey: "brandMenu",
     },
     {
@@ -43,7 +43,7 @@ export const MENU_LIST_01 = [
     {
         key: 3,
         name: "订单管理",
-        pathname: "/views/admin/order",
+        pathname: "/views/admin/order-management",
         authKey: "orderMenu",
     },
     {

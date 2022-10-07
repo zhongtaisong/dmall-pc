@@ -14,9 +14,9 @@ import MyOrder from '@pages/my-order';
 import WebsiteDescription from '@pages/website-description';
 import UserCenter from '@pages/user-center';
 import MessageBoard from '@pages/message-board';
-import BrandList from '@pages/admin/goods-manage/brand-list';
+import BrandManagement from '@pages/admin/brand-management';
 import ProductList from '@pages/admin/goods-manage/goods-list';
-import OrdersList from '@pages/admin/orders-manage/order-list';
+import OrderManagement from '@pages/admin/order-management';
 import UsersManageList from '@pages/admin/users-manage/user-list';
 import CommentsManageList from '@pages/admin/comments-manage/comment-list';
 import AdminList from '@pages/admin/admin-list';
@@ -107,14 +107,14 @@ export const PAGE_ROUTER = [
     },
     { 
         pathname: '/views/admin',
-        redirect: '/views/admin/brand',
-        title: '商城后台',
+        redirect: '/views/admin/brand-management',
+        title: 'DemoMall管理后台',
         isOpen: false,
     },
     {
-        pathname: '/views/admin/brand',
-        component: BrandList,
-        title: '商品管理-品牌',
+        pathname: '/views/admin/brand-management',
+        component: BrandManagement,
+        title: '品牌管理',
         isOpen: false,
     },
     {
@@ -124,9 +124,9 @@ export const PAGE_ROUTER = [
         isOpen: false,
     },
     {
-        pathname: '/views/admin/order',
-        component: OrdersList,
-        title: '订单管理-订单',
+        pathname: '/views/admin/order-management',
+        component: OrderManagement,
+        title: '订单管理',
         isOpen: false,
     },
     {

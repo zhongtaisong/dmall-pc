@@ -4,7 +4,8 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import lodash from 'lodash';
-import { MENU_LIST_01, MENU_LIST_02 } from './data';
+import { isAdminPage } from '@utils/common-fn';
+import { MENU_LIST_FRONT, MENU_LIST_BACK } from './data';
 // mobx数据
 import store from '@store';
 // less样式
@@ -34,10 +35,10 @@ class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> 
                         </Col>
                         <Col span={ 12 } className='dm_SearchArea__content--menu'>
                             {
-                                !location.pathname.includes('/views/admin') ? (
+                                !isAdminPage(location?.pathname) ? (
                                     <>
                                         {
-                                            MENU_LIST_01.map(item => {
+                                            MENU_LIST_FRONT.map(item => {
                                                 return (
                                                     <Link 
                                                         key={ item.key }
@@ -51,7 +52,7 @@ class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> 
                                 ) : (
                                     <>
                                         {
-                                            MENU_LIST_02.map(item => {
+                                            MENU_LIST_BACK.map(item => {
                                                 // if(!adminObj?.[item.authKey]) return null;
 
                                                 return (
@@ -69,7 +70,7 @@ class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> 
                         </Col>
                         <Col span={ 8 } className='dm_SearchArea__content--search'>
                             {
-                                !location.pathname.includes('/views/admin') ? (
+                                !isAdminPage(location?.pathname) ? (
                                     <>
                                         {
                                             location?.pathname?.includes?.("/goods-list") ? (

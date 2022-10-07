@@ -4,7 +4,8 @@ import { RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { SketchPicker } from 'react-color';
 import { commonFn } from '@utils';
-import { isOpenPath } from '@utils/common-fn';
+import { isAdminPage, isOpenPath } from '@utils/common-fn';
+import { ADMIN_PATH_NAME } from '@config';
 import { MENU_LIST } from './data';
 // mobx数据
 import store from '@store';
@@ -31,7 +32,7 @@ class TopMenu extends React.PureComponent<Partial<RouteComponentProps>, {
 
     render() {
         const { pathname } = this.props.location;
-        const { admin, nickName, uname } = commonFn?.getUserInfo?.() || {};
+        const { admin_status, nickName, uname } = commonFn?.getUserInfo?.() || {};
         const { isLoginAndRegister } = this.state;
         let { welcomeObjectName } = store?.headerBarStore || {};
         welcomeObjectName = welcomeObjectName || nickName || uname || '朋友';
@@ -42,7 +43,7 @@ class TopMenu extends React.PureComponent<Partial<RouteComponentProps>, {
                     <div className='dm_topMenu__content--left'>
                         欢迎您，{ welcomeObjectName }
                     </div>
-                    { !pathname.includes('/views/admin') && (
+                    { !isAdminPage(pathname) && (
                         <div className='dm_topMenu__content--right'>
                             {
                                 isLoginAndRegister ? (
@@ -56,14 +57,12 @@ class TopMenu extends React.PureComponent<Partial<RouteComponentProps>, {
                             }
                             {
                                 MENU_LIST.map(item => {
-                                    if([6].includes(item.key)) {
-                                        if(admin !== '1') {
-                                            return null;
-                                        }
+                                    if(item?.pathname === ADMIN_PATH_NAME) {
+                                        if(!admin_status) return null;
                                     };
 
                                     return (
-                                        <span key={ item.key }
+                                        <span key={ item?.pathname }
                                             onClick={() => this.intoTargetPage(item)}
                                         >{ item.name }</span>
                                     );
@@ -111,12 +110,11 @@ class TopMenu extends React.PureComponent<Partial<RouteComponentProps>, {
      * @param obj 菜单Object
      */
     intoTargetPage = (obj: {
-        key: number;
         name: string;
-        pathName?: string;
+        pathname?: string;
     }) => {
         if(!obj || !Object.keys(obj).length) return;
-        const { pathName } = obj;
+        const { pathname } = obj;
         const { history } = this.props;
         const isLogin = commonFn?.isLogin?.()
 
@@ -124,7 +122,7 @@ class TopMenu extends React.PureComponent<Partial<RouteComponentProps>, {
             return history.push('/login');
         }
 
-        return pathName && history.push(pathName);
+        return pathname && history.push(pathname);
     }
 
     /**
