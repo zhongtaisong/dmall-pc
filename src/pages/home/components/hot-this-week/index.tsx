@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { history } from '@utils';
 // url前缀
 import { PUBLIC_URL } from '@config';
 // mobx数据
@@ -31,11 +30,11 @@ class HotThisWeek extends React.PureComponent<any, any> {
                                     className='dm_HotThisWeek__content--item'
                                 >
                                     <img src={ `${ PUBLIC_URL }${ item.mainPicture }` } alt="商品图片" 
-                                        onClick={() => history?.push?.(`/views/goods-detail/${ item?.id }`)}
+                                        onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}
                                     />
                                     <div className='dm_HotThisWeek__content--item__text'>
                                         <div className='dm_HotThisWeek__content--item__text--title'>
-                                            <Link to={`/views/goods-detail/${ item?.id }`}>{ item.productName }</Link>
+                                            <span onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}>{ item.productName }</span>
                                             <div className='two_line_ellipsis'>{ item.description }</div>
                                         </div>
                                         <div className='dm_HotThisWeek__content--item__text--price'>

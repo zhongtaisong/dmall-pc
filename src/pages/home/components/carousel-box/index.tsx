@@ -30,11 +30,12 @@ class CarouselBox extends React.PureComponent<any, any> {
                                 {
                                     carouselBoxList.map( item => {
                                         return (
-                                            <Link key={ item.id } 
-                                                to={'/views/goods-detail/' + item.id}
-                                            >
-                                                <img src={ `${ PUBLIC_URL }${ item.bannerPic }` } alt='' />
-                                            </Link>
+                                            <img 
+                                                key={ item.id }
+                                                onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}
+                                                src={ `${ PUBLIC_URL }${ item.bannerPic }` } 
+                                                alt='大图png' 
+                                            />
                                         );
                                     } )
                                 }

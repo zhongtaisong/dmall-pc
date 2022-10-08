@@ -21,13 +21,19 @@ export const columns = (dataSourceLenth: number = 0): ColumnsType<any> => {
             align: 'center',
             render: (text, record) => {
                 return (
-                    <Link 
+                    <div 
                         className='dm_MyOrder__columns--description' 
-                        to={ `/views/goods-detail/${ record?.id }` }
+                        onClick={() => window.open(`/views/goods-detail/${ record?.id }`)}
                     >
-                        <span className='two_line_ellipsis' title={ text }>{ text }</span>
+                        <span 
+                            className='two_line_ellipsis'
+                            style={{ 
+                                color: 'var(--dm-main-color)',
+                                cursor: 'pointer',
+                            }}
+                        >{ text }</span>
                         <span className='single_line_ellipsis'>规格：{ record?.spec }</span>
-                    </Link>
+                    </div>
                 );
             }
         },

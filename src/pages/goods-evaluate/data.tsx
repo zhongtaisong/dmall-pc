@@ -23,13 +23,19 @@ export default function columns({ onGoodsEvaluateClick, } : {
             align: 'center',
             render: (text, record) => {
                 return (
-                    <Link 
-                        className='dm_MyOrder__columns--description' 
-                        to={ `/views/goods-detail/${ record?.pid }` }
+                    <div 
+                        className='dm_MyOrder__columns--description'
+                        onClick={() => window.open(`/views/goods-detail/${ record?.pid }`)}
                     >
-                        <span className='two_line_ellipsis' title={ text }>{ text }</span>
+                        <span 
+                            className='two_line_ellipsis'
+                            style={{ 
+                                color: 'var(--dm-main-color)',
+                                cursor: 'pointer',
+                            }}
+                        >{ text }</span>
                         <span className='single_line_ellipsis'>规格：{ record?.spec }</span>
-                    </Link>
+                    </div>
                 );
             }
         },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Pagination, Tag, Empty } from 'antd';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { StaticContext } from 'react-router';
 // 全局设置
@@ -217,11 +217,11 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
                                 className='dm_Products__content--goodsList__item'
                             >
                                 <img src={ `${ PUBLIC_URL }${ item.mainPicture }` } alt="商品图片" 
-                                    onClick={() => this.props?.history?.push?.(`/views/goods-detail/${ item?.id }`)}
+                                    onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}
                                 />
                                 <div className='dm_Products__content--goodsList__item--text'>
                                     <div className='dm_Products__content--goodsList__item--text__title'>
-                                        <Link to={`/views/goods-detail/${ item?.id }`}>{ item.productName }</Link>
+                                        <span onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}>{ item.productName }</span>
                                         <div className='two_line_ellipsis'>{ item.description }</div>
                                     </div>
                                     <div className='dm_Products__content--goodsList__item--text__price'>
