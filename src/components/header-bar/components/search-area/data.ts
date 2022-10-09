@@ -54,8 +54,8 @@ export const MENU_LIST_FRONT = [
     },
     {
         key: 5,
-        name: "评论管理",
-        pathname: "/views/admin/comment",
+        name: "评价管理",
+        pathname: "/views/admin/goods-evaluate-management",
         authKey: "commentMenu",
     },
     {

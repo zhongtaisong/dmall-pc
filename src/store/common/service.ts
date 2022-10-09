@@ -1,7 +1,7 @@
 import axios from '@axios';
 import { IResponse } from '@types';
 import { commonFn, history } from '@utils';
-import { IBuyGoodsInfo } from './type';
+import { IBuyGoodsInfo, IGoodsEvaluateAddService, IGoodsEvaluateUpdateService } from './type';
 
 export interface IPids {
     /** 商品id */
@@ -69,4 +69,22 @@ export const selectAddressListService = (): Promise<IResponse> => {
  */
 export const orderDeleteService = (id: number | string): Promise<IResponse> => {
     return axios.delete(`/order/delete/${ id }`);
+}
+
+/**
+ * 添加评价
+ * @param params 
+ * @returns 
+ */
+export const goodsEvaluateAddService = (params: IGoodsEvaluateAddService): Promise<IResponse> => {
+    return axios.post("/goods-evaluate/add", params);
+}
+
+/**
+ * 修改评价
+ * @param params 
+ * @returns 
+ */
+export const goodsEvaluateUpdateService = (params: IGoodsEvaluateUpdateService): Promise<IResponse> => {
+    return axios.put("/goods-evaluate/update", params);
 }

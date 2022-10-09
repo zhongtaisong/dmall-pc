@@ -17,7 +17,6 @@ class OrderManagement extends React.PureComponent<any, any> {
 
     render() {
         const { dataSource, total, } = store?.orderManagementStore || {};
-        console.log('99999999', dataSource.length, total)
 
         return (
             <div className='common_width'>

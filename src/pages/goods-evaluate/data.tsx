@@ -21,6 +21,7 @@ export default function columns({ onGoodsEvaluateClick, } : {
             dataIndex: 'description',
             key: 'description',
             align: 'center',
+            width: '30%',
             render: (text, record) => {
                 return (
                     <div 
@@ -56,11 +57,10 @@ export default function columns({ onGoodsEvaluateClick, } : {
             render: (text) => `x ${text}`
         },
         {
-            title: '评价',
+            title: '评价内容',
             dataIndex: 'content',
             key: 'content',
             align: 'center',
-            width: '10%',
         },
         {
             title: '操作',

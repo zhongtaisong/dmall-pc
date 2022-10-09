@@ -7,8 +7,10 @@ import {
     goodsCollectionDeleteService,
     selectAddressListService,
     orderDeleteService,
+    goodsEvaluateAddService,
+    goodsEvaluateUpdateService,
 } from './service';
-import { IBuyGoodsInfo } from "./type";
+import { IBuyGoodsInfo, IGoodsEvaluateAddService, IGoodsEvaluateUpdateService } from "./type";
 
 /**
  * 公共Store
@@ -87,6 +89,28 @@ export default class Store {
      */
     orderDeleteServiceFn = async (id) => {
         const result = await orderDeleteService(id);
+        return result?.data?.code === SUCCESS_CODE;
+    }
+
+    /**
+     * 添加评价 - 操作
+     * @param params 
+     */
+    goodsEvaluateAddServiceFn = async (params: IGoodsEvaluateAddService) => {
+        if(!params || !Object.keys(params).length) return false;
+
+        const result = await goodsEvaluateAddService(params);
+        return result?.data?.code === SUCCESS_CODE;
+    }
+
+    /**
+     * 修改评价 - 操作
+     * @param params 
+     */
+    goodsEvaluateUpdateServiceFn = async (params: IGoodsEvaluateUpdateService) => {
+        if(!params || !Object.keys(params).length) return false;
+
+        const result = await goodsEvaluateUpdateService(params);
         return result?.data?.code === SUCCESS_CODE;
     }
     

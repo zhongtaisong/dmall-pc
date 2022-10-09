@@ -18,7 +18,7 @@ import BrandManagement from '@pages/admin/brand-management';
 import ProductList from '@pages/admin/goods-manage/goods-list';
 import OrderManagement from '@pages/admin/order-management';
 import UsersManageList from '@pages/admin/users-manage/user-list';
-import CommentsManageList from '@pages/admin/comments-manage/comment-list';
+import GoodsEvaluateManagement from '@pages/admin/goods-evaluate-management';
 import AdminList from '@pages/admin/admin-list';
 
 /**
@@ -136,9 +136,9 @@ export const PAGE_ROUTER = [
         isOpen: false,
     },
     {
-        pathname: '/views/admin/comment',
-        component: CommentsManageList,
-        title: '评论管理-评论',
+        pathname: '/views/admin/goods-evaluate-management',
+        component: GoodsEvaluateManagement,
+        title: '评价管理',
         isOpen: false,
     },
     {

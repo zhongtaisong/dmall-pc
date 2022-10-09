@@ -2,11 +2,10 @@ import { SUCCESS_CODE } from "@config";
 import { makeAutoObservable, runInAction } from "mobx";
 import { 
     goodsEvaluateSelectService, 
-    goodsEvaluateAddService,
-    IGoodsEvaluateAddService,
-    goodsEvaluateUpdateService,
-    IGoodsEvaluateUpdateService,
 } from './service';
+import { IGoodsEvaluateAddService, IGoodsEvaluateUpdateService } from "@store/common/type";
+// mobx数据
+import store from '@store';
 
 export default class Store {
 
@@ -92,10 +91,10 @@ export default class Store {
     goodsEvaluateAddServiceFn = async (params: IGoodsEvaluateAddService) => {
         if(!params || !Object.keys(params).length) return;
 
-        const result = await goodsEvaluateAddService(params)
-        if(result?.data?.code === SUCCESS_CODE) {
-            this.goodsEvaluateSelectServiceFn();
-        }
+        const result = await store.commonStore.goodsEvaluateAddServiceFn(params);
+        if(!result) return;
+
+        this.goodsEvaluateSelectServiceFn();
     }
 
     /**
@@ -105,10 +104,10 @@ export default class Store {
     goodsEvaluateUpdateServiceFn = async (params: IGoodsEvaluateUpdateService) => {
         if(!params || !Object.keys(params).length) return;
 
-        const result = await goodsEvaluateUpdateService(params)
-        if(result?.data?.code === SUCCESS_CODE) {
-            this.goodsEvaluateSelectServiceFn();
-        }
+        const result = await store.commonStore.goodsEvaluateUpdateServiceFn(params)
+        if(!result) return;
+        
+        this.goodsEvaluateSelectServiceFn();
     }
 
     /**

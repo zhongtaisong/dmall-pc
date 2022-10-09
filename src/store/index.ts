@@ -16,6 +16,7 @@ import ShoppingCartStore from './shopping-cart/store';
 import ConfirmOrderStore from './confirm-order/store';
 import BrandManagementStore from './admin/brand-management/store';
 import OrderManagementStore from './admin/order-management/store';
+import GoodsEvaluateManagementStore from './admin/goods-evaluate-management/store';
 
 export default {
     commonStore: new CommonStore(),
@@ -36,4 +37,5 @@ export default {
     confirmOrderStore: new ConfirmOrderStore(),
     brandManagementStore: new BrandManagementStore(),
     orderManagementStore: new OrderManagementStore(),
+    goodsEvaluateManagementStore: new GoodsEvaluateManagementStore(),
 };

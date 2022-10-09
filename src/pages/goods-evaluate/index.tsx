@@ -10,10 +10,10 @@ import store from '@store';
 import './index.less';
 
 /**
- * 我的订单
+ * 商品评价中心
  */
 @observer
-class MyOrder extends React.PureComponent<any, any> {
+class GoodsEvaluate extends React.PureComponent<any, any> {
     formRef = React.createRef<FormInstance>();
 
     componentDidMount() {
@@ -80,9 +80,11 @@ class MyOrder extends React.PureComponent<any, any> {
                             }]}
                         >
                             <Input.TextArea 
+                                placeholder='请输入评价内容' 
                                 allowClear 
                                 showCount 
                                 maxLength={ 300 }
+                                autoSize={{ minRows: 5, maxRows: 6, }}
                             />
                         </Form.Item>
                     </Form>
@@ -119,4 +121,4 @@ class MyOrder extends React.PureComponent<any, any> {
     }
 }
 
-export default MyOrder;
+export default GoodsEvaluate;
