@@ -17,8 +17,8 @@ import MessageBoard from '@pages/message-board';
 import BrandManagement from '@pages/admin/brand-management';
 import ProductList from '@pages/admin/goods-manage/goods-list';
 import OrderManagement from '@pages/admin/order-management';
-import UsersManageList from '@pages/admin/users-manage/user-list';
 import GoodsEvaluateManagement from '@pages/admin/goods-evaluate-management';
+import UserManagement from '@pages/admin/user-management';
 import AdminList from '@pages/admin/admin-list';
 
 /**
@@ -130,9 +130,9 @@ export const PAGE_ROUTER = [
         isOpen: false,
     },
     {
-        pathname: '/views/admin/user',
-        component: UsersManageList,
-        title: '用户管理-用户',
+        pathname: '/views/admin/user-management',
+        component: UserManagement,
+        title: '用户管理',
         isOpen: false,
     },
     {

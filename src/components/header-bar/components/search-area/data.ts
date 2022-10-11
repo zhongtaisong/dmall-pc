@@ -49,7 +49,7 @@ export const MENU_LIST_FRONT = [
     {
         key: 4,
         name: "用户管理",
-        pathname: "/views/admin/user",
+        pathname: "/views/admin/user-management",
         authKey: "userMenu",
     },
     {

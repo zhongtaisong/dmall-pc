@@ -209,3 +209,26 @@ export const isAdminPage = (pathname: string): boolean => {
 
     return pathname?.includes?.(ADMIN_PATH_NAME);
 }
+
+/**
+ * 校验 - 用户名
+ * @param value 
+ * @returns 
+ */
+export const validateUname = (value) => {
+    value = value?.trim?.();
+    if(!value) {
+        return Promise.reject('请输入用户名');
+    }
+
+    const reg = /[A-Za-z0-9]{2,64}/;
+    if (!reg.test(value)) {
+        if(value?.length >= 2 && value?.length <= 64) {
+            return Promise.reject('用户名仅支持输入大小写英文、数字及其组合');
+        }
+
+        return Promise.reject('用户名限制在2到64个字符');
+    }
+
+    return Promise.resolve();
+};

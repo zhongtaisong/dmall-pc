@@ -143,18 +143,21 @@ class GoodsEvaluateManagement extends React.PureComponent<any, {
                                 message: '请选择商品编号'
                             }]}
                         >
-                            <Select 
-                                placeholder="请选择商品编号" 
-                                disabled={ Boolean(recordInfo?.id) }
-                            >
-                                {
-                                    pids?.map?.(item => (
-                                        <Select.Option 
-                                            key={ item }
-                                        >{ item }</Select.Option>
-                                    ))
-                                }
-                            </Select>
+                            {
+                                !recordInfo?.id ? (
+                                    <Select placeholder="请选择商品编号" >
+                                        {
+                                            pids?.map?.(item => (
+                                                <Select.Option 
+                                                    key={ item }
+                                                >{ item }</Select.Option>
+                                            ))
+                                        }
+                                    </Select>
+                                ) : (
+                                    <Input disabled={ Boolean(recordInfo?.id) } />
+                                )
+                            }
                         </Form.Item>
 
                         <Form.Item 
