@@ -32,13 +32,25 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "lint": "eslint src/",
+    "lint:fix": "eslint --fix --ext .js,jsx,ts,tsx src/"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "import/no-anonymous-default-export": "off",
+      "no-undef": "off",
+      "eqeqeq": "off",
+      "no-unused-vars": "off",
+      "no-extra-semi": "off",
+      "no-sparse-arrays": "off",
+      "no-constant-condition": "off",
+      "no-empty": "off"
+    }
   },
   "browserslist": {
     "production": [
