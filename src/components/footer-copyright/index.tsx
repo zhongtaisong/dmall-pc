@@ -29,6 +29,7 @@ class FooterCopyright extends React.PureComponent<any, any> {
                                                     key={ item02.cid }
                                                     target='_blank' 
                                                     href={ item02.url } 
+                                                    rel="noreferrer"
                                                 >{ item02.name }</a>
                                             )
                                         })
