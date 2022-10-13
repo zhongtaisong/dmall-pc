@@ -79,6 +79,7 @@ i {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        word-break: break-all;
     }
 
     // 两行展示 - 溢出显示省略号
@@ -88,6 +89,7 @@ i {
         -webkit-line-clamp: 2;
         text-overflow: ellipsis;
         overflow: hidden;
+        word-break: break-all;
     }
 
 
@@ -98,6 +100,10 @@ i {
             cursor: pointer;
             &:not(:last-child) {
                 margin-right: 10px;
+            }
+
+            &:hover {
+                text-decoration: underline;
             }
         }
     }
@@ -122,6 +128,15 @@ i {
         .ant-select-selector {
             color: inherit;
             cursor: text;
+        }
+    }
+}
+
+.ant-tooltip {
+    >.ant-tooltip-content {
+        >.ant-tooltip-inner {
+            font-size: 13px;
+            word-break: break-all;
         }
     }
 }

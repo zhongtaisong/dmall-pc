@@ -7,12 +7,10 @@ import App from './App';
 // 国际化设置
 import zhCN from 'antd/es/locale/zh_CN';
 import 'moment/locale/zh-cn';
-
 // less根样式
 import './index.less';
-moment.locale('zh-cn');
 
-(window as any).$md5 = md5;
+moment.locale('zh-cn');
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
