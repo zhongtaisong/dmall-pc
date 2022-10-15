@@ -1,10 +1,9 @@
-import { SUCCESS_CODE } from "@config";
+import { SERVICE_URL, SUCCESS_CODE } from "@config";
 import { makeAutoObservable, runInAction } from "mobx";
 import moment from "moment";
 import { 
     selectUserInformationService, 
     updateUserInformationService, 
-    IUserInformation,
     updateUserPasswordService,
     IUpdateUserPassword,
     IAddAddressService,
@@ -34,6 +33,12 @@ export default class Store {
         callBack?.({
             ...personalInformation,
             birthday: personalInformation?.birthday ? moment(personalInformation?.birthday) : null,
+            avatar: [{
+                uid: Date.now(),
+                name: 'image.png',
+                status: 'done',
+                url: `${ SERVICE_URL }${ personalInformation?.avatar }`,
+            }],
         });
     }
 
@@ -41,7 +46,7 @@ export default class Store {
      * 更新 - 用户信息 - 操作
      * @param params 
      */
-    updateUserInformationServiceFn = async (params: IUserInformation) => {
+    updateUserInformationServiceFn = async (params: FormData) => {
         const result = await updateUserInformationService(params);
         if(result?.data?.code === SUCCESS_CODE) {
             const user_info = {

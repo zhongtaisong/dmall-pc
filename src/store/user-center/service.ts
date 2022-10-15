@@ -22,13 +22,15 @@ export interface IUserInformation {
     birthday: string;
     /** 昵称 */
     nickName: string;
+    /** 用户头像 */
+    avatar: string;
 }
 
 /**
  * 更新 - 用户信息
  * @returns 
  */
-export const updateUserInformationService = (params: IUserInformation): Promise<IResponse> => {
+export const updateUserInformationService = (params: FormData): Promise<IResponse> => {
     return axios.put("/user/update/user-information", params);
 }
 

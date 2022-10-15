@@ -1,6 +1,7 @@
 import { cacheKey, history, } from "@utils";
 import { PAGE_ROUTER, } from '@router';
 import { ADMIN_PATH_NAME } from "@config";
+import type { RcFile, } from 'antd/es/upload/interface';
 
 /**
  * 获取用户信息
@@ -71,13 +72,13 @@ export const isLogin = (): boolean => {
  * @param file 
  * @returns 
  */
-export const fileToBase64 = (file) => {
+export const fileToBase64 = (file: RcFile) => {
     if(!file || !Object.keys(file).length) return Promise.resolve(null);
 
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
+        reader.onload = () => resolve(reader?.result);
         reader.onerror = error => reject(error);
     });
 }

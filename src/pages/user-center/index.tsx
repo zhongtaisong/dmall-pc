@@ -28,6 +28,8 @@ class UserCenter extends React.PureComponent<any, {
     radioValue: 0 | 1 | 2;
     /** 用户id */
     userId: number;
+    /** 图片列表 */
+    fileList: Array<any>;
 }> {
     formRef = React.createRef<FormInstance>();
 
@@ -36,19 +38,23 @@ class UserCenter extends React.PureComponent<any, {
         this.state = {
             radioValue: 0,
             userId: null,
+            fileList: [],
         };
     }
 
     componentDidMount() {
         store.userCenterStore.selectUserInformationServiceFn((data) => {
-            this.setState({ userId: data?.id, }, () => {
+            this.setState({ 
+                userId: data?.id, 
+                fileList: data?.avatar,
+            }, () => {
                 this.formRef.current.setFieldsValue({...data});
             });
         });
     }
 
     render() {
-        const { radioValue } = this.state;
+        const { radioValue, fileList, } = this.state;
 
         return (
             <div className='common_width dm_UserCenter'>
@@ -78,7 +84,14 @@ class UserCenter extends React.PureComponent<any, {
                                     {/* 个人资料 */}
                                     {
                                         radioValue === 0 ? (
-                                            <PersonalInformation />
+                                            <PersonalInformation 
+                                                onUploadCallBack={(avatar) => {
+                                                    this.formRef.current.setFieldsValue({
+                                                        avatar,
+                                                    });
+                                                }}
+                                                fileList={ fileList }
+                                            />
                                         ) : null
                                     }
 
@@ -118,7 +131,10 @@ class UserCenter extends React.PureComponent<any, {
             const callBack = {
                 0: () => {
                     store.userCenterStore.selectUserInformationServiceFn((data) => {
-                        this.setState({ userId: data?.id, }, () => {
+                        this.setState({ 
+                            userId: data?.id, 
+                            fileList: data?.avatar,
+                        }, () => {
                             this.formRef.current.setFieldsValue({...data});
                         });
                     });
@@ -141,11 +157,19 @@ class UserCenter extends React.PureComponent<any, {
         const { radioValue, userId, } = this.state;
         const callBack = {
             0: () => {
-                store.userCenterStore.updateUserInformationServiceFn({
-                    ...values,
+                const { avatar, ...otherValues } = values;
+                const formData = new FormData();
+                const avatar_new = avatar?.[0]?.originFileObj;
+                if(avatar_new) {
+                    formData.append("avatar", avatar_new);
+                }
+                formData.append("user_info", JSON.stringify({
+                    ...otherValues,
                     birthday:values['birthday'] ? moment(values['birthday']).format('YYYY-MM-DD') : null,
                     id: userId,
-                });
+                }));
+
+                store.userCenterStore.updateUserInformationServiceFn(formData);
             },
             1: () => {
                 store.userCenterStore.updateUserPasswordServiceFn({

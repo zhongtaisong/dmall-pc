@@ -1,14 +1,37 @@
 import React from 'react';
 import { Form, Input, Radio, DatePicker } from 'antd';
 import { validatePhone } from '@utils/common-fn';
+import UploadImg from '@com/upload-img';
 
 /**
  * 个人资料
  */
-export default class PersonalInformation extends React.PureComponent<any, any> {
+export default class PersonalInformation extends React.PureComponent<{
+    /** 上传图片 - 回调函数 */
+    onUploadCallBack: Function;
+    /** 图片列表 */
+    fileList: Array<any>;
+}, any> {
     render() {
+        const { onUploadCallBack, fileList, } = this.props;
+
         return (
             <>
+                <Form.Item
+                    label="头像"
+                    name="avatar"
+                    valuePropName="fileList"
+                    rules={[{
+                        required: true, 
+                        message: '请上传头像！',
+                    }]}
+                >
+                    <UploadImg 
+                        onUploadCallBack={(file) => onUploadCallBack?.(file)} 
+                        fileList={ fileList }
+                    />
+                </Form.Item>
+
                 <Form.Item
                     label="用户名"
                     name="uname"
