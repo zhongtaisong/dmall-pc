@@ -3,8 +3,6 @@ import { Button, Pagination, Tag, Empty } from 'antd';
 import { RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { StaticContext } from 'react-router';
-// 全局设置
-import { PUBLIC_URL } from '@config';
 // mobx数据
 import store from '@store';
 // 样式
@@ -76,7 +74,7 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
                     <div className='dm_Products__content--filterList'>
                         {
                             Object.entries(filterMap).map(([key, value]: any) => {
-                                key = key === 'brands' ? 'brandId' : key;
+                                key = key === 'brands' ? 'brand_id' : key;
                                 const filterParams_item = filterParams[key]
 
                                 return (
@@ -86,11 +84,11 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
                                     >
                                         <div className='dm_Products__content--filterList__item--label'>{ 
                                             {
-                                                brandId: "品牌",
+                                                brand_id: "品牌",
                                                 cpu: "处理器",
                                                 disk: "硬盘容量",
                                                 memory: "内存容量",
-                                                screenSize: "屏幕尺寸",
+                                                screen_size: "屏幕尺寸",
                                                 systems: "系统",
                                                 thickness: "厚度",
                                             }[key] 
@@ -98,13 +96,13 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
                                         <div className='dm_Products__content--filterList__item--tag'>
                                             {
                                                 value?.map?.(item => {
-                                                    const val = item?.id || item;
+                                                    const val = item?.brand_id || item;
                                                     return (
                                                         <Tag.CheckableTag 
                                                             key={ val }
                                                             checked={ filterParams_item === val }
                                                             onChange={() => this.onCheckableTagChange(key, val)}
-                                                        >{ item?.brandName || item }</Tag.CheckableTag>
+                                                        >{ item?.brand_name || item }</Tag.CheckableTag>
                                                     );
                                                 })
                                             }
@@ -143,7 +141,7 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
                         current={ current + 1 }
                         pageSize={ pageSize }
                         total={ total } 
-                        pageSizeOptions={[8, 16, 32, 64, 100]}
+                        // pageSizeOptions={[8, 16, 32, 64, 100]}
                         onChange={(page, pageSize) => {
                             this.goodsListSelectServiceFn({
                                 current: page - 1,
@@ -216,12 +214,15 @@ class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>,
                                 key={ item?.id }
                                 className='dm_Products__content--goodsList__item'
                             >
-                                <img src={ `${ PUBLIC_URL }${ item.mainPicture }` } alt="商品图片" 
+                                <img src={ item.main_picture } alt="商品图片" 
                                     onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}
                                 />
                                 <div className='dm_Products__content--goodsList__item--text'>
                                     <div className='dm_Products__content--goodsList__item--text__title'>
-                                        <span onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}>{ item.productName }</span>
+                                        <span 
+                                            className='single_line_ellipsis'
+                                            onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}
+                                        >{ item.goods_name }</span>
                                         <div className='two_line_ellipsis'>{ item.description }</div>
                                     </div>
                                     <div className='dm_Products__content--goodsList__item--text__price'>

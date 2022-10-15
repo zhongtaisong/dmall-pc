@@ -1,8 +1,6 @@
 import React from 'react';
 import { Comment, Avatar, Empty, } from 'antd';
 import { observer } from 'mobx-react';
-// 设置
-import { PUBLIC_URL } from '@config';
 // mobx数据
 import store from '@store';
 // less样式
@@ -30,7 +28,7 @@ class CommodityEvaluation extends React.PureComponent<any, any> {
                                 key={ item?.id }
                                 className="commodity_evaluation__comment"
                                 author={ item?.uname }
-                                avatar={ <Avatar src={ `${ PUBLIC_URL }${ item?.avatar }` } alt="用户头像" /> }
+                                avatar={ <Avatar src={ item?.avatar } alt="用户头像" /> }
                                 content={ <div className='commodity_evaluation__comment--content'>{ item.content }</div> }
                                 datetime={ item?.commentTime }
                             />

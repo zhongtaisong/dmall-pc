@@ -1,8 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
-// url前缀
-import { PUBLIC_URL } from '@config';
 // mobx数据
 import store from '@store';
 // less样式
@@ -29,12 +26,15 @@ class HotThisWeek extends React.PureComponent<any, any> {
                                     key={ item?.id }
                                     className='dm_HotThisWeek__content--item'
                                 >
-                                    <img src={ `${ PUBLIC_URL }${ item.mainPicture }` } alt="商品图片" 
+                                    <img src={ item?.main_picture } alt="商品图片" 
                                         onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}
                                     />
                                     <div className='dm_HotThisWeek__content--item__text'>
                                         <div className='dm_HotThisWeek__content--item__text--title'>
-                                            <span onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}>{ item.productName }</span>
+                                            <span 
+                                                className='single_line_ellipsis'
+                                                onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}
+                                            >{ item?.goods_name }</span>
                                             <div className='two_line_ellipsis'>{ item.description }</div>
                                         </div>
                                         <div className='dm_HotThisWeek__content--item__text--price'>

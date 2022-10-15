@@ -1,17 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import type { ColumnsType } from 'antd/es/table';
-// 全局设置
-import { PUBLIC_URL } from '@config';
 
 export const columns: ColumnsType<any> = [
     {
         title: '图片',
-        dataIndex: 'mainPicture',
-        key: 'mainPicture',
+        dataIndex: 'main_picture',
+        key: 'main_picture',
         align: 'center',
         width: '10%',
-        render: (text, record, index) => <img width='100%' src={ `${ PUBLIC_URL }${ text }` } alt={ text } />
+        render: (text, record, index) => <img width='100%' src={ text } alt={ text } />
     },
     {
         title: '商品详情',

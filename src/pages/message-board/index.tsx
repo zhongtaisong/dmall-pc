@@ -3,8 +3,6 @@ import { Comment, Avatar, Button, Input, List, Form } from 'antd';
 import { observer } from 'mobx-react';
 import { FormInstance } from 'antd/es/form';
 import { isLogin } from '@utils/common-fn';
-// 全局设置
-import { PUBLIC_URL } from '@config';
 // mobx数据
 import store from '@store';
 // less样式
@@ -14,26 +12,8 @@ import './index.less';
  * 留言板
  */
 @observer
-class MessageBoard extends React.PureComponent<any, {
-    /**
-     * 赞、踩
-     */
-    actionInfo: {
-        [key: string]: {
-            type?: 'agree' | 'disagree',
-            num?: number;
-        };
-    };
-}> {
-
+class MessageBoard extends React.PureComponent<any, any> {
     formRef = React.createRef<FormInstance>();
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            actionInfo: {},
-        };
-    }
 
     componentDidMount() {
         store.messageBoardStore.messageBoardSelectServiceFn();
@@ -41,7 +21,6 @@ class MessageBoard extends React.PureComponent<any, {
 
     render() {
         const { messageBoardList } = store?.messageBoardStore || {};
-        const { actionInfo, } = this.state;
         
         return (
             <div className='common_width dm_message_board'>
@@ -50,12 +29,10 @@ class MessageBoard extends React.PureComponent<any, {
                     header={ `${messageBoardList.length}条留言` }
                     itemLayout="horizontal"
                     renderItem={props => {
-                        const actionItem = actionInfo[props?.id] || {};
-
                         return (
                             <Comment 
                                 author={ props.uname }
-                                avatar={ <Avatar src={ props?.avatar ? `${ PUBLIC_URL }${ props?.avatar }` : null } alt="头像" /> }
+                                avatar={ <Avatar src={ props?.avatar } alt="头像" /> }
                                 content={ props?.content  }
                                 datetime={ props?.create_time }
                             />

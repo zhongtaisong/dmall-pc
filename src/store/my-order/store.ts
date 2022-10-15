@@ -20,7 +20,7 @@ export default class Store {
     /** 列表数据 */
     dataSource = [];
 
-    /** 查询商品 - 接口入参 */
+    /** 查询 - 接口入参 */
     requestParams = {};
 
     /**

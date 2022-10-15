@@ -4,8 +4,6 @@ import { InputNumber, Button, Image, } from 'antd';
 import { HeartFilled, HeartOutlined, } from '@ant-design/icons';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { history } from '@utils';
-// 设置
-import { PUBLIC_URL } from '@config';
 // mobx数据
 import store from '@store';
 // less样式
@@ -52,7 +50,7 @@ class CommoditySpecification extends React.PureComponent<RouteComponentProps<{
                         bigImgUrl ? (
                             <Image 
                                 className='dm_commoditySpecification__left--bigImg'
-                                src={ `${ PUBLIC_URL }${ bigImgUrl}` } 
+                                src={ bigImgUrl } 
                                 alt="大主图" 
                             />
                         ) : null
@@ -65,7 +63,7 @@ class CommoditySpecification extends React.PureComponent<RouteComponentProps<{
                                         key={ item }
                                         rootClassName={ imageIndex === index  ? 'dm_commoditySpecification__left--smallImg__item' : '' }
                                         preview={ false } 
-                                        src={ `${ PUBLIC_URL }${ item}` } 
+                                        src={ item } 
                                         alt="小主图" 
                                         onClick={() => this.onPreviewClick(index)}
                                     />

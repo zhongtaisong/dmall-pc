@@ -1,5 +1,4 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { SUCCESS_CODE } from "@config";
 import { largeScalePromotionService, hotRecommendationsService } from './service';
 
 export default class Store {
@@ -13,7 +12,7 @@ export default class Store {
      */
     carouselBoxList: Array<{
         /** 大图 */
-        bannerPic: string;
+        banner_picture: string;
         /** 商品描述 */
         description: string;
         /** 主键id */
@@ -39,11 +38,11 @@ export default class Store {
         /** 主键id */
         id: 17;
         /** 主图 */
-        mainPicture: string;
+        main_picture: string;
         /** 商品价格 */
         price: number;
         /** 商品名称 */
-        productName: string;
+        goods_name: string;
     }> = [];
 
     /**

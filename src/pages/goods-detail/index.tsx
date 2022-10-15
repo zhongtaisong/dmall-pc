@@ -35,7 +35,6 @@ class ProductsDetail extends React.PureComponent<RouteComponentProps<{
 
     render() {
         const { goodsInfo } = store?.goodsDetailStore || {};
-        const { id } = this.props?.match?.params || {};
         if(!goodsInfo || !Object.keys(goodsInfo)) return null;
 
         return (

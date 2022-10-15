@@ -1,7 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-// 全局设置
-import { PUBLIC_URL } from '@config';
 
 export default function columns({ onGoodsEvaluateClick, } : {
     /** 添加、修改评价 - 操作 */
@@ -10,11 +7,11 @@ export default function columns({ onGoodsEvaluateClick, } : {
     const columns = [
         {
             title: '图片',
-            dataIndex: 'mainPicture',
-            key: 'mainPicture',
+            dataIndex: 'main_picture',
+            key: 'main_picture',
             align: 'center',
             width: '10%',
-            render: (text) => <img style={{ width: '100%', }} src={ `${ PUBLIC_URL }${ text }` } alt={ text } />
+            render: (text) => <img style={{ width: '100%', }} src={ text } alt={ text } />
         },
         {
             title: '商品详情',

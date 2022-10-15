@@ -34,7 +34,7 @@ export default class Store {
         /**
          * 商品主图url
          */
-        mainPicture: string;
+        main_picture: string;
         /**
          * 商品价格
          */

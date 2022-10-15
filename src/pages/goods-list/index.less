@@ -41,7 +41,7 @@
             flex-wrap: wrap;
             margin-top: 16px;
             &__item {
-                width: calc((100% - 10px * 3) / 4);
+                width: calc((100% - 10px * 4) / 5);
                 margin-bottom: 10px;
                 background-color: #fff;
                 border: 1px solid var(--dm-border-color-eee);
@@ -49,19 +49,21 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                &:not(&:nth-child(4n)) {
+                &:not(&:nth-child(5n)) {
                     margin-right: 10px;
                 }
                 >img {
-                    width: 88%;
+                    height: 184px;
                     cursor: pointer;
                 }
                 &--text {
+                    width: 100%;
                     padding: 10px 16px 16px;
                     &__title {
                         margin-bottom: 6px;
                         line-height: 20px;
                         >span {
+                            width: 100%;
                             color: var(--dm-bg-color-333);
                             font-weight: bold;
                             display: inline-block;

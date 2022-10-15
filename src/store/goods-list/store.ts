@@ -3,8 +3,8 @@ import { goodsListSelectService, goodsListSelectFilterService } from './service'
 // mobx数据
 import store from '@store';
 import { IBuyGoodsInfo } from "@store/common/type";
+import { PAGE_SIZE } from "@config";
 
-const PAGE_SIZE = 8;
 export default class Store {
 
     constructor() {
@@ -26,7 +26,7 @@ export default class Store {
     /** 列表数据 */
     dataSource = [];
 
-    /** 查询商品 - 接口入参 */
+    /** 查询 - 接口入参 */
     requestParams = {};
 
     /**

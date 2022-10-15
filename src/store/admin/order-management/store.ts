@@ -19,7 +19,7 @@ export default class Store {
     /** 列表数据 */
     dataSource: Array<IOrderInfo> = [];
 
-    /** 查询商品 - 接口入参 */
+    /** 查询 - 接口入参 */
     requestParams: Partial<IAdminOrderSelectParams> = {
         current: 0,
         pageSize: PAGE_SIZE,

@@ -1,13 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { PUBLIC_URL } from '@config';
 // mobx数据
 import store from '@store';
 // less样式
 import './index.less';
 
 const PARAMS_MAP = {
-    productName: "商品名称",
+    goods_name: "商品名称",
     weight: "商品毛重",
     placeOfOrigin: "商品产地",
     systems: "系统",
@@ -38,7 +37,7 @@ class GoodsInfo extends React.PureComponent<any, any> {
                 <ul className='goods_detail_goods_info__params'>
                     {
                         goodsInfo?.['brandName'] ? (
-                            <li>
+                            <li className="single_line_ellipsis">
                                 <span>品牌: </span>
                                 { goodsInfo['brandName'] }
                             </li>
@@ -49,7 +48,10 @@ class GoodsInfo extends React.PureComponent<any, any> {
                             if(!goodsInfo?.[key]) return null;
 
                             return (
-                                <li key={ key }>
+                                <li 
+                                    key={ key }
+                                    className="single_line_ellipsis"
+                                >
                                     <span>{ value }: </span>
                                     { goodsInfo[key] }
                                 </li>
@@ -65,7 +67,7 @@ class GoodsInfo extends React.PureComponent<any, any> {
                             
                             return (
                                 <li key={ item }>
-                                    <img src={ `${ PUBLIC_URL }${ item }` } alt='商品介绍图片' /> 
+                                    <img src={ item } alt='商品介绍图片' /> 
                                 </li>
                             );
                         })

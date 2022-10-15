@@ -1,23 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import type { ColumnsType } from 'antd/lib/table';
-// 全局设置
-import { PUBLIC_URL } from '@config';
 
 export const columns: ColumnsType<any> = [
     {
         title: '图片',
-        dataIndex: 'mainPicture',
-        key: 'mainPicture',
+        dataIndex: 'main_picture',
+        key: 'main_picture',
         align: 'center',
         width: '10%',
         render: (text, record) => {
-            if(!record?.goodsInfo?.mainPicture) return '-';
+            if(!record?.goodsInfo?.main_picture) return '-';
 
             return (
                 <img 
                     style={{ width: '100%', }} 
-                    src={ `${ PUBLIC_URL }${ record?.goodsInfo?.mainPicture }` } 
+                    src={ record?.goodsInfo?.main_picture } 
                     alt="图片"
                 />
             );

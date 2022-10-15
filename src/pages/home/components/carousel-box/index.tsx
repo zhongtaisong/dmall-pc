@@ -1,9 +1,6 @@
 import React from 'react';
-import { Carousel } from 'antd';
+import { Carousel, } from 'antd';
 import { observer } from "mobx-react";
-import { Link } from 'react-router-dom';
-// url前缀
-import { PUBLIC_URL } from '@config';
 // mobx数据
 import store from '@store';
 // less样式
@@ -29,11 +26,13 @@ class CarouselBox extends React.PureComponent<any, any> {
                             >
                                 {
                                     carouselBoxList.map( item => {
+                                        if(!item?.banner_picture) return null;
+                                        
                                         return (
                                             <img 
                                                 key={ item.id }
                                                 onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}
-                                                src={ `${ PUBLIC_URL }${ item.bannerPic }` } 
+                                                src={ item?.banner_picture } 
                                                 alt='大图png' 
                                             />
                                         );

@@ -3,13 +3,13 @@ import { message } from 'antd';
 import { commonFn } from "@utils";
 import { validResponseCode } from "@utils/common-fn";
 // 设置
-import { PUBLIC_URL, SUCCESS_CODE, } from '@config';
+import { SERVICE_URL, SUCCESS_CODE, } from '@config';
 // 全局数据
 import store from '@store';
 
 /** 创建axios实例 */
 const axiosInstance = axios.create({
-    baseURL: PUBLIC_URL,
+    baseURL: SERVICE_URL,
     // 30s
     timeout: 30 * 1000,
     withCredentials: true,

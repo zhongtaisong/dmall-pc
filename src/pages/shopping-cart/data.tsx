@@ -1,28 +1,25 @@
 import React from 'react';
 import { InputNumber, Popconfirm } from 'antd';
-import { Link } from 'react-router-dom';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/lib/table';
 import lodash from 'lodash';
-// 全局设置
-import { PUBLIC_URL } from '@config';
 // mobx数据
 import store from '@store';
 
 export const columns: ColumnsType<any> = [
     {
         title: '图片',
-        dataIndex: 'mainPicture',
-        key: 'mainPicture',
+        dataIndex: 'main_picture',
+        key: 'main_picture',
         align: 'center',
         width: '10%',
         render: (text, record) => {
-            if(!record?.goodsInfo?.mainPicture) return '-';
+            if(!record?.goodsInfo?.main_picture) return '-';
 
             return (
                 <img 
                     style={{ width: '100%', }} 
-                    src={ `${ PUBLIC_URL }${ record?.goodsInfo?.mainPicture }` } 
+                    src={ record?.goodsInfo?.main_picture } 
                     alt="图片"
                 />
             );
