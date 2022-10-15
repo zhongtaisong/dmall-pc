@@ -18,11 +18,6 @@ import './index.less';
  */
 @observer
 class Index extends React.PureComponent<RouteComponentProps, any> {
-
-    componentDidMount(): void {
-        store.commonStore.shoppingCartSelectNumServiceFn();
-    }
-
     render() {
         const isLogin = commonFn.isLogin();
 

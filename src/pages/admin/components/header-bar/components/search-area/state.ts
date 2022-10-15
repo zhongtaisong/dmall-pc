@@ -1,5 +1,4 @@
 import { observable, action, toJS } from "mobx";
-import { message } from 'antd';
 import { makeAutoObservable } from "mobx";
 import { SUCCESS_CODE } from '@config';
 // 接口服务

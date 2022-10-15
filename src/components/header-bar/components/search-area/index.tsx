@@ -33,7 +33,8 @@ class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> 
                                 <use xlinkHref="#icon-logo"></use>
                             </svg>
                         </Col>
-                        <Col span={ 12 } className='dm_SearchArea__content--menu'>
+
+                        <Col span={ !isAdminPage(location?.pathname) ? 12 : 20 } className='dm_SearchArea__content--menu'>
                             {
                                 !isAdminPage(location?.pathname) ? (
                                     <>
@@ -41,7 +42,7 @@ class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> 
                                             MENU_LIST_FRONT.map(item => {
                                                 return (
                                                     <Link 
-                                                        key={ item.key }
+                                                        key={ item.pathname }
                                                         to={ item.pathname } 
                                                         className={ location?.pathname?.includes?.(item.pathname) ? 'active' : '' }
                                                     >{ item.name }</Link>
@@ -53,11 +54,9 @@ class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> 
                                     <>
                                         {
                                             MENU_LIST_BACK.map(item => {
-                                                // if(!adminObj?.[item.authKey]) return null;
-
                                                 return (
                                                     <Link 
-                                                        key={ item.key }
+                                                        key={ item.pathname }
                                                         to={ item.pathname } 
                                                         className={ location?.pathname?.includes?.(item.pathname) ? 'active' : '' }
                                                     >{ item.name }</Link>
@@ -68,33 +67,32 @@ class SearchArea extends React.PureComponent<Partial<RouteComponentProps>, any> 
                                 )
                             }
                         </Col>
-                        <Col span={ 8 } className='dm_SearchArea__content--search'>
-                            {
-                                !isAdminPage(location?.pathname) ? (
-                                    <>
-                                        {
-                                            location?.pathname?.includes?.("/goods-list") ? (
-                                                <Input.Search 
-                                                    className='dm_SearchArea__content--search__input'
-                                                    placeholder="请输入关键字" 
-                                                    enterButton 
-                                                    defaultValue={ keyword }
-                                                    onSearch={ this.getSearchKws } 
-                                                />
-                                            ) : null
-                                        }
-                                        <Badge count={ shoppingCartNum } overflowCount={ 99 }>
-                                            <Button 
-                                                icon={ <ShoppingCartOutlined style={{ fontSize: 15 }} /> } 
-                                                type="primary" 
-                                                className='dm_SearchArea__content--search__cart'
-                                                onClick={ this.goShopCartFn }
-                                            >购物车</Button>
-                                        </Badge>
-                                    </>
-                                ) : ''
-                            }
-                        </Col>
+
+                        {
+                            !isAdminPage(location?.pathname) ? (
+                                <Col span={ 8 } className='dm_SearchArea__content--search'>
+                                    {
+                                        location?.pathname?.includes?.("/goods-list") ? (
+                                            <Input.Search 
+                                                className='dm_SearchArea__content--search__input'
+                                                placeholder="请输入关键字" 
+                                                enterButton 
+                                                defaultValue={ keyword }
+                                                onSearch={ this.getSearchKws } 
+                                            />
+                                        ) : null
+                                    }
+                                    <Badge count={ shoppingCartNum } overflowCount={ 99 }>
+                                        <Button 
+                                            icon={ <ShoppingCartOutlined style={{ fontSize: 15 }} /> } 
+                                            type="primary" 
+                                            className='dm_SearchArea__content--search__cart'
+                                            onClick={ this.goShopCartFn }
+                                        >购物车</Button>
+                                    </Badge>
+                                </Col>
+                            ) : null
+                        }
                     </Row>
                 </div>
             </>
