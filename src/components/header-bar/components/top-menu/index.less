@@ -10,7 +10,12 @@
         justify-content: space-between;
         color: #fff;
         &--left {
-            font-size: 12px;
+            display: flex;
+            align-items: center;
+            >div {
+                font-size: 12px;
+                margin-left: 8px;
+            }
         }
         &--right {
             display: flex !important;

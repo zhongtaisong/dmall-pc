@@ -1,6 +1,7 @@
 import React from 'react';
 import { Comment, Avatar, Button, Input, List, Form } from 'antd';
 import { observer } from 'mobx-react';
+import { UserOutlined } from '@ant-design/icons';
 import { FormInstance } from 'antd/es/form';
 import { isLogin } from '@utils/common-fn';
 // mobx数据
@@ -32,7 +33,14 @@ class MessageBoard extends React.PureComponent<any, any> {
                         return (
                             <Comment 
                                 author={ props.uname }
-                                avatar={ <Avatar src={ props?.avatar } alt="头像" /> }
+                                avatar={ 
+                                    <Avatar 
+                                        style={{ backgroundColor: 'var(--dm-main-color)' }} 
+                                        src={ props?.avatar }
+                                        icon={<UserOutlined />} 
+                                        alt="头像"
+                                    /> 
+                                }
                                 content={ props?.content  }
                                 datetime={ props?.create_time }
                             />

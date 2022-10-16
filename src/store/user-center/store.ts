@@ -1,4 +1,4 @@
-import { SERVICE_URL, SUCCESS_CODE } from "@config";
+import { SUCCESS_CODE } from "@config";
 import { makeAutoObservable, runInAction } from "mobx";
 import moment from "moment";
 import { 
@@ -37,7 +37,7 @@ export default class Store {
                 uid: Date.now(),
                 name: 'image.png',
                 status: 'done',
-                url: `${ SERVICE_URL }${ personalInformation?.avatar }`,
+                url: personalInformation?.avatar,
             }],
         });
     }

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Popover, ConfigProvider } from 'antd';
+import { Popover, ConfigProvider, Avatar } from 'antd';
 import { RouteComponentProps } from 'react-router-dom';
+import { UserOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react';
 import { SketchPicker } from 'react-color';
 import { commonFn } from '@utils';
@@ -32,7 +33,7 @@ class TopMenu extends React.PureComponent<Partial<RouteComponentProps>, {
 
     render() {
         const { pathname } = this.props.location;
-        const { admin_status, nickName, uname } = commonFn?.getUserInfo?.() || {};
+        const { admin_status, nickName, uname, avatar, } = commonFn?.getUserInfo?.() || {};
         const { isLoginAndRegister } = this.state;
         let { welcomeObjectName } = store?.headerBarStore || {};
         welcomeObjectName = welcomeObjectName || nickName || uname || '朋友';
@@ -41,7 +42,14 @@ class TopMenu extends React.PureComponent<Partial<RouteComponentProps>, {
             <div className='dm_topMenu'>
                 <div className='common_width dm_topMenu__content'>
                     <div className='dm_topMenu__content--left'>
-                        欢迎您，{ welcomeObjectName }
+                        <Avatar 
+                            style={{ backgroundColor: 'var(--dm-main-color)' }} 
+                            src={ avatar }
+                            icon={<UserOutlined />} 
+                            size="small"
+                            alt="头像"
+                        /> 
+                        <div>欢迎您，{ welcomeObjectName }</div>
                     </div>
                     { !isAdminPage(pathname) && (
                         <div className='dm_topMenu__content--right'>

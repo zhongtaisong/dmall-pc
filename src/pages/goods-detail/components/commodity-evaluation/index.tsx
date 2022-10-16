@@ -1,5 +1,6 @@
 import React from 'react';
 import { Comment, Avatar, Empty, } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react';
 // mobx数据
 import store from '@store';
@@ -28,7 +29,14 @@ class CommodityEvaluation extends React.PureComponent<any, any> {
                                 key={ item?.id }
                                 className="commodity_evaluation__comment"
                                 author={ item?.uname }
-                                avatar={ <Avatar src={ item?.avatar } alt="用户头像" /> }
+                                avatar={ 
+                                    <Avatar 
+                                        style={{ backgroundColor: 'var(--dm-main-color)' }} 
+                                        src={ item?.avatar }
+                                        icon={<UserOutlined />} 
+                                        alt="头像"
+                                    /> 
+                                }
                                 content={ <div className='commodity_evaluation__comment--content'>{ item.content }</div> }
                                 datetime={ item?.commentTime }
                             />
