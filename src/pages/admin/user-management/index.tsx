@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, Table, Modal, Popconfirm, Select, notification, } from 'antd';
+import { Form, Input, Button, Table, Modal, Popconfirm, notification, } from 'antd';
 import { observer } from 'mobx-react';
 import { FormInstance } from 'antd/es/form';
 import { IRecordInfo } from '@store/admin/user-management/type';
@@ -60,6 +60,7 @@ class UserManagement extends React.PureComponent<any, {
                         },
                         showTotal: total => `共 ${total} 条`,
                     }}
+                    scroll={{ x: "110%", }}
                 >
                     <Table.Column 
                         title="序号" 
@@ -110,14 +111,15 @@ class UserManagement extends React.PureComponent<any, {
                     />
 
                     <Table.Column 
-                        title="是否允许进入DemoMall管理后台" 
+                        title="DemoMall管理后台" 
                         dataIndex="admin_status" 
                         key="admin_status" 
                         align='center'
+                        width='10%'
                         render={(text) => {
                             return {
-                                0: "否",
-                                1: "是",
+                                0: "无权限",
+                                1: "有权限",
                             }?.[text] || "-";
                         }} 
                     />
@@ -127,6 +129,7 @@ class UserManagement extends React.PureComponent<any, {
                         dataIndex="create_time" 
                         key="create_time"
                         align='center'
+                        width='10%'
                     />
 
                     <Table.Column 
@@ -134,6 +137,7 @@ class UserManagement extends React.PureComponent<any, {
                         dataIndex="update_time" 
                         key="update_time" 
                         align='center'
+                        width='10%'
                     />
 
                     <Table.Column 
@@ -141,6 +145,7 @@ class UserManagement extends React.PureComponent<any, {
                         dataIndex="operation" 
                         key="operation" 
                         align='center'
+                        fixed="right"
                         width='16%'
                         render={(text, record: IRecordInfo, index) => {
                             return (

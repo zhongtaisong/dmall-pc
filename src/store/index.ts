@@ -18,6 +18,7 @@ import BrandManagementStore from './admin/brand-management/store';
 import OrderManagementStore from './admin/order-management/store';
 import GoodsEvaluateManagementStore from './admin/goods-evaluate-management/store';
 import UserManagementStore from './admin/user-management/store';
+import GoodsManagementStore from './admin/goods-management/store';
 
 export default {
     commonStore: new CommonStore(),
@@ -40,4 +41,5 @@ export default {
     orderManagementStore: new OrderManagementStore(),
     goodsEvaluateManagementStore: new GoodsEvaluateManagementStore(),
     userManagementStore: new UserManagementStore(),
+    goodsManagementStore: new GoodsManagementStore(),
 };

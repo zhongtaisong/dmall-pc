@@ -65,8 +65,6 @@ export default class UploadImg extends React.PureComponent<Partial<IComponentPro
             previewImageInfo,
         } = this.state;
         const { maxCount, } = this.props;
-        // console.log('ddddddddd', this.state, this.props)
-
         return (
             <>
                 <Upload
@@ -146,7 +144,7 @@ export default class UploadImg extends React.PureComponent<Partial<IComponentPro
         if(file?.status === 'removed') {
             fileList_new = fileList.filter(item => item?.uid !== file?.uid) || [];
         }else {
-            fileList_new = [...fileList, ...info?.fileList];
+            fileList_new = info?.fileList;
         }
         setTimeout(() => {
             this.setState({ 

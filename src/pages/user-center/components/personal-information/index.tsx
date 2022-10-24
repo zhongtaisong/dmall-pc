@@ -25,8 +25,10 @@ export default class PersonalInformation extends React.PureComponent<{
                         required: true, 
                         message: '请上传头像！',
                     }]}
+                    extra="1、每张图片大小限制在 2M 以内; 2、最多上传 1 张图片。"
                 >
                     <UploadImg 
+                        maxCount={ 1 }
                         onUploadCallBack={(file) => onUploadCallBack?.(file)} 
                         fileList={ fileList }
                     />

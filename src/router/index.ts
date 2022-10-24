@@ -15,10 +15,10 @@ import WebsiteDescription from '@pages/website-description';
 import UserCenter from '@pages/user-center';
 import MessageBoard from '@pages/message-board';
 import BrandManagement from '@pages/admin/brand-management';
-import ProductList from '@pages/admin/goods-manage/goods-list';
 import OrderManagement from '@pages/admin/order-management';
 import GoodsEvaluateManagement from '@pages/admin/goods-evaluate-management';
 import UserManagement from '@pages/admin/user-management';
+import GoodsManagement from '@pages/admin/goods-management';
 import AdminList from '@pages/admin/admin-list';
 
 /**
@@ -118,9 +118,9 @@ export const PAGE_ROUTER = [
         isOpen: false,
     },
     {
-        pathname: '/views/admin/product',
-        component: ProductList,
-        title: '商品管理-商品',
+        pathname: '/views/admin/goods-management',
+        component: GoodsManagement,
+        title: '商品管理',
         isOpen: false,
     },
     {

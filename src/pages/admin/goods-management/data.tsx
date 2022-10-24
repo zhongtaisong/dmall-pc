@@ -1,8 +1,6 @@
 import React from 'react';
 import { Popconfirm } from 'antd';
-// 全局公共方法
-import { session } from '@utils';
-const tableDic = session.getItem('tableDic');
+const tableDic = sessionStorage.getItem('tableDic') as any;
    
 // 表头
 export default ({ onUpdateClick, onDeleteClick, onPushClick, onDetailClick }: {
@@ -40,8 +38,8 @@ export default ({ onUpdateClick, onDeleteClick, onPushClick, onDetailClick }: {
         },
         {
             title: '商品名称',
-            dataIndex: 'productName',
-            key: 'productName',
+            dataIndex: 'goods_name',
+            key: 'goods_name',
         },
         {
             title: '商品描述',
