@@ -19,158 +19,158 @@ import OrderManagement from '@pages/admin/order-management';
 import GoodsEvaluateManagement from '@pages/admin/goods-evaluate-management';
 import UserManagement from '@pages/admin/user-management';
 import GoodsManagement from '@pages/admin/goods-management';
-import AdminList from '@pages/admin/admin-list';
+import PermissionManagement from '@pages/admin/permission-management';
 
 /**
  * 核心页面路由
- * 
+ *
  * isOpen - 是否有权限访问
  */
 export const PAGE_ROUTER = [
-    { 
-        pathname: '/views',
-        redirect: '/views/home',
-        title: '首页',
-        isOpen: true,
-    },
-    { 
-        pathname: '/views/home',
-        component: Home,
-        title: '首页',
-        isOpen: true,
-    },
-    { 
-        pathname: '/views/goods-list/:keyword?',
-        component: GoodsList,
-        title: '杂货铺',
-        isOpen: true,
-    },
-    { 
-        pathname: '/views/web',
-        component: WebsiteDescription,
-        title: '网站说明',
-        isOpen: true,
-    },
-    { 
-        pathname: '/views/message-board',
-        component: MessageBoard,
-        title: '留言板',
-        isOpen: true,
-    },
-    { 
-        pathname: '/views/shopping-cart',
-        component: ShoppingCart,
-        title: '购物车',
-        isOpen: false,
-    },
-    { 
-        pathname: '/views/my-order',
-        component: MyOrder,
-        title: '我的订单',
-        isOpen: false,
-    },
-    { 
-        pathname: '/views/my-collection',
-        component: MyCollection,
-        title: '我的收藏',
-        isOpen: false,
-    },
-    { 
-        pathname: '/views/user-center',
-        component: UserCenter,
-        title: '用户中心',
-        isOpen: false,
-    },
-    { 
-        pathname: '/views/goods-detail/:id',
-        component: GoodsDetail,
-        title: '商品详情',
-        isOpen: true,
-    },
-    { 
-        pathname: '/views/confirm-order',
-        component: ConfirmOrder,
-        title: '确认订单',
-        isOpen: false,
-    },
-    { 
-        pathname: '/views/order-details/:order_no',
-        component: OrderDetails,
-        title: '订单详情',
-        isOpen: false,
-    },
-    { 
-        pathname: '/views/goods-evaluate/:order_no',
-        component: GoodsEvaluate,
-        title: '商品评价中心',
-        isOpen: false,
-    },
-    { 
-        pathname: '/views/admin',
-        redirect: '/views/admin/brand-management',
-        title: 'DemoMall管理后台',
-        isOpen: false,
-    },
-    {
-        pathname: '/views/admin/brand-management',
-        component: BrandManagement,
-        title: '品牌管理',
-        isOpen: false,
-    },
-    {
-        pathname: '/views/admin/goods-management',
-        component: GoodsManagement,
-        title: '商品管理',
-        isOpen: false,
-    },
-    {
-        pathname: '/views/admin/order-management',
-        component: OrderManagement,
-        title: '订单管理',
-        isOpen: false,
-    },
-    {
-        pathname: '/views/admin/user-management',
-        component: UserManagement,
-        title: '用户管理',
-        isOpen: false,
-    },
-    {
-        pathname: '/views/admin/goods-evaluate-management',
-        component: GoodsEvaluateManagement,
-        title: '评价管理',
-        isOpen: false,
-    },
-    {
-        pathname: '/views/admin/admin',
-        component: AdminList,
-        title: '管理员列表',
-        isOpen: false,
-    }
+  {
+    pathname: '/views',
+    redirect: '/views/home',
+    title: '首页',
+    isOpen: true,
+  },
+  {
+    pathname: '/views/home',
+    component: Home,
+    title: '首页',
+    isOpen: true,
+  },
+  {
+    pathname: '/views/goods-list/:keyword?',
+    component: GoodsList,
+    title: '杂货铺',
+    isOpen: true,
+  },
+  {
+    pathname: '/views/web',
+    component: WebsiteDescription,
+    title: '网站说明',
+    isOpen: true,
+  },
+  {
+    pathname: '/views/message-board',
+    component: MessageBoard,
+    title: '留言板',
+    isOpen: true,
+  },
+  {
+    pathname: '/views/shopping-cart',
+    component: ShoppingCart,
+    title: '购物车',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/my-order',
+    component: MyOrder,
+    title: '我的订单',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/my-collection',
+    component: MyCollection,
+    title: '我的收藏',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/user-center',
+    component: UserCenter,
+    title: '用户中心',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/goods-detail/:id',
+    component: GoodsDetail,
+    title: '商品详情',
+    isOpen: true,
+  },
+  {
+    pathname: '/views/confirm-order',
+    component: ConfirmOrder,
+    title: '确认订单',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/order-details/:order_no',
+    component: OrderDetails,
+    title: '订单详情',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/goods-evaluate/:order_no',
+    component: GoodsEvaluate,
+    title: '商品评价中心',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/admin',
+    redirect: '/views/admin/brand-management',
+    title: 'DemoMall管理后台',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/admin/brand-management',
+    component: BrandManagement,
+    title: '品牌管理',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/admin/goods-management',
+    component: GoodsManagement,
+    title: '商品管理',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/admin/order-management',
+    component: OrderManagement,
+    title: '订单管理',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/admin/user-management',
+    component: UserManagement,
+    title: '用户管理',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/admin/goods-evaluate-management',
+    component: GoodsEvaluateManagement,
+    title: '评价管理',
+    isOpen: false,
+  },
+  {
+    pathname: '/views/admin/permission-management',
+    component: PermissionManagement,
+    title: '权限管理',
+    isOpen: false,
+  },
 ];
 
 /**
  * 根路由
  */
 export const ROOT_ROUTER = [
-    { 
-        pathname: '/',
-        redirect: '/views',
-        title: '首页',
-    },
-    { 
-        pathname: '/views',
-        component: Index,
-        title: '首页',
-    },
-    { 
-        pathname: '/login',
-        component: Login,
-        title: '登录',
-    },
-    { 
-        pathname: '/register',
-        component: Register,
-        title: '注册',
-    },
+  {
+    pathname: '/',
+    redirect: '/views',
+    title: '首页',
+  },
+  {
+    pathname: '/views',
+    component: Index,
+    title: '首页',
+  },
+  {
+    pathname: '/login',
+    component: Login,
+    title: '登录',
+  },
+  {
+    pathname: '/register',
+    component: Register,
+    title: '注册',
+  },
 ];
