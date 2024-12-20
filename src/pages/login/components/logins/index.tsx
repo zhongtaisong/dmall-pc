@@ -12,73 +12,84 @@ import './index.less';
  */
 @observer
 class Logins extends React.PureComponent<any, any> {
-    render() {
-        const { componentKey, setMobxStoreFn, } = store?.loginStore || {};
-        if(componentKey !== 0) return null;
-        
-        return (
-            <div className='login_logins'>
-                <Form.Item
-                    name="uname"
-                    rules={[{ 
-                        required: true, 
-                        message: '请输入用户名', 
-                        whitespace: true 
-                    }]}
-                    initialValue={ localStorage.getItem('uname') }
-                >
-                    <Input
-                        prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder="请输入用户名"
-                    />
-                </Form.Item>
-                <Form.Item
-                    name="upwd"
-                    rules={[{ 
-                        required: true, 
-                        message: '请输入密码', 
-                        whitespace: true 
-                    }]}
-                >
-                    <Input.Password
-                        prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder="请输入密码"
-                    />
-                </Form.Item>
+  render() {
+    const { componentKey, setMobxStoreFn } = store?.loginStore || {};
+    if (componentKey !== 0) return null;
 
-                <div className='login_logins__pwd'>
-                    <Form.Item 
-                        name="isRemember"
-                        valuePropName="checked"
-                        initialValue={ false }
-                    >
-                        <Checkbox>记住密码</Checkbox>
-                    </Form.Item>
-                    <Form.Item>
-                        <span 
-                            className='login_logins__pwd--text' 
-                            onClick={() => setMobxStoreFn?.({
-                                key: 'componentKey',
-                                value: 1,
-                            })}
-                        >忘记密码？</span>
-                    </Form.Item>
-                </div>
+    return (
+      <div className='login_logins'>
+        <Form.Item
+          name='phone'
+          rules={[
+            {
+              required: true,
+              message: '请输入手机号码',
+            },
+          ]}
+          initialValue={localStorage.getItem('phone')}
+        >
+          <Input
+            prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder='请输入手机号码'
+            maxLength={11}
+          />
+        </Form.Item>
+        <Form.Item
+          name='password'
+          rules={[
+            {
+              required: true,
+              message: '请输入密码',
+            },
+          ]}
+        >
+          <Input.Password
+            prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder='请输入密码'
+          />
+        </Form.Item>
 
-                <Form.Item>
-                    <Button 
-                        type="primary" 
-                        htmlType="submit"
-                        style={{ width: '100%' }}
-                        size='large'
-                    >登录</Button>
-                </Form.Item> 
-                <Form.Item>
-                    <Link to="/register" className='login_logins__register'>新用户注册</Link>
-                </Form.Item>
-            </div>
-        );
-    }
+        <div className='login_logins__pwd'>
+          <Form.Item
+            name='isRemember'
+            valuePropName='checked'
+            initialValue={true}
+          >
+            <Checkbox>记住账号</Checkbox>
+          </Form.Item>
+          <Form.Item>
+            <span
+              className='login_logins__pwd--text'
+              onClick={() =>
+                setMobxStoreFn?.({
+                  key: 'componentKey',
+                  value: 1,
+                })
+              }
+            >
+              忘记密码？
+            </span>
+          </Form.Item>
+        </div>
+
+        <Form.Item>
+          <Button
+            type='primary'
+            htmlType='submit'
+            style={{ width: '100%' }}
+            size='large'
+          >
+            登录
+          </Button>
+        </Form.Item>
+        <Form.Item>
+          <Link to='/register' className='login_logins__register'>
+            新用户注册
+          </Link>
+        </Form.Item>
+      </div>
+    );
+  }
 }
 
 export default Logins;

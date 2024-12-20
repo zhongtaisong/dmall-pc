@@ -44,7 +44,7 @@ export default class Store {
 
     const result = await adminPermissionSelectService(requestParams);
 
-    const { dataSource, total } = result?.data?.content || {};
+    const { dataSource, total } = result?.data?.context || {};
     runInAction(() => {
       this.dataSource = dataSource || [];
       this.total = total ?? 0;
@@ -103,7 +103,7 @@ export default class Store {
   adminPermissionSelectUnameServiceFn = async () => {
     const result = await adminPermissionSelectUnameService();
     runInAction(() => {
-      this.unameList = result?.data?.content || [];
+      this.unameList = result?.data?.context || [];
     });
   };
 }

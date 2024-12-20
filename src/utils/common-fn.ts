@@ -1,121 +1,107 @@
-import { cacheKey, history, } from "@utils";
-import { PAGE_ROUTER, } from '@router';
-import { ADMIN_PATH_NAME } from "@config";
-import type { RcFile, } from 'antd/es/upload/interface';
+import { cacheKey, history } from '@utils';
+import { PAGE_ROUTER } from '@router';
+import { ADMIN_PATH_NAME } from '@config';
+import type { RcFile } from 'antd/es/upload/interface';
 
 /**
  * 获取用户信息
- * @returns 
+ * @returns
  */
 export const getUserInfo = (): {
-    /**
-     * 是否拥有后台权限
-     * 
-     * 1是，0否
-     */
-    admin_status: 0 | 1;
-    /**
-     * 用户头像
-     */
-    avatar: string;
-    /**
-     * 用户生日
-     */
-    birthday: string;
-    /**
-     * 用户邮箱
-     */
-    email: string;
-    /**
-     * 用户性别
-     */
-    gender: string;
-    /**
-     * 用户id
-     */
-    id: number;
-    /**
-     * 用户昵称
-     */
-    nickName: string;
-    /**
-     * 用户联系电话
-     */
-    phone: string;
-    /**
-     * 用户名
-     */
-    uname: string;
-    /**
-     * 登录凭证
-     */
-    token: string;
+  /**
+   * 用户头像
+   */
+  avatar: string;
+  /**
+   * 用户id
+   */
+  id: number;
+  /**
+   * 用户昵称
+   */
+  nickName: string;
+  /**
+   * 用户联系电话
+   */
+  phone: string;
+  /**
+   * 登录凭证
+   */
+  token: string;
 } => {
-    let user_info;
-    try {
-        user_info = JSON.parse(sessionStorage.getItem(cacheKey.USER_INFO) || localStorage.getItem(cacheKey.USER_INFO));
-    } catch (error) {
-        console.log(error);
-    }
-    return user_info || {};
-}
+  let user_info;
+  try {
+    user_info = JSON.parse(
+      sessionStorage.getItem(cacheKey.USER_INFO) ||
+        localStorage.getItem(cacheKey.USER_INFO),
+    );
+  } catch (error) {
+    console.log(error);
+  }
+  return user_info || {};
+};
 
 /**
  * 是否已登录
  */
 export const isLogin = (): boolean => {
-    return Boolean(window?.token || getUserInfo?.()?.token);
-}
+  return Boolean(window?.token || getUserInfo?.()?.token);
+};
 
 /**
  * file图片数据转为base64
- * @param file 
- * @returns 
+ * @param file
+ * @returns
  */
 export const fileToBase64 = (file: RcFile) => {
-    if(!file || !Object.keys(file).length) return Promise.resolve(null);
+  if (!file || !Object.keys(file).length) return Promise.resolve(null);
 
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader?.result);
-        reader.onerror = error => reject(error);
-    });
-}
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader?.result);
+    reader.onerror = (error) => reject(error);
+  });
+};
 
 /**
  * 校验图片尺寸 - 操作
- * @param file 
- * @returns 
+ * @param file
+ * @returns
  */
-export const checkSize = (file, width: Array<number>, height: Array<number>): Promise<string | boolean> => {
-    if( !Array.isArray(width) || !width.length ) return Promise.resolve(false);
-    if( !Array.isArray(height) || !height.length ) return Promise.resolve(false);
+export const checkSize = (
+  file,
+  width: Array<number>,
+  height: Array<number>,
+): Promise<string | boolean> => {
+  if (!Array.isArray(width) || !width.length) return Promise.resolve(false);
+  if (!Array.isArray(height) || !height.length) return Promise.resolve(false);
 
-    return new Promise(resolve => {
-        const _URL = window?.URL || window?.webkitURL;
-        const img = new Image();
-        img.src = _URL.createObjectURL(file?.originFileObj || file);
-        img.onload = () => {
-            if(!width.includes(img.width)){
-                return resolve(`图片尺寸不对，宽度为${ width.join(' 或 ') }！`);
-            }
+  return new Promise((resolve) => {
+    const _URL = window?.URL || window?.webkitURL;
+    const img = new Image();
+    img.src = _URL.createObjectURL(file?.originFileObj || file);
+    img.onload = () => {
+      if (!width.includes(img.width)) {
+        return resolve(`图片尺寸不对，宽度为${width.join(' 或 ')}！`);
+      }
 
-            if(!height.includes(img.height)){
-                return resolve(`图片尺寸不对，高度为${ height.join(' 或 ') }！`);
-            }
+      if (!height.includes(img.height)) {
+        return resolve(`图片尺寸不对，高度为${height.join(' 或 ')}！`);
+      }
 
-            resolve(false);
-        };
-    });
+      resolve(false);
+    };
+  });
 };
 
 /**
  * 校验 - 接口响应内容
- * @param params 
- * @param requestNum 
+ * @param params
+ * @param requestNum
  */
-export const validResponseCode = (params: {
+export const validResponseCode = (
+  params: {
     /**
      * 异常码
      */
@@ -124,112 +110,119 @@ export const validResponseCode = (params: {
      * 响应结果
      */
     response: {
+      /**
+       * 返回结果
+       */
+      data: {
         /**
-         * 返回结果
+         * 接口返回结果码
          */
-        data: {
-            /**
-             * 接口返回结果码
-             */
-            code: string;
-            /**
-             * 提示语
-             */
-            msg: string;
-        },
+        code: string;
         /**
-         * 响应码
+         * 提示语
          */
-        status: number;
+        msg: string;
+      };
+      /**
+       * 响应码
+       */
+      status: number;
     };
-}, requestNum?: number) => {
-    if(!params || !Object.keys(params).length) return;
+  },
+  requestNum?: number,
+) => {
+  if (!params || !Object.keys(params).length) return;
 
-    const { code, } = params;
-    const { status, data, } = params?.response || {};
-    switch(code) {
-        case "ERR_NETWORK":
-            return "网络出错了!";
-        case "ECONNABORTED":
-            return "请求超时!";
-        case "ERR_BAD_REQUEST":
-            if(status === 401) {
-                localStorage.removeItem(cacheKey.USER_INFO);
-                sessionStorage.removeItem(cacheKey.USER_INFO);
-                
-                if(requestNum <= 0 && !["/login"].includes(history?.location?.pathname)) {
-                    history.push("/login");
-                }
+  const { code } = params;
+  const { status, data } = params?.response || {};
+  switch (code) {
+    case 'ERR_NETWORK':
+      return '网络出错了!';
+    case 'ECONNABORTED':
+      return '请求超时!';
+    case 'ERR_BAD_REQUEST':
+      if (status === 401) {
+        localStorage.removeItem(cacheKey.USER_INFO);
+        sessionStorage.removeItem(cacheKey.USER_INFO);
 
-                if(!isLogin?.()) {
-                    return;
-                }
+        if (
+          requestNum <= 0 &&
+          !['/login'].includes(history?.location?.pathname)
+        ) {
+          history.push('/login');
+        }
 
-                return data?.msg || "身份认证失败!";
-            }
-            
-            return data?.msg;
-    }
+        if (!isLogin?.()) {
+          return;
+        }
+
+        return data?.msg || '身份认证失败!';
+      }
+
+      return data?.msg;
+  }
 };
 
 /**
  * 当前path是否属于开放访问
- * @param pathname 
- * @returns 
+ * @param pathname
+ * @returns
  */
 export const isOpenPath = (pathname: string) => {
-    if(!pathname) return true;
+  if (!pathname) return true;
 
-    return PAGE_ROUTER.find(item => item?.pathname === pathname)?.isOpen ?? true;
+  return (
+    PAGE_ROUTER.find((item) => item?.pathname === pathname)?.isOpen ?? true
+  );
 };
 
 /**
  * 校验 - 手机号码
- * @param value 
- * @returns 
+ * @param value
+ * @returns
  */
 export const validatePhone = (value) => {
-    if(!value?.trim?.()) {
-        return Promise.reject('请输入手机号码');
-    }
+  if (!value?.trim?.()) {
+    return Promise.reject('请输入手机号码');
+  }
 
-    const reg = /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/;
-    if (!reg.test(value)) {
-        return Promise.reject('请输入合法的手机号码');
-    }
+  const reg = /^1[3-9]\d{9}$/;
+  if (!reg.test(value)) {
+    return Promise.reject('请输入合法的手机号码');
+  }
 
-    return Promise.resolve();
+  return Promise.resolve();
 };
 
 /**
  * 是否为管理后台页面
- * @param pathname 
+ * @param pathname
  */
 export const isAdminPage = (pathname: string): boolean => {
-    if(!pathname) return false;
+  if (!pathname) return false;
 
-    return pathname?.includes?.(ADMIN_PATH_NAME);
-}
+  return pathname?.includes?.(ADMIN_PATH_NAME);
+};
 
 /**
  * 校验 - 用户名
- * @param value 
- * @returns 
+ * @param value
+ * @returns
  */
 export const validateUname = (value) => {
-    value = value?.trim?.();
-    if(!value) {
-        return Promise.reject('请输入用户名');
+  value = value?.trim?.();
+  if (!value) {
+    return Promise.reject('请输入用户名');
+  }
+
+  const reg = /[A-Za-z0-9]{2,64}/;
+  if (!reg.test(value)) {
+    if (value?.length >= 2 && value?.length <= 64) {
+      return Promise.reject('用户名仅支持输入大小写英文、数字及其组合');
     }
 
-    const reg = /[A-Za-z0-9]{2,64}/;
-    if (!reg.test(value)) {
-        if(value?.length >= 2 && value?.length <= 64) {
-            return Promise.reject('用户名仅支持输入大小写英文、数字及其组合');
-        }
+    return Promise.reject('用户名限制在2到64个字符');
+  }
 
-        return Promise.reject('用户名限制在2到64个字符');
-    }
-
-    return Promise.resolve();
+  return Promise.resolve();
 };

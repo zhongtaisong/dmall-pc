@@ -9,246 +9,271 @@ import store from '@store';
 import './index.less';
 
 interface IComponentPros {
-    /**
-     * 搜索关键字
-     */
-    keyword?: string;
+  /**
+   * 搜索关键字
+   */
+  keyword?: string;
 }
 
 interface IComponentState {
-    /**
-     * 当前选中的筛选条件
-     */
-    filterParams: {
-        [key: string]: string | number;
-    };
+  /**
+   * 当前选中的筛选条件
+   */
+  filterParams: {
+    [key: string]: string | number;
+  };
 }
 
 /**
- * 杂货铺
+ * 商品列表
  */
 @observer
-class GoodsList extends React.PureComponent<RouteComponentProps<IComponentPros>, IComponentState> {
+class GoodsList extends React.PureComponent<
+  RouteComponentProps<IComponentPros>,
+  IComponentState
+> {
+  constructor(props: RouteComponentProps<IComponentPros>) {
+    super(props);
+    this.state = {
+      filterParams: {},
+    };
+  }
 
-    constructor(props: RouteComponentProps<IComponentPros>) {
-        super(props);
-        this.state = {
-            filterParams: {},
-        };
+  componentDidMount() {
+    const { keyword } = this.props?.match?.params || {};
+    const { filterParams } = this.state;
+
+    // 查询商品列表
+    this.goodsListSelectServiceFn({
+      current: 0,
+      keyword: keyword?.trim?.(),
+      filterParams,
+    });
+    // 查询商品过滤条件
+    store.goodsListStore.goodsListSelectFilterServiceFn();
+  }
+
+  componentDidUpdate(
+    prevProps: Readonly<
+      RouteComponentProps<{ keyword?: string }, StaticContext, unknown>
+    >,
+  ): void {
+    const { keyword } = this.props?.match?.params || {};
+    if (keyword !== prevProps?.match?.params?.keyword) {
+      this.goodsListSelectServiceFn({
+        current: 0,
+        keyword: keyword?.trim?.(),
+      });
     }
+  }
 
-    componentDidMount() {
-        const { keyword } = this.props?.match?.params || {};
-        const { filterParams } = this.state;
+  render() {
+    const { current, pageSize, total, filterMap } = store?.goodsListStore || {};
+    const { filterParams } = this.state;
 
-        // 查询商品列表
-        this.goodsListSelectServiceFn({
-            current: 0,
-            keyword: keyword?.trim?.(),
-            filterParams,
-        });
-        // 查询商品过滤条件
-        store.goodsListStore.goodsListSelectFilterServiceFn();
-    }
+    return (
+      <div className='dm_Products'>
+        <div className='common_width dm_Products__content'>
+          <div className='dm_Products__content--title'>商品筛选</div>
 
-    componentDidUpdate(prevProps: Readonly<RouteComponentProps<{ keyword?: string; }, StaticContext, unknown>>): void {
-        const { keyword } = this.props?.match?.params || {};
-        if(keyword !== prevProps?.match?.params?.keyword) {
-            this.goodsListSelectServiceFn({
-                current: 0,
-                keyword: keyword?.trim?.(),
-            });
-        }
-    }
+          {/* 筛选条件 */}
+          <div className='dm_Products__content--filterList'>
+            {Object.entries(filterMap).map(([key, value]: any) => {
+              key = key === 'brands' ? 'brand_id' : key;
+              const filterParams_item = filterParams[key];
 
-    render() {
-        const { current, pageSize, total, filterMap, } = store?.goodsListStore || {};
-        const { filterParams, } = this.state;
-
-        return (
-            <div className='dm_Products'>
-                <div className='common_width dm_Products__content'>
-                    <div className='dm_Products__content--title'>商品筛选</div>
-
-                    {/* 筛选条件 */}
-                    <div className='dm_Products__content--filterList'>
-                        {
-                            Object.entries(filterMap).map(([key, value]: any) => {
-                                key = key === 'brands' ? 'brand_id' : key;
-                                const filterParams_item = filterParams[key]
-
-                                return (
-                                    <div 
-                                        className='dm_Products__content--filterList__item'
-                                        key={ key }
-                                    >
-                                        <div className='dm_Products__content--filterList__item--label'>{ 
-                                            {
-                                                brand_id: "品牌",
-                                                cpu: "处理器",
-                                                disk: "硬盘容量",
-                                                memory: "内存容量",
-                                                screen_size: "屏幕尺寸",
-                                                systems: "系统",
-                                                thickness: "厚度",
-                                            }[key] 
-                                        }: </div>
-                                        <div className='dm_Products__content--filterList__item--tag'>
-                                            {
-                                                value?.map?.(item => {
-                                                    const val = item?.brand_id || item;
-                                                    return (
-                                                        <Tag.CheckableTag 
-                                                            key={ val }
-                                                            checked={ filterParams_item === val }
-                                                            onChange={() => this.onCheckableTagChange(key, val)}
-                                                        >{ item?.brand_name || item }</Tag.CheckableTag>
-                                                    );
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                );
-                            })
-                        }
-                        <div className='dm_Products__content--filterList__item' >
-                            <div className='dm_Products__content--filterList__item--label'>价格: </div>
-                            <div className='dm_Products__content--filterList__item--tag'>
-                                {
-                                    [
-                                        "0-3999", "4000-4499", "4500-4999", 
-                                        "5000-5499", "5500-5999", "6000-6999", 
-                                        "7000以上",
-                                    ].map(item => {
-                                        const filterParams_item = filterParams['price']
-                                        return (
-                                            <Tag.CheckableTag 
-                                                key={ item }
-                                                checked={ filterParams_item === item }
-                                                onChange={() => this.onCheckableTagChange('price', item)}
-                                            >{ item }</Tag.CheckableTag>
-                                        );
-                                    })
-                                }
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* 商品列表 */}
-                    { this.renderGoodsList() }
-
-                    <Pagination 
-                        current={ current + 1 }
-                        pageSize={ pageSize }
-                        total={ total } 
-                        // pageSizeOptions={[8, 16, 32, 64, 100]}
-                        onChange={(page, pageSize) => {
-                            this.goodsListSelectServiceFn({
-                                current: page - 1,
-                                pageSize,
-                            });
-                        }} 
-                        showTotal={ total => `共 ${total} 条` }
-                    />
+              return (
+                <div
+                  className='dm_Products__content--filterList__item'
+                  key={key}
+                >
+                  <div className='dm_Products__content--filterList__item--label'>
+                    {
+                      {
+                        brand_id: '品牌',
+                        cpu: '处理器',
+                        disk: '硬盘容量',
+                        memory: '内存容量',
+                        screen_size: '屏幕尺寸',
+                        systems: '系统',
+                        thickness: '厚度',
+                      }[key]
+                    }
+                    :{' '}
+                  </div>
+                  <div className='dm_Products__content--filterList__item--tag'>
+                    {value?.map?.((item) => {
+                      const val = item?.brand_id || item;
+                      return (
+                        <Tag.CheckableTag
+                          key={val}
+                          checked={filterParams_item === val}
+                          onChange={() => this.onCheckableTagChange(key, val)}
+                        >
+                          {item?.brand_name || item}
+                        </Tag.CheckableTag>
+                      );
+                    })}
+                  </div>
                 </div>
+              );
+            })}
+            <div className='dm_Products__content--filterList__item'>
+              <div className='dm_Products__content--filterList__item--label'>
+                价格:{' '}
+              </div>
+              <div className='dm_Products__content--filterList__item--tag'>
+                {[
+                  '0-3999',
+                  '4000-4499',
+                  '4500-4999',
+                  '5000-5499',
+                  '5500-5999',
+                  '6000-6999',
+                  '7000以上',
+                ].map((item) => {
+                  const filterParams_item = filterParams['price'];
+                  return (
+                    <Tag.CheckableTag
+                      key={item}
+                      checked={filterParams_item === item}
+                      onChange={() => this.onCheckableTagChange('price', item)}
+                    >
+                      {item}
+                    </Tag.CheckableTag>
+                  );
+                })}
+              </div>
             </div>
-        );
+          </div>
+
+          {/* 商品列表 */}
+          {this.renderGoodsList()}
+
+          <Pagination
+            current={current + 1}
+            pageSize={pageSize}
+            total={total}
+            // pageSizeOptions={[8, 16, 32, 64, 100]}
+            onChange={(page, pageSize) => {
+              this.goodsListSelectServiceFn({
+                current: page - 1,
+                pageSize,
+              });
+            }}
+            showTotal={(total) => `共 ${total} 条`}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  /**
+   * 查询 - 商品列表
+   * @param params
+   */
+  goodsListSelectServiceFn = (params) => {
+    if (!params || !Object.keys(params).length) return;
+
+    store.goodsListStore.goodsListSelectServiceFn({ ...params });
+  };
+
+  /**
+   * 监听 - CheckableTag变化
+   * @param key
+   * @param value
+   */
+  onCheckableTagChange = (key: string, value: string) => {
+    let { filterParams } = this.state;
+    if (!filterParams || !Object.keys(filterParams).length) {
+      filterParams = {};
     }
 
-    /**
-     * 查询 - 商品列表
-     * @param params 
-     */
-    goodsListSelectServiceFn = (params) => {
-        if(!params || !Object.keys(params).length) return;
-
-        store.goodsListStore.goodsListSelectServiceFn({...params});
+    if (filterParams[key] === value) {
+      delete filterParams[key];
+    } else {
+      filterParams[key] = value;
     }
 
-    /**
-     * 监听 - CheckableTag变化
-     * @param key 
-     * @param value 
-     */
-    onCheckableTagChange = (key: string, value: string) => {
-        let { filterParams } = this.state;
-        if(!filterParams || !Object.keys(filterParams).length) {
-            filterParams = {};
-        }
+    this.setState({ filterParams }, () => {
+      this.goodsListSelectServiceFn({
+        current: 0,
+        filterParams,
+      });
+    });
+  };
 
-        if(filterParams[key] === value) {
-            delete filterParams[key];
-        }else {
-            filterParams[key] = value;
-        }
-
-        this.setState({ filterParams }, () => {
-            this.goodsListSelectServiceFn({
-                current: 0,
-                filterParams,
-            });
-        });
+  /**
+   * 渲染 - 商品列表 - 组件
+   * @returns
+   */
+  renderGoodsList = () => {
+    const { dataSource, shoppingCartAddServiceFn } =
+      store?.goodsListStore || {};
+    if (!Array.isArray(dataSource) || !dataSource?.length) {
+      return (
+        <div className='dm_Products__content--empty'>
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        </div>
+      );
     }
 
-    /**
-     * 渲染 - 商品列表 - 组件
-     * @returns 
-     */
-    renderGoodsList = () => {
-        const { dataSource, shoppingCartAddServiceFn, } = store?.goodsListStore || {};
-        if(!Array.isArray(dataSource) || !dataSource?.length) {
-            return (
-                <div className='dm_Products__content--empty'>
-                    <Empty image={ Empty.PRESENTED_IMAGE_SIMPLE } />
+    return (
+      <ul className='dm_Products__content--goodsList'>
+        {dataSource.map((item) => {
+          const price = !Number.isNaN(Number(item?.price))
+            ? Number(item.price).toFixed(2)
+            : 0.0;
+          return (
+            <li
+              key={item?.id}
+              className='dm_Products__content--goodsList__item'
+            >
+              <img
+                src={item.main_picture}
+                alt='商品图片'
+                onClick={() => window.open(`/views/goods-detail/${item?.id}`)}
+              />
+              <div className='dm_Products__content--goodsList__item--text'>
+                <div className='dm_Products__content--goodsList__item--text__title'>
+                  <span
+                    className='single_line_ellipsis'
+                    onClick={() =>
+                      window.open(`/views/goods-detail/${item?.id}`)
+                    }
+                  >
+                    {item.goods_name}
+                  </span>
+                  <div className='two_line_ellipsis'>{item.description}</div>
                 </div>
-            );
-        }
-
-        return (
-            <ul className='dm_Products__content--goodsList'>
-                {
-                    dataSource.map(item => {
-                        const price = !Number.isNaN(Number(item?.price)) ? Number(item.price).toFixed(2) : 0.00;
-                        return (
-                            <li 
-                                key={ item?.id }
-                                className='dm_Products__content--goodsList__item'
-                            >
-                                <img src={ item.main_picture } alt="商品图片" 
-                                    onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}
-                                />
-                                <div className='dm_Products__content--goodsList__item--text'>
-                                    <div className='dm_Products__content--goodsList__item--text__title'>
-                                        <span 
-                                            className='single_line_ellipsis'
-                                            onClick={() => window.open(`/views/goods-detail/${ item?.id }`)}
-                                        >{ item.goods_name }</span>
-                                        <div className='two_line_ellipsis'>{ item.description }</div>
-                                    </div>
-                                    <div className='dm_Products__content--goodsList__item--text__price'>
-                                        <span>￥</span>
-                                        <p>{  price }</p>
-                                    </div>
-                                    <div className='dm_Products__content--goodsList__item--text__add'>
-                                        <Button 
-                                            type="primary"
-                                            size="small"
-                                            ghost
-                                            onClick={() => shoppingCartAddServiceFn?.([{
-                                                pid: item?.id,
-                                                num: 1,
-                                            }])}
-                                        >+采购</Button>
-                                    </div>
-                                </div>
-                            </li>
-                        );
-                    })
-                }
-            </ul>
-        );
-    }
-
+                <div className='dm_Products__content--goodsList__item--text__price'>
+                  <span>￥</span>
+                  <p>{price}</p>
+                </div>
+                <div className='dm_Products__content--goodsList__item--text__add'>
+                  <Button
+                    type='primary'
+                    size='small'
+                    ghost
+                    onClick={() =>
+                      shoppingCartAddServiceFn?.([
+                        {
+                          pid: item?.id,
+                          num: 1,
+                        },
+                      ])
+                    }
+                  >
+                    +采购
+                  </Button>
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
 }
 
 export default GoodsList;

@@ -17,24 +17,21 @@ import './index.less';
  */
 @observer
 class HeaderBar extends React.PureComponent<RouteComponentProps, any> {
+  componentDidMount(): void {
+    const { pathname } = this.props?.location || {};
+    if (isAdminPage(pathname)) return;
+  }
 
-    componentDidMount(): void {
-        const { pathname, } = this.props?.location || {};
-        if(isAdminPage(pathname)) return;
-        
-        store.commonStore.shoppingCartSelectNumServiceFn();
-    }
-
-    render() {
-        return (
-            <div className='dm_HeaderBar'>
-                <Anchor>
-                    <TopMenu {...this.props} />
-                    <SearchArea {...this.props} />
-                </Anchor>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className='dm_HeaderBar'>
+        <Anchor>
+          <TopMenu {...this.props} />
+          <SearchArea {...this.props} />
+        </Anchor>
+      </div>
+    );
+  }
 }
 
 export default HeaderBar;
