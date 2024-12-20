@@ -1,7 +1,6 @@
 import CommonStore from './common/store';
 import PagesStore from './pages/store';
 import HeaderBarStore from './header-bar/store';
-import HomeStore from './home/store';
 import GoodsListStore from './goods-list/store';
 import LoginStore from './login/store';
 import RegisterStore from './register/store';
@@ -11,7 +10,6 @@ export default {
   commonStore: new CommonStore(),
   pagesStore: new PagesStore(),
   headerBarStore: new HeaderBarStore(),
-  homeStore: new HomeStore(),
   goodsListStore: new GoodsListStore(),
   loginStore: new LoginStore(),
   registerStore: new RegisterStore(),

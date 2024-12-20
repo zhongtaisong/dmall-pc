@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col, Input } from 'antd';
 import { RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import lodash from 'lodash';
+import store from '@store';
 // less样式
 import './index.less';
 
@@ -56,21 +56,14 @@ class SearchArea extends React.PureComponent<
    * @param value 关键字
    * @returns
    */
-  getSearchKws = lodash.debounce((value: string) => {
-    this.props.history.push(`/views/goods-list/${value?.trim?.()}`);
-  }, 360);
+  getSearchKws = (value: string) => {
+    const { isLoading } = store?.pagesStore || {};
+    if (isLoading) return;
 
-  /**
-   * 进入 - 购物车页面
-   */
-  goShopCartFn = () => {
-    const { history } = this.props;
-    const isAuth = true;
-    let pathname = '/views/shopping-cart';
-    if (!isAuth) {
-      pathname = '/login';
-    }
-    history.push(pathname);
+    store.goodsListStore.goodsListSelectServiceFn({
+      pageNum: 0,
+      goods_name: value || '',
+    });
   };
 }
 

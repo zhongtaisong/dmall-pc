@@ -1,6 +1,4 @@
 import { cacheKey, history } from '@utils';
-import { PAGE_ROUTER } from '@router';
-import { ADMIN_PATH_NAME } from '@config';
 import type { RcFile } from 'antd/es/upload/interface';
 
 /**
@@ -164,19 +162,6 @@ export const validResponseCode = (
 };
 
 /**
- * 当前path是否属于开放访问
- * @param pathname
- * @returns
- */
-export const isOpenPath = (pathname: string) => {
-  if (!pathname) return true;
-
-  return (
-    PAGE_ROUTER.find((item) => item?.pathname === pathname)?.isOpen ?? true
-  );
-};
-
-/**
  * 校验 - 手机号码
  * @param value
  * @returns
@@ -192,16 +177,6 @@ export const validatePhone = (value) => {
   }
 
   return Promise.resolve();
-};
-
-/**
- * 是否为管理后台页面
- * @param pathname
- */
-export const isAdminPage = (pathname: string): boolean => {
-  if (!pathname) return false;
-
-  return pathname?.includes?.(ADMIN_PATH_NAME);
 };
 
 /**

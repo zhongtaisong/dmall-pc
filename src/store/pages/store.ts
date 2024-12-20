@@ -11,7 +11,7 @@ export default class Store {
   /**
    * 是否显示loading
    */
-  isLoading: boolean = true;
+  isLoading: boolean = false;
   /**
    * 开启、关闭 - loading
    * @param value
