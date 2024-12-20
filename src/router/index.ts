@@ -4,7 +4,6 @@ import Register from '@pages/register';
 
 import Home from '@pages/home';
 import GoodsList from '@pages/goods-list';
-import GoodsDetail from '@pages/goods-detail';
 import UserCenter from '@pages/user-center';
 
 /**
@@ -36,12 +35,6 @@ export const PAGE_ROUTER = [
     component: UserCenter,
     title: '用户中心',
     isOpen: false,
-  },
-  {
-    pathname: '/views/goods-detail/:id',
-    component: GoodsDetail,
-    title: '商品详情',
-    isOpen: true,
   },
 ];
 

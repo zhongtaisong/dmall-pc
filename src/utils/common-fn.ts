@@ -226,3 +226,18 @@ export const validateUname = (value) => {
 
   return Promise.resolve();
 };
+
+/**
+ * 商品价格 - 格式化操作
+ * @param val
+ * @param precision
+ * @returns
+ */
+export const formatPriceFn = (val: number | string, precision = 2) => {
+  const val_new = Number(val) || 0;
+  if (!precision || typeof precision !== 'number') {
+    precision = 2;
+  }
+
+  return val_new?.toFixed?.(precision) || '0.00';
+};

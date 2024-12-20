@@ -1,12 +1,8 @@
 import React from 'react';
 import { Row, Col, Input } from 'antd';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import lodash from 'lodash';
-import { isAdminPage } from '@utils/common-fn';
-import { MENU_LIST_FRONT } from './data';
-// mobx数据
-import store from '@store';
 // less样式
 import './index.less';
 
@@ -20,7 +16,6 @@ class SearchArea extends React.PureComponent<
 > {
   render() {
     const { history, location } = this.props;
-    const { shoppingCartNum } = store?.commonStore || {};
     const keyword = location.pathname.split('/')?.[3] || '';
 
     return (
@@ -38,43 +33,18 @@ class SearchArea extends React.PureComponent<
             </Col>
 
             <Col
-              span={!isAdminPage(location?.pathname) ? 12 : 20}
-              className='dm_SearchArea__content--menu'
+              span={18}
+              offset={2}
+              className='dm_SearchArea__content--search'
             >
-              {!isAdminPage(location?.pathname) ? (
-                <>
-                  {MENU_LIST_FRONT.map((item) => {
-                    return (
-                      <Link
-                        key={item.pathname}
-                        to={item.pathname}
-                        className={
-                          location?.pathname?.includes?.(item.pathname)
-                            ? 'active'
-                            : ''
-                        }
-                      >
-                        {item.name}
-                      </Link>
-                    );
-                  })}
-                </>
-              ) : null}
+              <Input.Search
+                className='dm_SearchArea__content--search__input'
+                placeholder='搜索商品'
+                enterButton
+                defaultValue={keyword}
+                onSearch={this.getSearchKws}
+              />
             </Col>
-
-            {!isAdminPage(location?.pathname) ? (
-              <Col span={8} className='dm_SearchArea__content--search'>
-                {location?.pathname?.includes?.('/goods-list') ? (
-                  <Input.Search
-                    className='dm_SearchArea__content--search__input'
-                    placeholder='搜索商品'
-                    enterButton
-                    defaultValue={keyword}
-                    onSearch={this.getSearchKws}
-                  />
-                ) : null}
-              </Col>
-            ) : null}
           </Row>
         </div>
       </>

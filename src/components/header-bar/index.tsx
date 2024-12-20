@@ -25,10 +25,10 @@ class HeaderBar extends React.PureComponent<RouteComponentProps, any> {
   render() {
     return (
       <div className='dm_HeaderBar'>
-        <Anchor>
+        <div>
           <TopMenu {...this.props} />
           <SearchArea {...this.props} />
-        </Anchor>
+        </div>
       </div>
     );
   }

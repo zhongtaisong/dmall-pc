@@ -6,7 +6,7 @@ import { commonFn } from '@utils';
 // 公共组件
 import { HeaderBar, FooterCopyright } from '@com';
 // 各级页面路由
-import { PAGE_ROUTER, } from '@router';
+import { PAGE_ROUTER } from '@router';
 // 401、402、403、404
 import ResultPages from '@com/result-pages';
 // mobx数据
@@ -18,64 +18,61 @@ import './index.less';
  */
 @observer
 class Index extends React.PureComponent<RouteComponentProps, any> {
-    render() {
-        const isLogin = commonFn.isLogin();
+  render() {
+    const isLogin = commonFn.isLogin();
 
-        return (
-            <div className='pages_index'>
-                <BackTop className='pages_index__backTop' />
-                <HeaderBar {...this.props} />
-                <Spin 
-                    spinning={ store?.pagesStore?.isLoading } 
-                    tip="加载中..."
-                    delay={ 500 }
-                >
-                    <div className='pages_index__content'>
-                        <Switch>
-                            {
-                                PAGE_ROUTER.map(item => {
-                                    const isAuth = isLogin || item?.isOpen;
+    return (
+      <div className='pages_index'>
+        <div className='pages_index__header'>
+          <BackTop className='pages_index__backTop' />
+          <HeaderBar {...this.props} />
+        </div>
 
-                                    if(item.redirect){
-                                        const redirectParams = {
-                                            from: isAuth ? item?.pathname :  "*",
-                                            to: isAuth ? item?.redirect : '/login',
-                                        }
-                                        return (
-                                            <Redirect key={ item.pathname } exact {...redirectParams} />
-                                        );
-                                    }
+        <Spin spinning={store?.pagesStore?.isLoading}>
+          <div className='pages_index__body'>
+            <div className='pages_index__content'>
+              <Switch>
+                {PAGE_ROUTER.map((item) => {
+                  const isAuth = isLogin || item?.isOpen;
 
-                                    return (
-                                        <Route 
-                                            key={ item.pathname }
-                                            exact
-                                            path={ item.pathname }
-                                            render={
-                                                (props: RouteComponentProps) => {
-                                                    if(!isAuth){
-                                                        return (<Redirect to={ '/login' } />);
-                                                    }
+                  if (item.redirect) {
+                    const redirectParams = {
+                      from: isAuth ? item?.pathname : '*',
+                      to: isAuth ? item?.redirect : '/login',
+                    };
+                    return (
+                      <Redirect key={item.pathname} exact {...redirectParams} />
+                    );
+                  }
 
-                                                    if(item.title) {
-                                                        document.title = item.title;
-                                                    }
-                                                    return (<item.component {...props} />);
-                                                }
-                                            }
-                                        />
-                                    );
-                                })
-                            }
+                  return (
+                    <Route
+                      key={item.pathname}
+                      exact
+                      path={item.pathname}
+                      render={(props: RouteComponentProps) => {
+                        if (!isAuth) {
+                          return <Redirect to={'/login'} />;
+                        }
 
-                            <Route component={ ResultPages } />
-                        </Switch>
-                    </div>
-                    <FooterCopyright {...this.props} />
-                </Spin>
+                        if (item.title) {
+                          document.title = item.title;
+                        }
+                        return <item.component {...props} />;
+                      }}
+                    />
+                  );
+                })}
+
+                <Route component={ResultPages} />
+              </Switch>
             </div>
-        );
-    }
+            <FooterCopyright {...this.props} />
+          </div>
+        </Spin>
+      </div>
+    );
+  }
 }
 
 export default Index;
