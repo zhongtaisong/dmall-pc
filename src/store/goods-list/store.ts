@@ -1,8 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import {
-  goodsListSelectService,
-  goodsListSelectFilterService,
-} from './service';
+import { goodsListSelectService } from './service';
 // mobx数据
 import store from '@store';
 import { IBuyGoodsInfo } from '@store/common/type';
@@ -13,15 +10,6 @@ export default class Store {
     makeAutoObservable(this);
   }
 
-  /** 商品筛选所有条件 */
-  filterMap = {};
-
-  /** 当前页 */
-  current = 0;
-
-  /** 一页多少条数据 */
-  pageSize = PAGE_SIZE;
-
   /** 数据总数 */
   total = 0;
 
@@ -29,52 +17,27 @@ export default class Store {
   dataSource = [];
 
   /** 查询 - 接口入参 */
-  requestParams = {};
+  requestParams = {
+    pageNum: 0,
+    pageSize: PAGE_SIZE,
+  };
 
   /**
    * 查询 - 商品列表
    * @param params
    */
   goodsListSelectServiceFn = async (params = {}) => {
-    const requestParams: {
-      current?: number;
-      filterParams?: {
-        [key: string]: string | number;
-      };
-      pageSize?: number;
-    } = {
+    const params_new = {
       ...this.requestParams,
-      pageSize: PAGE_SIZE,
       ...params,
     };
-    const result = await goodsListSelectService(requestParams);
+    const result = await goodsListSelectService(params_new);
 
-    const { dataSource, total } = result?.data?.context || {};
+    const { content, total } = result?.data?.context || {};
     runInAction(() => {
-      this.dataSource = dataSource || [];
+      this.dataSource = content || [];
       this.total = total || 0;
-      this.requestParams = requestParams || {};
-      this.current = requestParams?.current || 0;
-      this.pageSize = requestParams?.pageSize || PAGE_SIZE;
+      this.requestParams = params_new;
     });
-  };
-
-  /**
-   * 查询 - 商品过滤条件
-   */
-  goodsListSelectFilterServiceFn = async () => {
-    const result = await goodsListSelectFilterService();
-    runInAction(() => {
-      this.filterMap = result?.data?.context || {};
-    });
-  };
-
-  /**
-   * 加入购物车 - 操作
-   * @param goodsInfo
-   * @returns
-   */
-  shoppingCartAddServiceFn = async (goodsInfo: Array<IBuyGoodsInfo>) => {
-    store.commonStore.shoppingCartAddServiceFn(goodsInfo);
   };
 }

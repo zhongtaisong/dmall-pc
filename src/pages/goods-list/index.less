@@ -1,4 +1,8 @@
 .dm_Products {
+    img {
+        -webkit-user-drag: none;
+    }
+    
     &__content {
         background: #fff;
         min-height: var(--min-content-height);
@@ -39,7 +43,6 @@
         &--goodsList {
             display: flex;
             flex-wrap: wrap;
-            margin-top: 16px;
             &__item {
                 width: calc((100% - 10px * 4) / 5);
                 margin-bottom: 10px;
@@ -54,7 +57,6 @@
                 }
                 >img {
                     height: 184px;
-                    cursor: pointer;
                 }
                 &--text {
                     width: 100%;
@@ -69,11 +71,6 @@
                             display: inline-block;
                             font-size: 14px;
                             margin-bottom: 6px;
-                            cursor: pointer;
-                            
-                            &:hover {
-                                color: var(--dm-main-color);
-                            }
                         }
                         >div {
                             font-size: 13px;

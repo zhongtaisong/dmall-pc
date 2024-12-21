@@ -7,6 +7,6 @@ export const MENU_LIST: Array<{
 }> = [
   {
     name: '用户中心',
-    pathname: '/views/user-center',
+    pathname: '/user-center',
   },
 ];

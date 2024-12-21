@@ -2,7 +2,6 @@ import { SUCCESS_CODE } from '@config';
 import { makeAutoObservable, runInAction } from 'mobx';
 import {
   goodsCollectionAddService,
-  shoppingCartAddService,
   goodsCollectionDeleteService,
   selectAddressListService,
   orderDeleteService,
@@ -50,23 +49,6 @@ export default class Store {
     if (!Array.isArray(pids) || !pids.length) return;
 
     const result = await goodsCollectionDeleteService({ pids });
-    return result?.data?.code === SUCCESS_CODE;
-  };
-
-  /**
-   * 加入购物车 - 操作
-   * @param goodsInfo
-   * @param url
-   * @returns
-   */
-  shoppingCartAddServiceFn = async (
-    goodsInfo: Array<IBuyGoodsInfo>,
-    url?: string,
-  ): Promise<Boolean> => {
-    if (!Array.isArray(goodsInfo) || !goodsInfo.length) return false;
-
-    const result = await shoppingCartAddService(goodsInfo, url);
-
     return result?.data?.code === SUCCESS_CODE;
   };
 

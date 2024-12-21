@@ -1,14 +1,12 @@
 import React from 'react';
 import { Row, Col, Input } from 'antd';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import lodash from 'lodash';
-import { isAdminPage } from '@utils/common-fn';
-import { MENU_LIST_FRONT } from './data';
-// mobx数据
 import store from '@store';
 // less样式
 import './index.less';
+import { history } from '@utils';
+import { getURLSearchParamsFn } from '@utils/common-fn';
 
 /**
  * 搜索区域
@@ -19,9 +17,7 @@ class SearchArea extends React.PureComponent<
   any
 > {
   render() {
-    const { history, location } = this.props;
-    const { shoppingCartNum } = store?.commonStore || {};
-    const keyword = location.pathname.split('/')?.[3] || '';
+    const { keyword } = getURLSearchParamsFn();
 
     return (
       <>
@@ -38,43 +34,18 @@ class SearchArea extends React.PureComponent<
             </Col>
 
             <Col
-              span={!isAdminPage(location?.pathname) ? 12 : 20}
-              className='dm_SearchArea__content--menu'
+              span={18}
+              offset={2}
+              className='dm_SearchArea__content--search'
             >
-              {!isAdminPage(location?.pathname) ? (
-                <>
-                  {MENU_LIST_FRONT.map((item) => {
-                    return (
-                      <Link
-                        key={item.pathname}
-                        to={item.pathname}
-                        className={
-                          location?.pathname?.includes?.(item.pathname)
-                            ? 'active'
-                            : ''
-                        }
-                      >
-                        {item.name}
-                      </Link>
-                    );
-                  })}
-                </>
-              ) : null}
+              <Input.Search
+                className='dm_SearchArea__content--search__input'
+                placeholder='搜索商品'
+                enterButton
+                defaultValue={keyword || ''}
+                onSearch={this.getSearchKws}
+              />
             </Col>
-
-            {!isAdminPage(location?.pathname) ? (
-              <Col span={8} className='dm_SearchArea__content--search'>
-                {location?.pathname?.includes?.('/goods-list') ? (
-                  <Input.Search
-                    className='dm_SearchArea__content--search__input'
-                    placeholder='搜索商品'
-                    enterButton
-                    defaultValue={keyword}
-                    onSearch={this.getSearchKws}
-                  />
-                ) : null}
-              </Col>
-            ) : null}
           </Row>
         </div>
       </>
@@ -86,21 +57,21 @@ class SearchArea extends React.PureComponent<
    * @param value 关键字
    * @returns
    */
-  getSearchKws = lodash.debounce((value: string) => {
-    this.props.history.push(`/views/goods-list/${value?.trim?.()}`);
-  }, 360);
+  getSearchKws = (value: string) => {
+    const { pathname } = this.props?.location || {};
+    const { keyword } = getURLSearchParamsFn();
+    const { isLoading } = store?.pagesStore || {};
+    if (pathname !== '/') {
+      history.push(`/?keyword=${value || ''}`);
+    } else {
+      if (isLoading || keyword === value) return;
 
-  /**
-   * 进入 - 购物车页面
-   */
-  goShopCartFn = () => {
-    const { history } = this.props;
-    const isAuth = true;
-    let pathname = '/views/shopping-cart';
-    if (!isAuth) {
-      pathname = '/login';
+      window.history.pushState({}, '', `/?keyword=${value || ''}`);
+      store.goodsListStore.goodsListSelectServiceFn({
+        pageNum: 0,
+        goods_name: value || '',
+      });
     }
-    history.push(pathname);
   };
 }
 

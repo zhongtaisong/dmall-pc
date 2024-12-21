@@ -12,10 +12,8 @@ export const PAGE_SIZE = 10;
  */
 export const SUCCESS_CODE = 'DM000000';
 
-/**
- * 管理后台页面 - 主页路由
- */
-export const ADMIN_PATH_NAME = '/views/admin';
-
 /** 服务端web服务url */
 export const SERVICE_URL = 'http://127.0.0.1:8000/api';
+
+/** 身份认证失败 - 响应码 */
+export const AUTH_CODE = 'APP-ERR-000001';

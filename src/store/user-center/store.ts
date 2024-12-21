@@ -1,16 +1,8 @@
 import { SUCCESS_CODE } from '@config';
 import { makeAutoObservable, runInAction } from 'mobx';
-import moment from 'moment';
 import {
   selectUserInformationService,
   updateUserInformationService,
-  updateUserPasswordService,
-  IUpdateUserPassword,
-  IAddAddressService,
-  addAddressService,
-  IUpdateAddressService,
-  updateAddressService,
-  deleteAddressService,
 } from './service';
 // mobx数据
 import store from '@store';
@@ -26,23 +18,22 @@ export default class Store {
    * 查询 - 用户信息 - 操作
    * @param callBack
    */
-  selectUserInformationServiceFn = async (callBack: Function) => {
+  selectUserInformationServiceFn = async () => {
     const result = await selectUserInformationService();
-    const personalInformation = result?.data?.context;
-    callBack?.({
-      ...personalInformation,
-      birthday: personalInformation?.birthday
-        ? moment(personalInformation?.birthday)
-        : null,
-      avatar: [
-        {
-          uid: Date.now(),
-          name: 'image.png',
-          status: 'done',
-          url: personalInformation?.avatar,
-        },
-      ],
-    });
+    const context = result?.data?.context;
+    return {
+      ...context,
+      avatar: context?.avatar
+        ? [
+            {
+              uid: '-1',
+              name: 'image.png',
+              status: 'done',
+              url: context?.avatar,
+            },
+          ]
+        : [],
+    };
   };
 
   /**
@@ -54,8 +45,15 @@ export default class Store {
     if (result?.data?.code === SUCCESS_CODE) {
       const user_info = {
         ...getUserInfo(),
-        ...result?.data?.context,
+        ...params,
       };
+
+      const avatar = user_info?.avatar;
+      if (Array.isArray(avatar)) {
+        Object.assign(user_info, {
+          avatar: avatar?.[0] || '',
+        });
+      }
 
       const key = cacheKey.USER_INFO;
       const val = JSON.stringify(user_info || {});
@@ -64,89 +62,9 @@ export default class Store {
       runInAction(() => {
         store.headerBarStore.setMobxStoreFn({
           key: 'welcomeObjectName',
-          value: user_info?.nickName || user_info?.uname,
+          value: user_info?.nickname || user_info?.phone,
         });
       });
     }
-  };
-
-  /**
-   * 修改登录密码 - 操作
-   * @param params
-   */
-  updateUserPasswordServiceFn = (params: IUpdateUserPassword) => {
-    return updateUserPasswordService(params);
-  };
-
-  /** 收货地址 - 列表数据 */
-  dataSource = [];
-
-  /**
-   * 查询 - 收货地址 - 操作
-   */
-  selectAddressListServiceFn = async () => {
-    const result = await store.commonStore.selectAddressListServiceFn();
-    runInAction(() => {
-      this.dataSource = result;
-    });
-  };
-
-  /**
-   * 添加 - 收货地址 - 操作
-   * @param params
-   * @param callBack
-   */
-  addAddressServiceFn = async (
-    params: IAddAddressService,
-    callBack: Function,
-  ) => {
-    const result = await addAddressService(params);
-    if (result?.data?.code === SUCCESS_CODE) {
-      this.selectAddressListServiceFn();
-      callBack?.();
-    }
-  };
-
-  /**
-   * 更新 - 收货地址 - 操作
-   * @param params
-   * @param callBack
-   */
-  updateAddressServiceFn = async (
-    params: IUpdateAddressService,
-    callBack: Function,
-  ) => {
-    const result = await updateAddressService(params);
-    if (result?.data?.code === SUCCESS_CODE) {
-      this.selectAddressListServiceFn();
-      callBack?.();
-    }
-  };
-
-  /**
-   * 删除 - 收货地址 - 操作
-   * @param id
-   */
-  deleteAddressServiceFn = async (id: number | string) => {
-    const result = await deleteAddressService(id);
-    if (result?.data?.code === SUCCESS_CODE) {
-      this.selectAddressListServiceFn();
-    }
-  };
-
-  /** 是否显示 - 收货地址弹窗 */
-  isAddressModal = false;
-
-  /** 收货地址 - 行数据 */
-  addressItem: Partial<IUpdateAddressService> = {};
-
-  /**
-   * 打开、关闭 - 收货地址弹窗
-   * @param bol
-   * @param params
-   */
-  onToggleAddressModalClick = (bol: boolean, params = {}) => {
-    this.isAddressModal = bol;
-    this.addressItem = params;
   };
 }
