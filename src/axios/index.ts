@@ -31,7 +31,7 @@ axiosInstance.interceptors.request.use(
     const headersParams = {};
     const { token } = commonFn?.getUserInfo() || {};
     if (token) {
-      headersParams['Authorization'] = token;
+      headersParams['Authorization'] = `Bearer ${token}`;
     }
     config.headers = {
       ...config.headers,

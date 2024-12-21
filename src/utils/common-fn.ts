@@ -17,7 +17,7 @@ export const getUserInfo = (): {
   /**
    * 用户昵称
    */
-  nickName: string;
+  nickname: string;
   /**
    * 用户联系电话
    */

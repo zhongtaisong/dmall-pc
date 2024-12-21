@@ -18,12 +18,3 @@ export interface ILogin {
 export const userLoginService = (params: ILogin): Promise<IResponse> => {
   return axios.post('/user/public/login', params);
 };
-
-export interface IUserValidateService {
-  /** 用户名 */
-  uname: string;
-  /** 邮箱 */
-  email: string;
-  /** 手机号码 */
-  phone: string;
-}

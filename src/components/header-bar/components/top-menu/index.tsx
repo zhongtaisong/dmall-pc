@@ -32,10 +32,10 @@ class TopMenu extends React.PureComponent<
   }
 
   render() {
-    const { nickName, phone, avatar } = commonFn?.getUserInfo?.() || {};
+    const { nickname, phone, avatar } = commonFn?.getUserInfo?.() || {};
     const { isLoginAndRegister } = this.state;
     let { welcomeObjectName } = store?.headerBarStore || {};
-    welcomeObjectName = welcomeObjectName || nickName || phone || '朋友';
+    welcomeObjectName = welcomeObjectName || nickname || phone || '朋友';
 
     return (
       <div className='dm_topMenu'>
