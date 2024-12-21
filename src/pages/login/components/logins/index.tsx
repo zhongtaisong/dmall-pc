@@ -3,8 +3,6 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
-// mobx数据
-import store from '@store';
 import './index.less';
 
 /**
@@ -13,9 +11,6 @@ import './index.less';
 @observer
 class Logins extends React.PureComponent<any, any> {
   render() {
-    const { componentKey, setMobxStoreFn } = store?.loginStore || {};
-    if (componentKey !== 0) return null;
-
     return (
       <div className='login_logins'>
         <Form.Item
@@ -56,19 +51,6 @@ class Logins extends React.PureComponent<any, any> {
             initialValue={true}
           >
             <Checkbox>记住账号</Checkbox>
-          </Form.Item>
-          <Form.Item>
-            <span
-              className='login_logins__pwd--text'
-              onClick={() =>
-                setMobxStoreFn?.({
-                  key: 'componentKey',
-                  value: 1,
-                })
-              }
-            >
-              忘记密码？
-            </span>
           </Form.Item>
         </div>
 

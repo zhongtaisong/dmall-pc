@@ -5,8 +5,6 @@ import { UserOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react';
 import { SketchPicker } from 'react-color';
 import { commonFn } from '@utils';
-import { isAdminPage, isOpenPath } from '@utils/common-fn';
-import { ADMIN_PATH_NAME } from '@config';
 import { MENU_LIST } from './data';
 // mobx数据
 import store from '@store';
@@ -34,11 +32,10 @@ class TopMenu extends React.PureComponent<
   }
 
   render() {
-    const { pathname } = this.props.location;
-    const { nickName, phone, avatar } = commonFn?.getUserInfo?.() || {};
+    const { nickname, phone, avatar } = commonFn?.getUserInfo?.() || {};
     const { isLoginAndRegister } = this.state;
     let { welcomeObjectName } = store?.headerBarStore || {};
-    welcomeObjectName = welcomeObjectName || nickName || phone || '朋友';
+    welcomeObjectName = welcomeObjectName || nickname || phone || '朋友';
 
     return (
       <div className='dm_topMenu'>
@@ -53,48 +50,47 @@ class TopMenu extends React.PureComponent<
             />
             <div>欢迎您，{welcomeObjectName}</div>
           </div>
-          {!isAdminPage(pathname) && (
-            <div className='dm_topMenu__content--right'>
-              {isLoginAndRegister ? (
-                <>
-                  <span onClick={() => this.props.history.push('/login')}>
-                    登录
-                  </span>
-                  <span onClick={() => this.props.history.push('/register')}>
-                    注册
-                  </span>
-                </>
-              ) : (
-                <span onClick={this.onLogoutClick}>退出登录</span>
-              )}
-              {MENU_LIST.map((item) => {
-                return (
-                  <span
-                    key={item?.pathname}
-                    onClick={() => this.intoTargetPage(item)}
-                  >
-                    {item.name}
-                  </span>
-                );
-              })}
-              <Popover
-                overlayClassName='dm_topMenu__popover'
-                placement='bottom'
-                content={
-                  <SketchPicker
-                    presetColors={['#1890ff', '#25b864', '#ff6f00']}
-                    color={`var(--dm-main-color)`}
-                    onChange={this.onColorChange}
-                  />
-                }
-              >
-                <div className='dm_topMenu__content--right__theme'>
-                  <div style={{ background: `var(--dm-main-color)` }} />
-                  <span>主题色</span>
-                </div>
-              </Popover>
-            </div>
-          )}
+
+          <div className='dm_topMenu__content--right'>
+            {isLoginAndRegister ? (
+              <>
+                <span onClick={() => this.props.history.push('/login')}>
+                  登录
+                </span>
+                <span onClick={() => this.props.history.push('/register')}>
+                  注册
+                </span>
+              </>
+            ) : (
+              <span onClick={this.onLogoutClick}>退出登录</span>
+            )}
+            {MENU_LIST.map((item) => {
+              return (
+                <span
+                  key={item?.pathname}
+                  onClick={() => this.intoTargetPage(item)}
+                >
+                  {item.name}
+                </span>
+              );
+            })}
+            <Popover
+              overlayClassName='dm_topMenu__popover'
+              placement='bottom'
+              content={
+                <SketchPicker
+                  presetColors={['#1890ff', '#25b864', '#ff6f00']}
+                  color={`var(--dm-main-color)`}
+                  onChange={this.onColorChange}
+                />
+              }
+            >
+              <div className='dm_topMenu__content--right__theme'>
+                <div style={{ background: `var(--dm-main-color)` }} />
+                <span>主题色</span>
+              </div>
+            </Popover>
+          </div>
         </div>
       </div>
     );
@@ -104,13 +100,11 @@ class TopMenu extends React.PureComponent<
    * 退出登录 - 操作
    */
   onLogoutClick = () => {
-    store?.headerBarStore?.logoutServiceFn?.(() => {
-      this.setState({ isLoginAndRegister: true }, () => {
-        const isOpen = isOpenPath(this.props.location.pathname);
-        if (!isOpen) {
-          this.props.history.replace('/login');
-        }
-      });
+    store?.headerBarStore?.logoutServiceFn().then((result) => {
+      if (!result) return;
+
+      this.setState({ isLoginAndRegister: true });
+      this.props.history.replace('/login');
     });
   };
 

@@ -1,172 +1,89 @@
+import { Upload, Image, Space } from 'antd';
+import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import { useEffect, useState } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
 import React from 'react';
-import { Upload, message, Modal, } from 'antd';
-import { LoadingOutlined, PlusOutlined, } from '@ant-design/icons';
-import type { UploadChangeParam } from 'antd/es/upload';
-import type { UploadFile, } from 'antd/es/upload/interface';
-import { fileToBase64 } from '@utils/common-fn';
-import lodash from 'lodash';
-import './index.less';
+import { SERVICE_URL } from '@config';
+import { getUserInfo } from '@utils/common-fn';
 
-interface IComponentProps {
-    /** 上传图片 - 回调函数 */
-    onUploadCallBack?: Function;
-    /** 限制上传数量 */
-    maxCount: number;
-    /** 图片列表 */
-    fileList: Array<UploadFile>;
+const getBase64 = (file: RcFile): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+
+interface IDmUploadProps extends UploadProps {
+  isForm?: boolean;
 }
 
-interface IComponentState {
-    /** loading是否可见 */
-    isLoading: boolean;
-    /** 图片列表 */
-    fileList: Array<UploadFile>;
-    /** Modal是否可见 */
-    isModal: boolean;
-    /** 预览图片信息 */
-    previewImageInfo: Partial<{
-        /** 弹窗标题 */
-        title: string;
-        /** 预览图片url */
-        url: string;
-    }>;
-}
+export default function DmUpload(props: IDmUploadProps) {
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
+  const [fileList, setFileList] = useState<UploadFile[]>(props?.fileList || []);
+  const { maxCount = Infinity, isForm = true, action, ...restProps } = props;
+  const { token } = getUserInfo() || {};
 
-/**
- * 上传图片
- */
-export default class UploadImg extends React.PureComponent<Partial<IComponentProps>, IComponentState> {
+  useEffect(() => {
+    setFileList(props?.fileList || []);
+  }, [props]);
 
-    static defaultProps: Partial<IComponentProps> = {
-        maxCount: 1,
-    }
+  return (
+    <>
+      <Upload
+        listType='picture-card'
+        action={`${SERVICE_URL}${action}`}
+        accept='.png, .jpg, .jpeg'
+        headers={{
+          Authorization: `Bearer ${token}`,
+        }}
+        {...restProps}
+        onPreview={async (file: UploadFile) => {
+          if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj as RcFile);
+          }
 
-    constructor(props: IComponentProps) {
-        super(props);
-        this.state = {
-            isLoading: false,
-            fileList: props?.fileList || [],
-            isModal: false,
-            previewImageInfo: {},
-        };
-    }
+          setPreviewImage(file.url || (file.preview as string));
+          setPreviewOpen(true);
+        }}
+        onChange={(info) => {
+          if (!info || !Object.keys(info).length) return;
 
-    componentDidUpdate(prevProps: Readonly<Partial<IComponentProps>>): void {
-        if(!lodash.isEqual(this.props.fileList, prevProps.fileList)) {
-            this.setState({
-                fileList: this.props.fileList,
-            });
-        }
-    }
+          const { file, fileList } = info;
+          if (isForm) {
+            props?.onChange?.(fileList as any);
+          }
 
-    render() {
-        const { 
-            isLoading, fileList, isModal, 
-            previewImageInfo,
-        } = this.state;
-        const { maxCount, } = this.props;
-        return (
-            <>
-                <Upload
-                    className='dm_upload_img'
-                    listType="picture-card"
-                    accept="image/png, image/jpeg"
-                    fileList={ fileList }
-                    maxCount={ maxCount }
-                    beforeUpload={ this.beforeUpload }
-                    onPreview={ this.onUploadPreview }
-                    onChange={ this.onUploadChange }
-                >
-                    {
-                        fileList.length < maxCount ? (
-                            <div className='dm_upload_img__plus'>
-                                { isLoading ? <LoadingOutlined /> : <PlusOutlined /> }
-                                <div className="dm_upload_img__plus--tip">点击上传</div>
-                            </div>
-                        ) : null
-                    }
-                </Upload>
-                
-                <Modal 
-                    visible={ isModal } 
-                    title={ previewImageInfo?.title }
-                    footer={ null } 
-                    onCancel={ this.onModalCancel }
-                >
-                    <img 
-                        style={{ width: '100%' }} 
-                        src={ previewImageInfo?.url } 
-                        alt={ previewImageInfo?.title }
-                    />
-                </Modal>
-            </>
-        );
-    }
+          if (file?.status === 'uploading') return;
 
-    /**
-     * 预览图片 - 操作
-     * @param file 
-     */
-    onUploadPreview = async (file: UploadFile) => {
-        if(file && !file?.url && !file?.preview) {
-            file.preview = await fileToBase64(file?.originFileObj);
-        }
-      
-        this.setState({
-            isModal: true,
-            previewImageInfo: {
-                title: file?.name || file?.url?.substring?.(file?.url?.lastIndexOf?.('/') + 1),
-                url: file?.url || file?.preview,
+          setFileList(fileList);
+        }}
+      >
+        {fileList.length >= maxCount ? null : (
+          <Space direction='vertical' size={0}>
+            <PlusOutlined />
+            <div>上传</div>
+          </Space>
+        )}
+      </Upload>
+
+      {previewImage && (
+        <Image
+          wrapperStyle={{ display: 'none' }}
+          preview={{
+            visible: previewOpen,
+            onVisibleChange: (visible) => {
+              setPreviewOpen(visible);
+
+              if (!visible) {
+                setPreviewImage('');
+              }
             },
-        });
-    }
-
-    /**
-     * 关闭Modal - 回调函数
-     */
-    onModalCancel = () => {
-        this.setState({ isModal: false, });
-    }
-
-    /**
-     * 监听 - upload变化
-     * @param info 
-     */
-    onUploadChange = (info: UploadChangeParam<UploadFile>) => {
-        if(!info || !Object.keys(info).length) return;
-
-        const { file, } = info;
-        const { fileList, } = this.state;
-        const { onUploadCallBack, } = this.props;
-        this.setState({ isLoading: true, });
-
-        let fileList_new = [];
-        if(file?.status === 'removed') {
-            fileList_new = fileList.filter(item => item?.uid !== file?.uid) || [];
-        }else {
-            fileList_new = info?.fileList;
-        }
-        setTimeout(() => {
-            this.setState({ 
-                isLoading: false, 
-                fileList: fileList_new,
-            });
-            onUploadCallBack?.(fileList_new);
-        }, 1000);
-    }
-
-    /**
-     * 上传之前 - 操作
-     * @param file 
-     * @returns 
-     */
-    beforeUpload = (file) => {
-        const isLt2M = file?.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-            message.error('图片大小必须小于2MB!');
-            return false;
-        }
-
-        return false;
-    };
-};
+          }}
+          src={previewImage}
+        />
+      )}
+    </>
+  );
+}

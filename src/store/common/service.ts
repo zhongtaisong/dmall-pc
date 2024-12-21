@@ -37,25 +37,6 @@ export const goodsCollectionDeleteService = (
 };
 
 /**
- * 加入购物车
- * @param params
- * @param url
- * @returns
- */
-export const shoppingCartAddService = (
-  goodsInfo: Array<IBuyGoodsInfo>,
-  url: string,
-): Promise<IResponse> => {
-  const isLogin = commonFn.isLogin();
-  if (!isLogin) {
-    history.push('/login');
-    return;
-  }
-
-  return axios.post(`/shopping-cart/add${url || ''}`, { goodsInfo });
-};
-
-/**
  * 查询 - 收货地址
  * @returns
  */

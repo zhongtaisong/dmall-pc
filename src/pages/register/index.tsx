@@ -6,8 +6,6 @@ import type { FormInstance } from 'antd/es/form';
 import jsmd5 from 'js-md5';
 import { history } from '@utils';
 import { validatePhone } from '@utils/common-fn';
-// 全局设置
-import { PWD_KEY } from '@config';
 // logo图片
 import logoImg from '@img/logo2.png';
 // mobx数据

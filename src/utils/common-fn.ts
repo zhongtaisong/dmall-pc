@@ -1,6 +1,4 @@
 import { cacheKey, history } from '@utils';
-import { PAGE_ROUTER } from '@router';
-import { ADMIN_PATH_NAME } from '@config';
 import type { RcFile } from 'antd/es/upload/interface';
 
 /**
@@ -19,7 +17,7 @@ export const getUserInfo = (): {
   /**
    * 用户昵称
    */
-  nickName: string;
+  nickname: string;
   /**
    * 用户联系电话
    */
@@ -164,19 +162,6 @@ export const validResponseCode = (
 };
 
 /**
- * 当前path是否属于开放访问
- * @param pathname
- * @returns
- */
-export const isOpenPath = (pathname: string) => {
-  if (!pathname) return true;
-
-  return (
-    PAGE_ROUTER.find((item) => item?.pathname === pathname)?.isOpen ?? true
-  );
-};
-
-/**
  * 校验 - 手机号码
  * @param value
  * @returns
@@ -192,16 +177,6 @@ export const validatePhone = (value) => {
   }
 
   return Promise.resolve();
-};
-
-/**
- * 是否为管理后台页面
- * @param pathname
- */
-export const isAdminPage = (pathname: string): boolean => {
-  if (!pathname) return false;
-
-  return pathname?.includes?.(ADMIN_PATH_NAME);
 };
 
 /**
@@ -225,4 +200,38 @@ export const validateUname = (value) => {
   }
 
   return Promise.resolve();
+};
+
+/**
+ * 商品价格 - 格式化操作
+ * @param val
+ * @param precision
+ * @returns
+ */
+export const formatPriceFn = (val: number | string, precision = 2) => {
+  const val_new = Number(val) || 0;
+  if (!precision || typeof precision !== 'number') {
+    precision = 2;
+  }
+
+  return val_new?.toFixed?.(precision) || '0.00';
+};
+
+/**
+ * 获取url后参数 - 操作
+ * 如：location.search 为 "?from=&code=123&state=666"
+ * @returns
+ */
+export const getURLSearchParamsFn = (): IObject => {
+  const search_val = window.location.search;
+  const params = {};
+
+  if (!search_val) return params;
+
+  const searchParams = new URLSearchParams(search_val);
+  for (const [key, value] of searchParams.entries()) {
+    params[key] = value;
+  }
+
+  return params;
 };

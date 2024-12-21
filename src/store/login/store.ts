@@ -1,14 +1,7 @@
 import { SUCCESS_CODE } from '@config';
 import { cacheKey, history } from '@utils';
-import { makeAutoObservable, runInAction } from 'mobx';
-import {
-  userLoginService,
-  ILogin,
-  userValidateService,
-  IUserValidateService,
-  userUpdatePasswordService,
-  IUserUpdatePasswordService,
-} from './service';
+import { makeAutoObservable } from 'mobx';
+import { userLoginService, ILogin } from './service';
 
 export default class Store {
   constructor() {
@@ -41,9 +34,6 @@ export default class Store {
     }
   };
 
-  /** 组件key */
-  componentKey = 0;
-
   /**
    * 动态设置Mobx数据
    * @param params
@@ -70,49 +60,4 @@ export default class Store {
 
   /** 信息验证通过临时token */
   temporaryToken = null;
-
-  /**
-   * 验证用户信息 - 操作
-   * @param params
-   * @returns
-   */
-  userValidateServiceFn = async (
-    params: IUserValidateService,
-    callBack?: Function,
-  ) => {
-    if (!params || !Object.keys(params).length) return;
-
-    const result = await userValidateService(params);
-    if (result?.data?.code === SUCCESS_CODE) {
-      callBack?.();
-      runInAction(() => {
-        this.temporaryToken = result?.data?.context?.temporaryToken || null;
-        this.componentKey = 2;
-      });
-    }
-  };
-
-  /**
-   * 更新登录密码 - 操作
-   * @param params
-   * @param callBack
-   * @returns
-   */
-  userUpdatePasswordServiceFn = async (
-    params: IUserUpdatePasswordService,
-    callBack?: Function,
-  ) => {
-    if (!params || !Object.keys(params).length) return;
-
-    const result = await userUpdatePasswordService({
-      ...params,
-      temporaryToken: this.temporaryToken,
-    });
-    if (result?.data?.code === SUCCESS_CODE) {
-      callBack?.();
-      runInAction(() => {
-        this.componentKey = 0;
-      });
-    }
-  };
 }

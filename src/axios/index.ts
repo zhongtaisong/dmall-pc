@@ -31,11 +31,12 @@ axiosInstance.interceptors.request.use(
     const headersParams = {};
     const { token } = commonFn?.getUserInfo() || {};
     if (token) {
-      headersParams['Authorization'] = token;
+      headersParams['Authorization'] = `Bearer ${token}`;
     }
     config.headers = {
       ...config.headers,
       ...headersParams,
+      terminal: 'PC',
     };
 
     // 接口请求次数加1
@@ -55,6 +56,8 @@ axiosInstance.interceptors.request.use(
  */
 axiosInstance.interceptors.response.use(
   (response) => {
+    const url = response?.config?.url || '';
+
     // 接口请求次数减1
     requestNum--;
     if (requestNum <= 0) {
@@ -66,10 +69,12 @@ axiosInstance.interceptors.response.use(
     if (response?.data && Object.keys(response?.data).length) {
       const { code } = response?.data || {};
       const msg = response?.data?.message;
-      if (code === SUCCESS_CODE) {
-        msg && message.success(msg);
-      } else {
-        msg && message.error(msg);
+      if (msg && !url.includes('msg=false')) {
+        if (code === SUCCESS_CODE) {
+          message.success(msg);
+        } else {
+          message.error(msg);
+        }
       }
     }
     return response;
