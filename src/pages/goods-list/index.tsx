@@ -2,12 +2,11 @@ import React from 'react';
 import { Pagination, Empty } from 'antd';
 import { RouteComponentProps } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { StaticContext } from 'react-router';
+import { formatPriceFn, getURLSearchParamsFn } from '@utils/common-fn';
 // mobx数据
 import store from '@store';
 // 样式
 import './index.less';
-import { formatPriceFn } from '@utils/common-fn';
 
 interface IComponentPros {
   /**
@@ -34,26 +33,12 @@ class GoodsList extends React.PureComponent<
   IComponentState
 > {
   componentDidMount() {
-    const { keyword } = this.props?.match?.params || {};
+    const { keyword } = getURLSearchParamsFn();
 
     // 查询商品列表
     this.goodsListSelectServiceFn({
-      goods_name: keyword?.trim?.(),
+      goods_name: keyword || '',
     });
-  }
-
-  componentDidUpdate(
-    prevProps: Readonly<
-      RouteComponentProps<{ keyword?: string }, StaticContext, unknown>
-    >,
-  ): void {
-    const { keyword } = this.props?.match?.params || {};
-    if (keyword !== prevProps?.match?.params?.keyword) {
-      this.goodsListSelectServiceFn({
-        pageNum: 0,
-        goods_name: keyword?.trim?.(),
-      });
-    }
   }
 
   render() {

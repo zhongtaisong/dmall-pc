@@ -8,12 +8,13 @@ export const ROUTE_LIST = [
     pathname: '/',
     component: GoodsList,
     title: '首页',
+    exact: true,
   },
   {
     pathname: '/user-center',
     component: UserCenter,
     title: '用户中心',
-    isOpen: false,
+    exact: true,
   },
 ];
 
@@ -22,10 +23,12 @@ export const ROUTE_LIST_PUBLIC = [
     pathname: '/login',
     component: Login,
     title: '登录',
+    exact: true,
   },
   {
     pathname: '/register',
     component: Register,
     title: '注册',
+    exact: true,
   },
 ];

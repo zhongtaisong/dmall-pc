@@ -1,12 +1,9 @@
 import React from 'react';
 import { Router, Switch, Route, RouteComponentProps } from 'react-router-dom';
-import { Button } from 'antd';
 // 全局公共方法
 import { ScrollToTop, history } from '@utils';
 // 各级页面路由
 import { ROUTE_LIST_PUBLIC } from '@router';
-// 401、402、403、404
-import ResultPages from '@com/result-pages';
 import Index from '@pages';
 
 /**
@@ -19,8 +16,6 @@ class App extends React.PureComponent<any, any> {
         <Router history={history}>
           <ScrollToTop />
           <Switch>
-            <Route exact path='/' component={Index} />
-
             {ROUTE_LIST_PUBLIC.map((item) => {
               if (!item || !Object.keys(item).length) return null;
 
@@ -28,6 +23,7 @@ class App extends React.PureComponent<any, any> {
                 <Route
                   key={item?.pathname}
                   path={item?.pathname}
+                  exact={item?.exact}
                   render={(props: RouteComponentProps) => {
                     if (item.title) {
                       document.title = item.title;
@@ -38,22 +34,7 @@ class App extends React.PureComponent<any, any> {
               );
             })}
 
-            <Route
-              render={(props) => {
-                return (
-                  <ResultPages
-                    extra={
-                      <Button
-                        type='primary'
-                        onClick={() => props?.history?.replace('/')}
-                      >
-                        首页
-                      </Button>
-                    }
-                  />
-                );
-              }}
-            />
+            <Route path='/' component={Index} />
           </Switch>
         </Router>
       </div>

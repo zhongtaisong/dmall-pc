@@ -5,6 +5,8 @@ import { observer } from 'mobx-react';
 import store from '@store';
 // less样式
 import './index.less';
+import { history } from '@utils';
+import { getURLSearchParamsFn } from '@utils/common-fn';
 
 /**
  * 搜索区域
@@ -15,8 +17,7 @@ class SearchArea extends React.PureComponent<
   any
 > {
   render() {
-    const { history, location } = this.props;
-    const keyword = location.pathname.split('/')?.[3] || '';
+    const { keyword } = getURLSearchParamsFn();
 
     return (
       <>
@@ -41,7 +42,7 @@ class SearchArea extends React.PureComponent<
                 className='dm_SearchArea__content--search__input'
                 placeholder='搜索商品'
                 enterButton
-                defaultValue={keyword}
+                defaultValue={keyword || ''}
                 onSearch={this.getSearchKws}
               />
             </Col>
@@ -57,13 +58,20 @@ class SearchArea extends React.PureComponent<
    * @returns
    */
   getSearchKws = (value: string) => {
+    const { pathname } = this.props?.location || {};
+    const { keyword } = getURLSearchParamsFn();
     const { isLoading } = store?.pagesStore || {};
-    if (isLoading) return;
+    if (pathname !== '/') {
+      history.push(`/?keyword=${value || ''}`);
+    } else {
+      if (isLoading || keyword === value) return;
 
-    store.goodsListStore.goodsListSelectServiceFn({
-      pageNum: 0,
-      goods_name: value || '',
-    });
+      window.history.pushState({}, '', `/?keyword=${value || ''}`);
+      store.goodsListStore.goodsListSelectServiceFn({
+        pageNum: 0,
+        goods_name: value || '',
+      });
+    }
   };
 }
 

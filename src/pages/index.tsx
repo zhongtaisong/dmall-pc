@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, RouteComponentProps } from 'react-router-dom';
-import { BackTop, Spin } from 'antd';
+import { BackTop, Button, Spin } from 'antd';
 import { observer } from 'mobx-react';
 // 公共组件
 import { HeaderBar, FooterCopyright } from '@com';
@@ -9,6 +9,7 @@ import { ROUTE_LIST } from '@router';
 // mobx数据
 import store from '@store';
 import './index.less';
+import ResultPages from '@com/result-pages';
 
 /**
  * 根页面
@@ -29,11 +30,10 @@ class Index extends React.PureComponent<RouteComponentProps, any> {
               <Switch>
                 {ROUTE_LIST.map((item) => {
                   if (!item || !Object.keys(item).length) return null;
-
                   return (
                     <Route
                       key={item.pathname}
-                      exact
+                      exact={item?.exact}
                       path={item.pathname}
                       render={(props: RouteComponentProps) => {
                         if (item.title) {
@@ -44,6 +44,23 @@ class Index extends React.PureComponent<RouteComponentProps, any> {
                     />
                   );
                 })}
+
+                <Route
+                  render={(props) => {
+                    return (
+                      <ResultPages
+                        extra={
+                          <Button
+                            type='primary'
+                            onClick={() => props?.history?.replace('/')}
+                          >
+                            首页
+                          </Button>
+                        }
+                      />
+                    );
+                  }}
+                />
               </Switch>
             </div>
 

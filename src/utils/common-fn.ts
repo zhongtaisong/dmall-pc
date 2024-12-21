@@ -216,3 +216,22 @@ export const formatPriceFn = (val: number | string, precision = 2) => {
 
   return val_new?.toFixed?.(precision) || '0.00';
 };
+
+/**
+ * 获取url后参数 - 操作
+ * 如：location.search 为 "?from=&code=123&state=666"
+ * @returns
+ */
+export const getURLSearchParamsFn = (): IObject => {
+  const search_val = window.location.search;
+  const params = {};
+
+  if (!search_val) return params;
+
+  const searchParams = new URLSearchParams(search_val);
+  for (const [key, value] of searchParams.entries()) {
+    params[key] = value;
+  }
+
+  return params;
+};
