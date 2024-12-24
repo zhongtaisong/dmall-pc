@@ -25,7 +25,7 @@ const ForkTsCheckerWebpackPlugin =
     ? require('react-dev-utils/ForkTsCheckerWarningWebpackPlugin')
     : require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-
+const dmAlias = require("./dm-alias.js");
 const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash');
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
@@ -320,16 +320,7 @@ module.exports = function (webpackEnv) {
           'scheduler/tracing': 'scheduler/tracing-profiling',
         }),
         ...(modules.webpackAliases || {}),
-        
-        '@utils': path.resolve(__dirname, './../src/utils'),
-        '@config': path.resolve(__dirname, './../src/config'),
-        '@pages': path.resolve(__dirname, './../src/pages'),
-        '@router': path.resolve(__dirname, './../src/router'),
-        '@com': path.resolve(__dirname, './../src/components'),
-        '@img': path.resolve(__dirname, './../src/img'),
-        '@axios': path.resolve(__dirname, './../src/axios'),
-        '@store': path.resolve(__dirname, './../src/store'),
-        '@types': path.resolve(__dirname, './../src/types'),
+        ...dmAlias,
       },
       plugins: [
         // Prevents users from importing files from outside of src/ (or node_modules/).

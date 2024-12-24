@@ -7,6 +7,7 @@ import { formatPriceFn, getURLSearchParamsFn } from '@utils/common-fn';
 import store from '@store';
 // 样式
 import './index.less';
+import { withTranslation } from 'react-i18next';
 
 interface IComponentPros {
   /**
@@ -29,7 +30,9 @@ interface IComponentState {
  */
 @observer
 class GoodsList extends React.PureComponent<
-  RouteComponentProps<IComponentPros>,
+  RouteComponentProps<IComponentPros> & {
+    t: (text: string, data?: IObject) => string;
+  },
   IComponentState
 > {
   componentDidMount() {
@@ -43,6 +46,7 @@ class GoodsList extends React.PureComponent<
 
   render() {
     const { requestParams, total } = store?.goodsListStore || {};
+    const { t } = this.props;
 
     return (
       <div className='dm_Products'>
@@ -61,7 +65,7 @@ class GoodsList extends React.PureComponent<
                   pageSize,
                 });
               }}
-              showTotal={(total) => `共 ${total} 条`}
+              showTotal={(total) => t('共 {{total}} 条', { total })}
             />
           ) : null}
         </div>
@@ -120,4 +124,4 @@ class GoodsList extends React.PureComponent<
   };
 }
 
-export default GoodsList;
+export default withTranslation()(GoodsList);

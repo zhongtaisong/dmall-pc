@@ -22,12 +22,14 @@
       "@store": ["src/store"],
       "@store/*": ["src/store/*"],
       "@types": ["src/types"],
-      "@types/*": ["src/types/*"]
+      "@types/*": ["src/types/*"],
+      "@i18n/*": ["src/i18n/*"]
     },
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "resolveJsonModule": true
   },
-  "include": ["src", "global.d.ts"],
+  "include": ["src", "global.d.ts", "analytics-storage-utils.d.ts"],
   "exclude": ["node_modules"]
 }

@@ -2,6 +2,7 @@ import Login from '@pages/login';
 import Register from '@pages/register';
 import GoodsList from '@pages/goods-list';
 import UserCenter from '@pages/user-center';
+import I18nPage from '@pages/i18n-page';
 
 export const ROUTE_LIST = [
   {
@@ -14,6 +15,12 @@ export const ROUTE_LIST = [
     pathname: '/user-center',
     component: UserCenter,
     title: '用户中心',
+    exact: true,
+  },
+  {
+    pathname: '/i18n-page',
+    component: I18nPage,
+    title: '多语言维护',
     exact: true,
   },
 ];
