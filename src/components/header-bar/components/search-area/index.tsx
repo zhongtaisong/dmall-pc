@@ -70,7 +70,7 @@ class SearchArea extends React.PureComponent<
     if (pathname !== '/') {
       dmHistory.push(`/?keyword=${value || ''}`);
     } else {
-      if (isLoading || keyword === value) return;
+      if (isLoading) return;
 
       window.history.pushState({}, '', `/?keyword=${value || ''}`);
       store.goodsListStore.goodsListSelectServiceFn({

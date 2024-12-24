@@ -6,6 +6,7 @@ import { AUTH_CODE, SERVICE_URL, SUCCESS_CODE } from '@config';
 // 全局数据
 import store from '@store';
 import { onNavigateToLoginClick } from '@utils/common-fn';
+import { getCurrentLanguageInfoFn } from '@i18n/index';
 
 /** 创建axios实例 */
 const axiosInstance = axios.create({
@@ -37,6 +38,7 @@ axiosInstance.interceptors.request.use(
       ...config.headers,
       ...headersParams,
       terminal: 'PC',
+      lang: getCurrentLanguageInfoFn()?.key || '',
     };
 
     // 接口请求次数加1
