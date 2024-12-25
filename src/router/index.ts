@@ -1,8 +1,19 @@
-import Login from '@pages/login';
-import Register from '@pages/register';
-import GoodsList from '@pages/goods-list';
-import UserCenter from '@pages/user-center';
-import I18nPage from '@pages/i18n-page';
+import React from 'react';
+const Login = React.lazy(
+  () => import(/* webpackChunkName: "login" */ '@pages/login'),
+);
+const Register = React.lazy(
+  () => import(/* webpackChunkName: "register" */ '@pages/register'),
+);
+const GoodsList = React.lazy(
+  () => import(/* webpackChunkName: "goods-list" */ '@pages/goods-list'),
+);
+const UserCenter = React.lazy(
+  () => import(/* webpackChunkName: "user-center" */ '@pages/user-center'),
+);
+const I18nPage = React.lazy(
+  () => import(/* webpackChunkName: "i18n-page" */ '@pages/i18n-page'),
+);
 
 export const ROUTE_LIST = [
   {
