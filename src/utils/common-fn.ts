@@ -1,5 +1,5 @@
 import type { RcFile } from 'antd/es/upload/interface';
-import lodash from 'lodash';
+import _ from 'lodash';
 import { removeItem } from '@analytics/storage-utils';
 import { cache } from './cache';
 import { dmHistory } from './history';
@@ -180,7 +180,7 @@ export const handleListFn = <T extends IObject>(
   if (!Array.isArray(list) || !list.length || !key || typeof t !== 'function')
     return [];
 
-  const data = lodash.cloneDeep(list);
+  const data = _.cloneDeep(list);
   data.forEach((item) => {
     if (item && Object.keys(data).length) {
       Object.assign(item, {

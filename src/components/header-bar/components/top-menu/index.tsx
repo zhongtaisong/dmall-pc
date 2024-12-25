@@ -13,7 +13,7 @@ import './index.less';
 import { LANGUAGE_LIST } from '@config';
 import { setItem } from '@analytics/storage-utils';
 import { cache } from '@utils/cache';
-import lodash from 'lodash';
+import _ from 'lodash';
 import { dmI18n, getCurrentLanguageInfoFn } from '@i18n/index';
 import { eventBus } from '@utils/event-bus';
 import { withTranslation } from 'react-i18next';
@@ -51,7 +51,7 @@ class TopMenu extends React.PureComponent<
     let { welcomeObjectName } = store?.headerBarStore || {};
     welcomeObjectName = welcomeObjectName || nickname || phone || t(`朋友`);
 
-    let menuItems_new = lodash.cloneDeep(MENU_LIST);
+    let menuItems_new = _.cloneDeep(MENU_LIST);
     if (role !== '0') {
       menuItems_new = menuItems_new.filter(
         (item) => !['/i18n-page'].includes(item?.pathname),
