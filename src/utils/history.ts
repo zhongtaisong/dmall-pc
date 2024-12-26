@@ -1,5 +1,3 @@
-import { createBrowserHistory } from "history";
-// 创建history实例
-const history = createBrowserHistory();
+import { createBrowserHistory } from 'history';
 
-export default history;
+export const dmHistory = createBrowserHistory();

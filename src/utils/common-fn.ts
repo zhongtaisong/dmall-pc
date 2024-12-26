@@ -1,5 +1,8 @@
-import { cacheKey, history } from '@utils';
 import type { RcFile } from 'antd/es/upload/interface';
+import _ from 'lodash';
+import { removeItem } from '@analytics/storage-utils';
+import { cache } from './cache';
+import { dmHistory } from './history';
 
 /**
  * 获取用户信息
@@ -26,12 +29,13 @@ export const getUserInfo = (): {
    * 登录凭证
    */
   token: string;
+  role: string;
 } => {
   let user_info;
   try {
     user_info = JSON.parse(
-      sessionStorage.getItem(cacheKey.USER_INFO) ||
-        localStorage.getItem(cacheKey.USER_INFO),
+      sessionStorage.getItem(cache.LOGIN_INFO) ||
+        localStorage.getItem(cache.LOGIN_INFO),
     );
   } catch (error) {
     console.log(error);
@@ -94,86 +98,18 @@ export const checkSize = (
 };
 
 /**
- * 校验 - 接口响应内容
- * @param params
- * @param requestNum
- */
-export const validResponseCode = (
-  params: {
-    /**
-     * 异常码
-     */
-    code: string;
-    /**
-     * 响应结果
-     */
-    response: {
-      /**
-       * 返回结果
-       */
-      data: {
-        /**
-         * 接口返回结果码
-         */
-        code: string;
-        /**
-         * 提示语
-         */
-        msg: string;
-      };
-      /**
-       * 响应码
-       */
-      status: number;
-    };
-  },
-  requestNum?: number,
-) => {
-  if (!params || !Object.keys(params).length) return;
-
-  const { code } = params;
-  const { status, data } = params?.response || {};
-  switch (code) {
-    case 'ERR_NETWORK':
-      return '网络出错了!';
-    case 'ECONNABORTED':
-      return '请求超时!';
-    case 'ERR_BAD_REQUEST':
-      if (status === 401) {
-        localStorage.removeItem(cacheKey.USER_INFO);
-        sessionStorage.removeItem(cacheKey.USER_INFO);
-
-        if (
-          requestNum <= 0 &&
-          !['/login'].includes(history?.location?.pathname)
-        ) {
-          history.push('/login');
-        }
-
-        if (!isLogin?.()) {
-          return;
-        }
-
-        return data?.msg || '身份认证失败!';
-      }
-
-      return data?.msg;
-  }
-};
-
-/**
  * 校验 - 手机号码
  * @param value
  * @returns
  */
-export const validatePhone = (value) => {
+export const validatePhone = (value: string, t: (text: string) => string) => {
   if (!value?.trim?.()) {
-    return Promise.reject('请输入手机号码');
+    return Promise.reject(t(`请输入手机号码`));
   }
 
   const reg = /^1[3-9]\d{9}$/;
   if (!reg.test(value)) {
-    return Promise.reject('请输入合法的手机号码');
+    return Promise.reject(t(`请输入正确的手机号码`));
   }
 
   return Promise.resolve();
@@ -234,4 +170,38 @@ export const getURLSearchParamsFn = (): IObject => {
   }
 
   return params;
+};
+
+export const handleListFn = <T extends IObject>(
+  list: Array<T>,
+  key: keyof T,
+  t: (val: string) => void,
+) => {
+  if (!Array.isArray(list) || !list.length || !key || typeof t !== 'function')
+    return [];
+
+  const data = _.cloneDeep(list);
+  data.forEach((item) => {
+    if (item && Object.keys(data).length) {
+      Object.assign(item, {
+        [key]: t(item?.[key] || ''),
+      });
+    }
+  });
+
+  return data;
+};
+
+/**
+ * 跳转登录页 - 操作
+ * @returns
+ */
+export const onNavigateToLoginClick = () => {
+  const pathname = window?.location?.pathname;
+
+  const login_path = '/login';
+  if (pathname === login_path) return;
+
+  removeItem(cache.LOGIN_INFO);
+  dmHistory.push('/login');
 };

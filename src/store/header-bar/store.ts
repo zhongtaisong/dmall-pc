@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { SUCCESS_CODE } from '@config';
-import { cacheKey } from '@utils';
 import { logoutService } from './service';
+import { cache } from '@utils/cache';
 
 export default class Store {
   constructor() {
@@ -14,8 +14,8 @@ export default class Store {
   logoutServiceFn = async () => {
     const result = await logoutService();
     if (result) {
-      localStorage.removeItem(cacheKey.USER_INFO);
-      sessionStorage.removeItem(cacheKey.USER_INFO);
+      localStorage.removeItem(cache.LOGIN_INFO);
+      sessionStorage.removeItem(cache.LOGIN_INFO);
     }
 
     return result;

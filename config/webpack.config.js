@@ -25,9 +25,9 @@ const ForkTsCheckerWebpackPlugin =
     ? require('react-dev-utils/ForkTsCheckerWarningWebpackPlugin')
     : require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-
+const dmAlias = require("./dm-alias.js");
 const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash');
-
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 
@@ -292,6 +292,9 @@ module.exports = function (webpackEnv) {
         // This is only used in production mode
         new CssMinimizerPlugin(),
       ],
+      splitChunks: isEnvProduction ? {
+        chunks: 'all',
+      } : false,
     },
     resolve: {
       // This allows you to set a fallback for where webpack should look for modules.
@@ -320,16 +323,7 @@ module.exports = function (webpackEnv) {
           'scheduler/tracing': 'scheduler/tracing-profiling',
         }),
         ...(modules.webpackAliases || {}),
-        
-        '@utils': path.resolve(__dirname, './../src/utils'),
-        '@config': path.resolve(__dirname, './../src/config'),
-        '@pages': path.resolve(__dirname, './../src/pages'),
-        '@router': path.resolve(__dirname, './../src/router'),
-        '@com': path.resolve(__dirname, './../src/components'),
-        '@img': path.resolve(__dirname, './../src/img'),
-        '@axios': path.resolve(__dirname, './../src/axios'),
-        '@store': path.resolve(__dirname, './../src/store'),
-        '@types': path.resolve(__dirname, './../src/types'),
+        ...dmAlias,
       },
       plugins: [
         // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -624,6 +618,7 @@ module.exports = function (webpackEnv) {
       ].filter(Boolean),
     },
     plugins: [
+      isEnvProduction && new BundleAnalyzerPlugin(),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(

@@ -17,3 +17,9 @@ export const SERVICE_URL = 'http://127.0.0.1:8000/api';
 
 /** 身份认证失败 - 响应码 */
 export const AUTH_CODE = 'APP-ERR-000001';
+
+export const LANGUAGE_LIST = [
+  { key: 'zh', label: '中文' },
+  { key: 'en', label: 'English' },
+  { key: 'ru', label: 'Русский язык' },
+];

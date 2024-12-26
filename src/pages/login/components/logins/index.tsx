@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import './index.less';
+import { withTranslation } from 'react-i18next';
 
 /**
  * 登录 - 表单
@@ -11,6 +12,8 @@ import './index.less';
 @observer
 class Logins extends React.PureComponent<any, any> {
   render() {
+    const { t } = this.props;
+
     return (
       <div className='login_logins'>
         <Form.Item
@@ -18,14 +21,14 @@ class Logins extends React.PureComponent<any, any> {
           rules={[
             {
               required: true,
-              message: '请输入手机号码',
+              message: t(`请输入手机号码`),
             },
           ]}
           initialValue={localStorage.getItem('phone')}
         >
           <Input
             prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder='请输入手机号码'
+            placeholder={t(`请输入手机号码`)}
             maxLength={11}
           />
         </Form.Item>
@@ -34,13 +37,13 @@ class Logins extends React.PureComponent<any, any> {
           rules={[
             {
               required: true,
-              message: '请输入密码',
+              message: t(`请输入密码`),
             },
           ]}
         >
           <Input.Password
             prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder='请输入密码'
+            placeholder={t(`请输入密码`)}
           />
         </Form.Item>
 
@@ -50,7 +53,7 @@ class Logins extends React.PureComponent<any, any> {
             valuePropName='checked'
             initialValue={true}
           >
-            <Checkbox>记住账号</Checkbox>
+            <Checkbox>{t(`记住账号`)}</Checkbox>
           </Form.Item>
         </div>
 
@@ -61,12 +64,12 @@ class Logins extends React.PureComponent<any, any> {
             style={{ width: '100%' }}
             size='large'
           >
-            登录
+            {t(`登录`)}
           </Button>
         </Form.Item>
         <Form.Item>
           <Link to='/register' className='login_logins__register'>
-            新用户注册
+            {t(`新用户注册`)}
           </Link>
         </Form.Item>
       </div>
@@ -74,4 +77,4 @@ class Logins extends React.PureComponent<any, any> {
   }
 }
 
-export default Logins;
+export default withTranslation()(Logins);

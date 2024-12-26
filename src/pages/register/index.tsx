@@ -4,7 +4,6 @@ import { observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import type { FormInstance } from 'antd/es/form';
 import jsmd5 from 'js-md5';
-import { history } from '@utils';
 import { validatePhone } from '@utils/common-fn';
 // logo图片
 import logoImg from '@img/logo2.png';
@@ -12,6 +11,8 @@ import logoImg from '@img/logo2.png';
 import store from '@store';
 // less样式
 import './index.less';
+import { dmHistory } from '@utils/history';
+import { withTranslation } from 'react-i18next';
 
 /**
  * 注册
@@ -21,6 +22,8 @@ class Register extends React.PureComponent<any, any> {
   formRef = React.createRef<FormInstance>();
 
   render() {
+    const { t } = this.props;
+
     return (
       <div className='dm_Register'>
         <div className='dm_Register__content'>
@@ -36,9 +39,11 @@ class Register extends React.PureComponent<any, any> {
             <Form.Item
               name='phone'
               required
-              rules={[{ validator: (rule, value) => validatePhone?.(value) }]}
+              rules={[
+                { validator: (rule, value) => validatePhone?.(value, t) },
+              ]}
             >
-              <Input placeholder='请输入手机号码' maxLength={11} />
+              <Input placeholder={t(`请输入手机号码`)} maxLength={11} />
             </Form.Item>
 
             <Form.Item
@@ -46,11 +51,11 @@ class Register extends React.PureComponent<any, any> {
               rules={[
                 {
                   required: true,
-                  message: '请输入密码',
+                  message: t(`请输入密码`),
                 },
               ]}
             >
-              <Input.Password placeholder='请输入密码' />
+              <Input.Password placeholder={t(`请输入密码`)} />
             </Form.Item>
 
             <Form.Item
@@ -62,11 +67,11 @@ class Register extends React.PureComponent<any, any> {
                   validator(_, value) {
                     value = value?.trim?.();
                     if (!value) {
-                      return Promise.reject('请输入确认密码');
+                      return Promise.reject(t(`请输入确认密码`));
                     }
 
                     if (getFieldValue('password') !== value) {
-                      return Promise.reject('两次输入的密码不一致');
+                      return Promise.reject(t(`两次输入的密码不一致`));
                     }
 
                     return Promise.resolve();
@@ -74,7 +79,7 @@ class Register extends React.PureComponent<any, any> {
                 }),
               ]}
             >
-              <Input.Password placeholder='请输入确认密码' />
+              <Input.Password placeholder={t(`请输入确认密码`)} />
             </Form.Item>
 
             <Form.Item colon={false}>
@@ -84,15 +89,15 @@ class Register extends React.PureComponent<any, any> {
                 style={{ width: '100%' }}
                 size='large'
               >
-                提交注册信息
+                {t(`提交`)}
               </Button>
             </Form.Item>
             <Form.Item colon={false}>
               <span
                 className='dm_Register__login'
-                onClick={() => history.push('/login')}
+                onClick={() => dmHistory.push('/login')}
               >
-                已有账号，直接登录
+                {t(`已有账号，直接登录`)}
               </span>
             </Form.Item>
           </Form>
@@ -115,10 +120,10 @@ class Register extends React.PureComponent<any, any> {
       },
       () => {
         this.formRef.current?.resetFields?.();
-        history.push('/login');
+        dmHistory.push('/login');
       },
     );
   };
 }
 
-export default Register;
+export default withTranslation()(Register);

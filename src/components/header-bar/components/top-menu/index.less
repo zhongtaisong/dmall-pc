@@ -10,17 +10,20 @@
         justify-content: space-between;
         color: #fff;
         &--left {
-            display: flex;
-            align-items: center;
-            >div {
-                font-size: 12px;
-                margin-left: 8px;
+            &__info {
+                display: flex;
+                align-items: center;
+
+                >div {
+                    margin-left: 8px;
+                }
             }
         }
         &--right {
             display: flex !important;
             justify-content: flex-end;
-            span {
+
+            >span {
                 cursor: pointer;
                 font-size: 13px;
                 &:not(:last-child):after {
@@ -43,6 +46,11 @@
                     margin-right: 4px;
                 }
                 >span {}
+            }
+
+            &__language {
+                margin-left: 12px;
+                cursor: pointer;
             }
         }
     }

@@ -1,7 +1,7 @@
-import React from 'react';
-import { Popover, ConfigProvider, Avatar } from 'antd';
+import * as React from 'react';
+import { Popover, ConfigProvider, Avatar, Dropdown, Menu, Space } from 'antd';
 import { RouteComponentProps } from 'react-router-dom';
-import { UserOutlined } from '@ant-design/icons';
+import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react';
 import { SketchPicker } from 'react-color';
 import { commonFn } from '@utils';
@@ -10,61 +10,97 @@ import { MENU_LIST } from './data';
 import store from '@store';
 // less样式
 import './index.less';
+import { LANGUAGE_LIST } from '@config';
+import { setItem } from '@analytics/storage-utils';
+import { cache } from '@utils/cache';
+import _ from 'lodash';
+import { dmI18n, getCurrentLanguageInfoFn } from '@i18n/index';
+import { eventBus } from '@utils/event-bus';
+import { withTranslation } from 'react-i18next';
 
 /**
  * 顶部菜单
  */
 @observer
 class TopMenu extends React.PureComponent<
-  Partial<RouteComponentProps>,
+  Partial<
+    RouteComponentProps & {
+      t: (key: string) => string;
+    }
+  >,
   {
     /**
      * 是否展示登录、注册
      */
     isLoginAndRegister: boolean;
+    languageInfo: IObject;
   }
 > {
   constructor(props) {
     super(props);
     this.state = {
       isLoginAndRegister: !commonFn?.isLogin?.(),
+      languageInfo: getCurrentLanguageInfoFn(),
     };
   }
 
   render() {
-    const { nickname, phone, avatar } = commonFn?.getUserInfo?.() || {};
-    const { isLoginAndRegister } = this.state;
+    const { nickname, phone, avatar, role } = commonFn?.getUserInfo?.() || {};
+    const { isLoginAndRegister, languageInfo } = this.state;
+    const { t } = this.props;
     let { welcomeObjectName } = store?.headerBarStore || {};
-    welcomeObjectName = welcomeObjectName || nickname || phone || '朋友';
+    welcomeObjectName = welcomeObjectName || nickname || phone || t(`朋友`);
+
+    let menuItems_new = _.cloneDeep(MENU_LIST);
+    if (role !== '0') {
+      menuItems_new = menuItems_new.filter(
+        (item) => !['/i18n-page'].includes(item?.pathname),
+      );
+    }
+
+    if (Array.isArray(menuItems_new) && menuItems_new?.length) {
+      menuItems_new.forEach((item) => {
+        if (item && Object.keys(item).length) {
+          Object.assign(item, {
+            name: t(item?.name),
+          });
+        }
+      });
+    }
 
     return (
-      <div className='dm_topMenu'>
+      <div className='dm_topMenu' id='dm_topMenu'>
         <div className='common_width dm_topMenu__content'>
-          <div className='dm_topMenu__content--left'>
-            <Avatar
-              style={{ backgroundColor: 'var(--dm-main-color)' }}
-              src={avatar}
-              icon={<UserOutlined />}
-              size='small'
-              alt='头像'
-            />
-            <div>欢迎您，{welcomeObjectName}</div>
-          </div>
+          <Space className='dm_topMenu__content--left' size={32}>
+            <div className='dm_topMenu__content--left__info'>
+              <Avatar
+                style={{ backgroundColor: 'var(--dm-main-color)' }}
+                src={avatar}
+                icon={<UserOutlined />}
+                size='small'
+                alt='头像'
+              />
+              <div>
+                {t(`欢迎您`)}，{welcomeObjectName}
+              </div>
+            </div>
+          </Space>
 
           <div className='dm_topMenu__content--right'>
             {isLoginAndRegister ? (
               <>
                 <span onClick={() => this.props.history.push('/login')}>
-                  登录
+                  {t(`登录`)}
                 </span>
                 <span onClick={() => this.props.history.push('/register')}>
-                  注册
+                  {t(`注册`)}
                 </span>
               </>
             ) : (
-              <span onClick={this.onLogoutClick}>退出登录</span>
+              <span onClick={this.onLogoutClick}>{t(`退出登录`)}</span>
             )}
-            {MENU_LIST.map((item) => {
+
+            {menuItems_new.map((item) => {
               return (
                 <span
                   key={item?.pathname}
@@ -87,9 +123,47 @@ class TopMenu extends React.PureComponent<
             >
               <div className='dm_topMenu__content--right__theme'>
                 <div style={{ background: `var(--dm-main-color)` }} />
-                <span>主题色</span>
+                <span>{t(`主题色`)}</span>
               </div>
             </Popover>
+
+            <Dropdown
+              className='dm_topMenu__content--right__language'
+              overlay={
+                <Menu
+                  onClick={(info) => {
+                    const key = info?.key;
+                    if (!key || languageInfo?.key === key) return;
+
+                    const languageInfo_new =
+                      LANGUAGE_LIST?.find((item) => item?.key === key) || {};
+                    setItem(cache.LANGUAGE_INFO, languageInfo_new);
+                    dmI18n.changeLanguage(key);
+                    this.setState({ languageInfo: languageInfo_new });
+                    eventBus.emit('onLanguageChange', languageInfo_new);
+                  }}
+                >
+                  {LANGUAGE_LIST.map((item) => {
+                    return (
+                      <Menu.Item
+                        // @ts-ignore
+                        key={item?.key}
+                      >
+                        {item?.label}
+                      </Menu.Item>
+                    );
+                  })}
+                </Menu>
+              }
+              arrow
+              placement='bottomRight'
+            >
+              <Space>
+                <span>{languageInfo?.label}</span>
+
+                <DownOutlined style={{ fontSize: 12 }} />
+              </Space>
+            </Dropdown>
           </div>
         </div>
       </div>
@@ -141,4 +215,4 @@ class TopMenu extends React.PureComponent<
   };
 }
 
-export default TopMenu;
+export default withTranslation()(TopMenu);

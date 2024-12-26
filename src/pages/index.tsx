@@ -31,7 +31,9 @@ class Index extends React.PureComponent<RouteComponentProps, any> {
                 {ROUTE_LIST.map((item) => {
                   if (!item || !Object.keys(item).length) return null;
                   return (
-                    <Route
+                    <Route<{
+                      key: string;
+                    }>
                       key={item.pathname}
                       exact={item?.exact}
                       path={item.pathname}

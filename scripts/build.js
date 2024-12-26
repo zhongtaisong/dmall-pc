@@ -135,7 +135,14 @@ checkBrowsers(paths.appPath, isInteractive)
 function build(previousFileSizes) {
   console.log('Creating an optimized production build...');
 
-  const compiler = webpack(config);
+  const compiler = webpack({
+    ...config,
+    externals: {
+      lodash: "_",
+      react: "React",
+      "react-dom": "ReactDOM",
+    },
+  });
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
       let messages;

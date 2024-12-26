@@ -1,6 +1,5 @@
 import axios from '@axios';
 import { IResponse } from '@types';
-import { commonFn, history } from '@utils';
 import {
   IBuyGoodsInfo,
   IGoodsEvaluateAddService,
