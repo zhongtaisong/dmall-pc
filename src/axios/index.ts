@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { message } from 'antd';
 import { commonFn } from '@utils';
-import { validResponseCode } from '@utils/common-fn';
 // 设置
-import { SERVICE_URL, SUCCESS_CODE } from '@config';
+import { AUTH_CODE, SERVICE_URL, SUCCESS_CODE } from '@config';
 // 全局数据
 import store from '@store';
+import { onNavigateToLoginClick } from '@utils/common-fn';
+import { getCurrentLanguageInfoFn } from '@i18n/index';
 
 /** 创建axios实例 */
 const axiosInstance = axios.create({
@@ -37,6 +38,7 @@ axiosInstance.interceptors.request.use(
       ...config.headers,
       ...headersParams,
       terminal: 'PC',
+      lang: getCurrentLanguageInfoFn()?.key || '',
     };
 
     // 接口请求次数加1
@@ -76,18 +78,20 @@ axiosInstance.interceptors.response.use(
           message.error(msg);
         }
       }
+
+      if (code !== SUCCESS_CODE) {
+        switch (code) {
+          case AUTH_CODE:
+            onNavigateToLoginClick();
+            break;
+        }
+      }
     }
     return response;
   },
   (error) => {
     // 接口请求次数减1
     requestNum--;
-
-    // 校验 - 接口响应内容
-    const msg = validResponseCode(error, requestNum);
-    if (msg) {
-      message.error(msg);
-    }
 
     if (requestNum <= 0) {
       // 关闭loading

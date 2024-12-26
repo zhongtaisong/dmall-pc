@@ -1,7 +1,8 @@
 import { SUCCESS_CODE } from '@config';
-import { history } from '@utils';
 import { makeAutoObservable } from 'mobx';
 import { userRegisterService, IRegister } from './service';
+import { setItem } from '@analytics/storage-utils';
+import { cache } from '@utils/cache';
 
 export default class Store {
   constructor() {
@@ -19,7 +20,7 @@ export default class Store {
 
     const result = await userRegisterService(params);
     if (result?.data?.code === SUCCESS_CODE) {
-      localStorage.setItem('phone', params?.phone);
+      setItem(cache.LOGIN_ACCOUNT, params?.phone);
       callBack?.();
     }
   };

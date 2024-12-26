@@ -8,6 +8,7 @@ import PersonalInformation from './components/personal-information';
 import store from '@store';
 // less样式
 import './index.less';
+import { withTranslation } from 'react-i18next';
 
 /**
  * 用户中心
@@ -46,6 +47,7 @@ class UserCenter extends React.PureComponent<
 
   render() {
     const { fileList } = this.state;
+    const { t } = this.props;
 
     return (
       <div className='common_width dm_UserCenter'>
@@ -57,6 +59,7 @@ class UserCenter extends React.PureComponent<
               autoComplete='off'
               ref={this.formRef}
               onFinish={this.onFinish}
+              labelWrap
             >
               {/* 个人资料 */}
               <PersonalInformation
@@ -70,7 +73,7 @@ class UserCenter extends React.PureComponent<
 
               <Form.Item wrapperCol={{ offset: 5, span: 19 }}>
                 <Button type='primary' htmlType='submit'>
-                  提交
+                  {t('提交')}
                 </Button>
               </Form.Item>
             </Form>
@@ -103,4 +106,4 @@ class UserCenter extends React.PureComponent<
   };
 }
 
-export default UserCenter;
+export default withTranslation()(UserCenter);

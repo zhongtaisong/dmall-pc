@@ -5,19 +5,25 @@ import { observer } from 'mobx-react';
 import store from '@store';
 // less样式
 import './index.less';
-import { history } from '@utils';
 import { getURLSearchParamsFn } from '@utils/common-fn';
+import { dmHistory } from '@utils/history';
+import { withTranslation } from 'react-i18next';
 
 /**
  * 搜索区域
  */
 @observer
 class SearchArea extends React.PureComponent<
-  Partial<RouteComponentProps>,
+  Partial<
+    RouteComponentProps & {
+      t: (text: string) => string;
+    }
+  >,
   any
 > {
   render() {
     const { keyword } = getURLSearchParamsFn();
+    const { t } = this.props;
 
     return (
       <>
@@ -26,7 +32,7 @@ class SearchArea extends React.PureComponent<
             <Col
               span={4}
               className='dm_SearchArea__content--logo'
-              onClick={() => history.push('/')}
+              onClick={() => dmHistory.push('/')}
             >
               <svg className='icon-font' aria-hidden='true'>
                 <use xlinkHref='#icon-logo'></use>
@@ -40,7 +46,7 @@ class SearchArea extends React.PureComponent<
             >
               <Input.Search
                 className='dm_SearchArea__content--search__input'
-                placeholder='搜索商品'
+                placeholder={t(`搜索商品`)}
                 enterButton
                 defaultValue={keyword || ''}
                 onSearch={this.getSearchKws}
@@ -62,9 +68,9 @@ class SearchArea extends React.PureComponent<
     const { keyword } = getURLSearchParamsFn();
     const { isLoading } = store?.pagesStore || {};
     if (pathname !== '/') {
-      history.push(`/?keyword=${value || ''}`);
+      dmHistory.push(`/?keyword=${value || ''}`);
     } else {
-      if (isLoading || keyword === value) return;
+      if (isLoading) return;
 
       window.history.pushState({}, '', `/?keyword=${value || ''}`);
       store.goodsListStore.goodsListSelectServiceFn({
@@ -75,4 +81,4 @@ class SearchArea extends React.PureComponent<
   };
 }
 
-export default SearchArea;
+export default withTranslation()(SearchArea);

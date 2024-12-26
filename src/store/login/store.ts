@@ -1,7 +1,9 @@
 import { SUCCESS_CODE } from '@config';
-import { cacheKey, history } from '@utils';
 import { makeAutoObservable } from 'mobx';
 import { userLoginService, ILogin } from './service';
+import { cache } from '@utils/cache';
+import { removeItem, setItem } from '@analytics/storage-utils';
+import { dmHistory } from '@utils/history';
 
 export default class Store {
   constructor() {
@@ -20,17 +22,15 @@ export default class Store {
 
     const result = await userLoginService(restParams);
     if (result?.data?.code === SUCCESS_CODE) {
-      const key = cacheKey.USER_INFO;
-      const val = JSON.stringify(result?.data?.context || {});
       if (isRemember) {
-        localStorage.setItem('phone', restParams?.phone);
+        setItem(cache.LOGIN_ACCOUNT, restParams?.phone);
       } else {
-        localStorage.removeItem('phone');
+        removeItem(cache.LOGIN_ACCOUNT);
       }
 
-      localStorage.setItem(key, val);
+      setItem(cache.LOGIN_INFO, result?.data?.context || {});
 
-      history.replace('/');
+      dmHistory.replace('/');
     }
   };
 

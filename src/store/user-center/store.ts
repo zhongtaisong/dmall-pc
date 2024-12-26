@@ -6,8 +6,9 @@ import {
 } from './service';
 // mobx数据
 import store from '@store';
-import { cacheKey } from '@utils';
 import { getUserInfo } from '@utils/common-fn';
+import { cache } from '@utils/cache';
+import { setItem } from '@analytics/storage-utils';
 
 export default class Store {
   constructor() {
@@ -55,10 +56,9 @@ export default class Store {
         });
       }
 
-      const key = cacheKey.USER_INFO;
-      const val = JSON.stringify(user_info || {});
-      localStorage.setItem(key, val);
-      sessionStorage.setItem(key, val);
+      const val = user_info || {};
+      setItem(cache.LOGIN_INFO, val);
+      setItem(cache.LOGIN_INFO, val);
       runInAction(() => {
         store.headerBarStore.setMobxStoreFn({
           key: 'welcomeObjectName',
