@@ -26,7 +26,8 @@ const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const printHostingInstructions = require('react-dev-utils/printHostingInstructions');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
-
+const { merge } = require('webpack-merge');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const measureFileSizesBeforeBuild =
   FileSizeReporter.measureFileSizesBeforeBuild;
 const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
@@ -45,9 +46,19 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 
 const argv = process.argv.slice(2);
 const writeStatsJson = argv.indexOf('--stats') !== -1;
+const isAnalyzer = argv.indexOf('--analyzer') !== -1;
 
 // Generate configuration
-const config = configFactory('production');
+const config = merge(configFactory('production'), {
+  plugins: [
+    isAnalyzer && new BundleAnalyzerPlugin(),
+  ].filter(Boolean),
+  externals: {
+    lodash: "_",
+    react: "React",
+    "react-dom": "ReactDOM",
+  },
+});
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
@@ -135,14 +146,7 @@ checkBrowsers(paths.appPath, isInteractive)
 function build(previousFileSizes) {
   console.log('Creating an optimized production build...');
 
-  const compiler = webpack({
-    ...config,
-    externals: {
-      lodash: "_",
-      react: "React",
-      "react-dom": "ReactDOM",
-    },
-  });
+  const compiler = webpack(config);
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
       let messages;
