@@ -3,10 +3,10 @@ name: pipeline-20241229
 displayName: pipeline-20241229
 triggers:
   trigger: auto
-  push:
+  pr:
     branches:
-      exclude:
-        - master
+      prefix:
+        - ''
 stages:
   - name: stage-a9fcd35a
     displayName: 未命名
