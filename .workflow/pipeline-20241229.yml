@@ -29,10 +29,11 @@ stages:
         artifacts:
           - name: BUILD_ARTIFACT
             path:
-              - ./dist
+              - ./build
         caches:
           - ~/.npm
           - ~/.yarn
         notify: []
         strategy:
           retry: '0'
+strategy: {}
