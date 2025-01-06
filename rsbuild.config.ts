@@ -7,4 +7,12 @@ export default defineConfig({
     template: './public/index.html',
   },
   plugins: [pluginReact(), pluginLess()],
+  output: {
+    distPath: {
+      root: 'build',
+    },
+  },
+  server: {
+    port: 3008,
+  },
 });
